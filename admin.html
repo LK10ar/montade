@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <title>Espace pro — Le Montadé</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #2c4577; --blue-mid: #3a5587; --blue-dark: #17233f;
+            --yellow: #f7de4e; --yellow-soft: #fff6b8; --gold: #9a7b00;
+            --bg: #eef0f6; --card: #fff; --ink: #1e2740; --muted: #647091; --line: #dde2ee;
+            --danger: #d64545; --ok: #1f9d62; --radius: 16px;
+            --ff-title: 'Playfair Display', Georgia, serif; --ff-body: 'Montserrat', system-ui, sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--ff-body); background: var(--bg); color: var(--ink); min-height: 100vh; line-height: 1.5; -webkit-text-size-adjust: 100%; }
+        button, input, select { font-family: inherit; font-size: 1rem; }
+        [hidden] { display: none !important; }
+        :focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+        /* ============ CONNEXION (plein écran) ============ */
+        .login { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 1fr; }
+        .login-brand { background: linear-gradient(160deg, var(--blue-dark), var(--blue)); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem 2rem; position: relative; overflow: hidden; }
+        .login-brand::before { content: ''; position: absolute; width: 520px; height: 520px; border-radius: 50%; background: rgba(247, 222, 78, .08); top: -160px; right: -160px; }
+        .login-brand img { width: 130px; height: 130px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; background: #fff; box-shadow: 0 14px 40px rgba(0, 0, 0, .3); position: relative; }
+        .login-brand h1 { font-size: clamp(2rem, 4vw, 3rem); margin-top: 1.6rem; position: relative; }
+        .login-brand h1 em { color: var(--yellow); }
+        .login-brand p { color: #c4cde3; margin-top: .8rem; max-width: 34ch; position: relative; }
+        .login-form-wrap { display: grid; place-items: center; padding: 2rem 1.25rem; }
+        .login-card { width: 100%; max-width: 420px; }
+        .login-card h2 { font-family: var(--ff-title); font-size: 2rem; color: var(--blue); }
+        .login-card > p { color: var(--muted); margin: .4rem 0 1.8rem; font-size: .92rem; }
+        .field { margin-bottom: 1.1rem; }
+        .field label { display: block; font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: .4rem; }
+        .field input, .field select { width: 100%; padding: .85rem 1rem; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); transition: border-color .2s, box-shadow .2s; }
+        .field input:focus, .field select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(44, 69, 119, .12); }
+        .pw-wrap { position: relative; }
+        .pw-wrap button { position: absolute; right: .4rem; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); width: 40px; height: 40px; cursor: pointer; border-radius: 10px; }
+        .code-input { text-align: center; font-size: 1.7rem !important; letter-spacing: .5em; font-weight: 700; padding-left: 1.4rem !important; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border: 0; border-radius: 12px; padding: .85rem 1.3rem; font-weight: 700; cursor: pointer; transition: background .2s, transform .2s, box-shadow .2s; text-decoration: none; font-size: .92rem; }
+        .btn:active { transform: translateY(1px); }
+        .btn-primary { background: var(--blue); color: #fff; width: 100%; padding: 1rem; }
+        .btn-primary:hover { background: var(--blue-dark); }
+        .btn-primary:disabled { opacity: .6; cursor: wait; }
+        .btn-yellow { background: var(--yellow); color: var(--blue-dark); }
+        .btn-yellow:hover { background: #ffe863; }
+        .btn-ghost { background: transparent; color: var(--blue); border: 1.5px solid var(--line); }
+        .btn-ghost:hover { background: #fff; border-color: var(--blue); }
+        .btn-danger { background: #fdeaea; color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: #fff; }
+        .btn-soft { background: #eaf0fb; color: var(--blue); }
+        .btn-soft:hover { background: var(--blue); color: #fff; }
+        .btn-sm { padding: .5rem .85rem; font-size: .8rem; border-radius: 10px; }
+        .form-msg { margin-top: 1rem; padding: .8rem 1rem; border-radius: 12px; font-size: .88rem; display: none; }
+        .form-msg.show { display: block; }
+        .form-msg.err { background: #fdeaea; color: var(--danger); }
+        .form-msg.info { background: #eaf0fb; color: var(--blue); }
+        .back-site { display: inline-block; margin-top: 1.6rem; color: var(--muted); font-size: .85rem; text-decoration: none; }
+        .back-site:hover { color: var(--blue); }
+
+        /* ============ TABLEAU DE BORD ============ */
+        .topbar { position: sticky; top: 0; z-index: 50; background: var(--blue-dark); color: #fff; display: flex; align-items: center; gap: 1rem; padding: .7rem clamp(1rem, 3vw, 2rem); box-shadow: 0 6px 24px rgba(23, 35, 63, .25); }
+        .topbar img { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; background: #fff; }
+        .topbar h1 { font-family: var(--ff-title); font-size: 1.25rem; flex: 1; line-height: 1.2; }
+        .topbar h1 small { display: block; font-family: var(--ff-body); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--yellow); font-weight: 700; }
+        .topbar .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, .3); }
+        .topbar .btn-ghost:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
+        .dash { max-width: 1500px; margin: 0 auto; padding: clamp(1rem, 3vw, 2rem); display: grid; grid-template-columns: minmax(360px, 440px) 1fr; gap: 1.6rem; align-items: start; }
+        .card { background: var(--card); border-radius: var(--radius); box-shadow: 0 6px 26px rgba(23, 35, 63, .07); }
+        .form-card { padding: 1.6rem; position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow-y: auto; }
+        .form-card h2 { font-family: var(--ff-title); color: var(--blue); font-size: 1.5rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: .6rem; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+        .box { background: #f6f8fc; border: 1px solid var(--line); border-radius: 14px; padding: 1rem; margin-bottom: 1.1rem; }
+        .box > .box-title { font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: .7rem; display: block; }
+        .box .field { margin-bottom: .7rem; }
+        .check { display: flex; gap: .7rem; align-items: center; cursor: pointer; font-size: .9rem; }
+        .check input { width: 20px; height: 20px; accent-color: var(--blue); }
+        .dyn-title { display: flex; justify-content: space-between; align-items: center; margin: .9rem 0 .4rem; font-weight: 700; color: var(--blue); font-size: .88rem; }
+        .dyn-row { display: grid; grid-template-columns: 1.6fr 1.6fr .8fr auto; gap: .45rem; margin-bottom: .45rem; }
+        .dyn-row input { padding: .6rem .7rem; font-size: .88rem; border: 1.5px solid var(--line); border-radius: 10px; min-width: 0; }
+        .dyn-row button { border: 0; background: #fdeaea; color: var(--danger); border-radius: 10px; width: 36px; cursor: pointer; }
+        .form-actions { display: flex; gap: .6rem; margin-top: .4rem; }
+        .form-actions .btn-primary { flex: 1; }
+
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; margin-bottom: 1.2rem; }
+        .stat { padding: 1.1rem 1.2rem; display: flex; flex-direction: column; border-left: 5px solid var(--yellow); cursor: pointer; transition: transform .2s, box-shadow .2s; }
+        .stat:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(23, 35, 63, .12); }
+        .stat b { font-size: 1.9rem; font-family: var(--ff-title); color: var(--blue); line-height: 1; }
+        .stat span { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: .35rem; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; padding: 1rem 1.2rem; margin-bottom: 1.2rem; }
+        .filter-tabs { display: flex; flex-wrap: wrap; gap: .5rem; flex: 1; }
+        .ftab { border: 1.5px solid var(--line); background: #fff; color: var(--blue); border-radius: 999px; padding: .5rem 1rem; font-weight: 700; font-size: .78rem; cursor: pointer; transition: all .2s; }
+        .ftab.active, .ftab:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .search { position: relative; min-width: 220px; flex: 0 1 280px; }
+        .search i { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+        .search input { width: 100%; padding: .65rem 1rem .65rem 2.4rem; border: 1.5px solid var(--line); border-radius: 999px; font-size: .9rem; }
+        .search input:focus { outline: none; border-color: var(--blue); }
+        .group-title { font-family: var(--ff-title); font-size: 1.25rem; color: var(--blue); margin: 1.6rem 0 .7rem; display: flex; align-items: center; gap: .8rem; }
+        .group-title::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+        .group-title small { font-family: var(--ff-body); font-size: .72rem; font-weight: 700; color: var(--muted); }
+        .plat { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; margin-bottom: .6rem; border-left: 5px solid var(--blue); flex-wrap: wrap; }
+        .plat-info { min-width: 0; flex: 1 1 240px; }
+        .plat-info strong { display: block; overflow-wrap: anywhere; }
+        .plat-info span { display: block; font-size: .84rem; color: var(--muted); overflow-wrap: anywhere; }
+        .badge { display: inline-block; font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: .2rem .6rem; border-radius: 999px; background: var(--yellow-soft); color: var(--gold); margin-left: .5rem; vertical-align: middle; }
+        .plat-actions { display: flex; gap: .5rem; }
+        .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+        .empty i { font-size: 2rem; display: block; margin-bottom: .8rem; color: var(--line); }
+        .mobile-add { display: none; }
+        .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 30px); background: var(--blue-dark); color: #fff; padding: .85rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: .9rem; opacity: 0; pointer-events: none; transition: all .35s; z-index: 200; box-shadow: 0 14px 40px rgba(0, 0, 0, .3); max-width: 90vw; text-align: center; }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .toast.ok { background: var(--ok); }
+        .toast.err { background: var(--danger); }
+
+        @media (max-width: 1100px) {
+            .dash { grid-template-columns: 1fr; }
+            .form-card { position: static; max-height: none; display: none; }
+            .form-card.open { display: block; }
+            .mobile-add { display: flex; width: 100%; margin-bottom: 1rem; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 820px) {
+            .login { grid-template-columns: 1fr; }
+            .login-brand { padding: 2.2rem 1.5rem; }
+            .login-brand img { width: 90px; height: 90px; }
+            .login-brand p { display: none; }
+        }
+        @media (max-width: 560px) {
+            .row2 { grid-template-columns: 1fr; }
+            .dyn-row { grid-template-columns: 1fr 1fr; }
+            .dyn-row input:first-child { grid-column: 1 / -1; }
+            .dyn-row button { width: auto; }
+            .topbar .label-long { display: none; }
+            .plat-actions { width: 100%; }
+            .plat-actions .btn { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= ÉCRAN DE CONNEXION ================= -->
+<main class="login" id="loginScreen">
+    <section class="login-brand">
+        <img src="logo.jpg" alt="Le Montadé">
+        <h1>Espace <em>professionnel</em></h1>
+        <p>Gérez la carte du restaurant en toute sécurité.</p>
+    </section>
+    <section class="login-form-wrap">
+        <form class="login-card" id="loginForm" autocomplete="off" novalidate>
+            <h2><i class="fas fa-lock" style="font-size:1.4rem;margin-right:.4rem"></i>Connexion</h2>
+            <p>Mot de passe et code à 6 chiffres de l'application d'authentification.</p>
+            <div class="field">
+                <label for="pw">Mot de passe</label>
+                <div class="pw-wrap">
+                    <input type="password" id="pw" autocomplete="current-password" required>
+                    <button type="button" id="togglePw" aria-label="Afficher le mot de passe"><i class="far fa-eye"></i></button>
+                </div>
+            </div>
+            <div class="field">
+                <label for="code">Code Google Authenticator</label>
+                <input type="text" id="code" class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="••••••" autocomplete="one-time-code" required>
+            </div>
+            <button class="btn btn-primary" id="loginBtn" type="submit"><i class="fas fa-right-to-bracket"></i> Se connecter</button>
+            <div class="form-msg" id="loginMsg" role="alert"></div>
+            <a class="back-site" href="index.html"><i class="fas fa-arrow-left"></i> Retour au site</a>
+        </form>
+    </section>
+</main>
+
+<!-- ================= TABLEAU DE BORD ================= -->
+<div id="dashboard" hidden>
+    <header class="topbar">
+        <img src="logo.jpg" alt="">
+        <h1><small>Espace pro</small>Gestion de la carte</h1>
+        <a class="btn btn-ghost btn-sm" href="index.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i><span class="label-long">Voir le site</span></a>
+        <button class="btn btn-yellow btn-sm" id="logoutBtn" type="button"><i class="fas fa-right-from-bracket"></i><span class="label-long">Déconnexion</span></button>
+    </header>
+
+    <div class="dash">
+        <aside>
+            <button class="btn btn-yellow mobile-add" id="mobileAdd" type="button"><i class="fas fa-plus"></i> Ajouter un élément</button>
+            <form class="card form-card" id="platForm" novalidate>
+                <h2 id="formTitle"><i class="fas fa-plus-circle"></i> Ajouter à la carte</h2>
+
+                <div class="row2">
+                    <div class="field"><label for="categorie">Onglet</label>
+                        <select id="categorie">
+                            <option value="midi">Le Midi</option>
+                            <option value="menu_du_jour">Menu du Jour</option>
+                            <option value="soir">Le Soir (On Mange)</option>
+                            <option value="boissons">Le Soir (On Boit)</option>
+                        </select></div>
+                    <div class="field"><label for="sousCategorie">Catégorie</label>
+                        <select id="sousCategorie">
+                            <option value="formule">Formule complète</option>
+                            <option value="entree">Entrée</option>
+                            <option value="plat">Plat</option>
+                            <option value="menu_enfant">Menu enfant</option>
+                            <option value="dessert">Dessert</option>
+                            <option value="planche">Planches & Tapas</option>
+                            <option value="biere">Bière</option>
+                            <option value="vin">Vin au verre</option>
+                            <option value="sans_alcool">Sans alcool</option>
+                        </select></div>
+                </div>
+
+                <div class="field"><label for="nom">Nom</label><input type="text" id="nom" maxlength="120" placeholder="Ex : Formule Cocotte" required></div>
+                <div class="field" id="gDesc"><label for="desc">Description (facultatif)</label><input type="text" id="desc" maxlength="300" placeholder="Ex : Frites + salade"></div>
+
+                <div class="box" id="gVin" hidden>
+                    <span class="box-title">Couleur du vin</span>
+                    <select id="couleurVin" style="width:100%;padding:.8rem 1rem;border:1.5px solid var(--line);border-radius:12px">
+                        <option>Rouge</option><option>Blanc</option><option>Rosé</option>
+                    </select>
+                </div>
+
+                <div class="box" id="gSansAlcool" hidden>
+                    <label class="check"><input type="checkbox" id="isBiereToggle"> Bière sans alcool (prix par taille)</label>
+                </div>
+
+                <div class="box" id="gTailles" hidden>
+                    <span class="box-title">Prix par taille (laisser vide si indisponible)</span>
+                    <div class="row2" style="grid-template-columns:repeat(3,1fr)">
+                        <div class="field"><label for="p25">25 cl</label><input type="text" id="p25" placeholder="€"></div>
+                        <div class="field"><label for="p33">33 cl</label><input type="text" id="p33" placeholder="€"></div>
+                        <div class="field"><label for="p50">50 cl</label><input type="text" id="p50" placeholder="€"></div>
+                    </div>
+                </div>
+
+                <div class="box" id="gFormule" hidden>
+                    <span class="box-title">Prix des combinaisons</span>
+                    <div class="field"><label for="pEPD">Entrée + Plat + Dessert</label><input type="text" id="pEPD" placeholder="€"></div>
+                    <div class="field"><label for="pEP">Entrée + Plat</label><input type="text" id="pEP" placeholder="€"></div>
+                    <div class="field"><label for="pPD">Plat + Dessert</label><input type="text" id="pPD" placeholder="€"></div>
+                    <div id="dynEntrees"></div><div id="dynPlats"></div><div id="dynDesserts"></div>
+                </div>
+
+                <div class="field" id="gPrix"><label for="prix">Prix</label><input type="text" id="prix" maxlength="30" placeholder="Ex : 14"></div>
+
+                <div class="form-msg" id="formMsg" role="alert"></div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="saveBtn" type="submit"><i class="fas fa-check"></i> <span id="saveLabel">Ajouter à la carte</span></button>
+                    <button class="btn btn-ghost" id="cancelEdit" type="button" hidden>Annuler</button>
+                </div>
+            </form>
+        </aside>
+
+        <section>
+            <div class="stats" id="stats"></div>
+            <div class="card toolbar">
+                <div class="filter-tabs" id="filterTabs"></div>
+                <label class="search"><i class="fas fa-magnifying-glass"></i><input type="search" id="search" placeholder="Rechercher…" aria-label="Rechercher dans la carte"></label>
+            </div>
+            <div id="list"></div>
+        </section>
+    </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    /* ===== RÉGLAGES ===== */
+    // Adresse de ton backend Render (sans « / » à la fin)
+    const API = 'https://montade-backend-zdjf.onrender.com';
+    const firebaseConfig = {
+        apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
+        authDomain: "le-montade.firebaseapp.com",
+        projectId: "le-montade",
+        storageBucket: "le-montade.firebasestorage.app",
+        messagingSenderId: "325197109352",
+        appId: "1:325197109352:web:1b65a2c21cbc26aae7c3dd"
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const TABS = { midi: 'Le Midi', menu_du_jour: 'Menu du Jour', soir: 'Le Soir (On Mange)', boissons: 'Le Soir (On Boit)' };
+    const TYPE_LABELS = { formule: 'Formules', entree: 'Entrées', plat: 'Plats', menu_enfant: 'Menu enfant', dessert: 'Desserts', planche: 'Planches & Tapas', biere: 'Bières', vin: 'Vins au verre', sans_alcool: 'Sans alcool' };
+    const TYPE_ORDER = Object.keys(TYPE_LABELS);
+    const fmtPrix = (p) => { const s = String(p ?? '').trim(); if (!s || s === '0') return ''; return /[€$£¥]/.test(s) ? s : s + ' €'; };
+
+    /* ===== Session (jeton signé par le serveur, valable 2 h, effacé à la fermeture de l'onglet) ===== */
+    const TOKEN_KEY = 'montade_admin_token';
+    let token = null, tokenExp = 0, unsub = null, plats = [], filter = 'all', editingId = null, logoutTimer;
+
+    function readStoredToken() {
+        try {
+            const t = sessionStorage.getItem(TOKEN_KEY);
+            if (!t) return;
+            const payload = JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+            if (payload.exp * 1000 > Date.now() + 5000) { token = t; tokenExp = payload.exp * 1000; }
+            else sessionStorage.removeItem(TOKEN_KEY);
+        } catch { sessionStorage.removeItem(TOKEN_KEY); }
+    }
+
+    function toast(msg, type = '') {
+        const t = $('toast'); t.textContent = msg; t.className = 'toast show ' + type;
+        clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+    function showMsg(el, msg, kind = 'err') { el.textContent = msg; el.className = 'form-msg show ' + kind; }
+    function hideMsg(el) { el.className = 'form-msg'; }
+
+    async function api(path, { method = 'GET', body } = {}) {
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 70000); // le serveur gratuit peut mettre ~1 min à se réveiller
+        try {
+            const res = await fetch(API + path, {
+                method, signal: ctrl.signal,
+                headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
+                body: body ? JSON.stringify(body) : undefined
+            });
+            let data = {};
+            try { data = await res.json(); } catch { /* réponse vide */ }
+            if (res.status === 401 && token) { logout('Session expirée, reconnectez-vous.'); throw new Error('Session expirée'); }
+            if (!res.ok) throw new Error(data.message || 'Erreur ' + res.status);
+            return data;
+        } catch (e) {
+            if (e.name === 'AbortError') throw new Error('Le serveur ne répond pas. Réessayez dans un instant.');
+            if (e instanceof TypeError) throw new Error('Serveur injoignable. Vérifiez votre connexion.');
+            throw e;
+        } finally { clearTimeout(to); }
+    }
+
+    /* ===== Connexion / déconnexion ===== */
+    $('togglePw').addEventListener('click', () => {
+        const i = $('pw'); const show = i.type === 'password';
+        i.type = show ? 'text' : 'password';
+        $('togglePw').innerHTML = `<i class="far fa-eye${show ? '-slash' : ''}"></i>`;
+    });
+    $('code').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6); });
+
+    $('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = $('loginMsg'), btn = $('loginBtn');
+        const password = $('pw').value, code = $('code').value;
+        if (!password || code.length !== 6) return showMsg(msg, 'Saisissez le mot de passe et le code à 6 chiffres.');
+        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion…';
+        showMsg(msg, 'Connexion en cours… le serveur peut mettre jusqu\'à une minute à se réveiller.', 'info');
+        try {
+            const data = await api('/api/login', { method: 'POST', body: { password, token: code } });
+            token = data.token; tokenExp = data.exp * 1000;
+            sessionStorage.setItem(TOKEN_KEY, token);
+            $('pw').value = ''; $('code').value = ''; hideMsg(msg);
+            openDashboard();
+        } catch (err) {
+            showMsg(msg, err.message);
+            $('code').value = '';
+        } finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Se connecter'; }
+    });
+
+    function logout(message) {
+        token = null; tokenExp = 0; sessionStorage.removeItem(TOKEN_KEY);
+        clearTimeout(logoutTimer);
+        if (unsub) { unsub(); unsub = null; }
+        $('dashboard').hidden = true; $('loginScreen').hidden = false;
+        resetForm();
+        if (message) showMsg($('loginMsg'), message, 'info');
+    }
+    $('logoutBtn').addEventListener('click', () => logout('Vous êtes déconnecté.'));
+
+    function openDashboard() {
+        $('loginScreen').hidden = true; $('dashboard').hidden = false;
+        window.scrollTo(0, 0);
+        clearTimeout(logoutTimer);
+        logoutTimer = setTimeout(() => logout('Session expirée, reconnectez-vous.'), Math.max(1000, tokenExp - Date.now()));
+        resetForm(); updateFormVisibility(); startListening();
+    }
+
+    /* ===== Lecture de la carte en direct ===== */
+    function startListening() {
+        if (unsub) unsub();
+        const db = getFirestore(initializeApp(firebaseConfig));
+        unsub = onSnapshot(query(collection(db, 'plats'), orderBy('dateAjout', 'asc')),
+            (snap) => { plats = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderAll(); },
+            (err) => { console.error(err); $('list').innerHTML = '<div class="card empty"><i class="fas fa-triangle-exclamation"></i>Impossible de lire la carte (vérifiez les règles Firestore).</div>'; });
+    }
+
+    function summary(p) {
+        if (p.sousCategorie === 'formule') {
+            const c = p.prixCombos || {}; const d = p.detailsFormule || {};
+            const parts = [];
+            if (fmtPrix(c.epd)) parts.push('E+P+D ' + fmtPrix(c.epd));
+            if (fmtPrix(c.ep)) parts.push('E+P ' + fmtPrix(c.ep));
+            if (fmtPrix(c.pd)) parts.push('P+D ' + fmtPrix(c.pd));
+            const n = (d.entrees?.length || 0) + (d.plats?.length || 0) + (d.desserts?.length || 0);
+            return parts.join(' · ') + (n ? ` — ${n} choix` : '');
+        }
+        if (p.prixTailles) {
+            return [['25cl', p.prixTailles.cl25], ['33cl', p.prixTailles.cl33], ['50cl', p.prixTailles.cl50]]
+                .filter(([, v]) => fmtPrix(v)).map(([l, v]) => `${l} ${fmtPrix(v)}`).join(' · ');
+        }
+        return [p.description, fmtPrix(p.prix)].filter(Boolean).join(' — ');
+    }
+
+    function renderAll() {
+        const counts = { all: plats.length };
+        Object.keys(TABS).forEach((k) => counts[k] = plats.filter((p) => p.categorie === k).length);
+        $('stats').innerHTML = [['all', 'Total'], ...Object.entries(TABS)]
+            .map(([k, l]) => `<div class="card stat" data-filter="${k}"><b>${counts[k]}</b><span>${esc(l)}</span></div>`).join('');
+        $('filterTabs').innerHTML = [['all', 'Tout'], ...Object.entries(TABS)]
+            .map(([k, l]) => `<button type="button" class="ftab${filter === k ? ' active' : ''}" data-filter="${k}">${esc(l)}</button>`).join('');
+        renderList();
+    }
+
+    function renderList() {
+        const q = $('search').value.trim().toLowerCase();
+        const items = plats.filter((p) => (filter === 'all' || p.categorie === filter)
+            && (!q || `${p.nom} ${p.description || ''}`.toLowerCase().includes(q)));
+        if (!items.length) {
+            $('list').innerHTML = `<div class="card empty"><i class="fas fa-utensils"></i>${plats.length ? 'Aucun résultat.' : 'La carte est vide. Ajoutez votre premier élément !'}</div>`;
+            return;
+        }
+        let html = '';
+        const tabKeys = filter === 'all' ? Object.keys(TABS) : [filter];
+        tabKeys.forEach((tk) => {
+            const inTab = items.filter((p) => p.categorie === tk);
+            if (!inTab.length) return;
+            html += `<h3 class="group-title">${esc(TABS[tk])} <small>${inTab.length}</small></h3>`;
+            TYPE_ORDER.forEach((t) => {
+                inTab.filter((p) => p.sousCategorie === t).forEach((p) => {
+                    html += `<div class="card plat"><div class="plat-info"><strong>${esc(p.nom)}<span class="badge" style="display:inline-block">${esc(TYPE_LABELS[t] || t)}</span></strong><span>${esc(summary(p)) || '—'}</span></div>
+                        <div class="plat-actions"><button class="btn btn-soft btn-sm" data-edit="${esc(p.id)}"><i class="fas fa-pen"></i> Modifier</button>
+                        <button class="btn btn-danger btn-sm" data-del="${esc(p.id)}"><i class="fas fa-trash"></i> Supprimer</button></div></div>`;
+                });
+            });
+        });
+        $('list').innerHTML = html;
+    }
+
+    document.addEventListener('click', async (e) => {
+        const f = e.target.closest('[data-filter]');
+        if (f) { filter = f.dataset.filter; renderAll(); return; }
+        const ed = e.target.closest('[data-edit]');
+        if (ed) { startEdit(ed.dataset.edit); return; }
+        const del = e.target.closest('[data-del]');
+        if (del) {
+            const p = plats.find((x) => x.id === del.dataset.del);
+            if (!p || !confirm(`Supprimer « ${p.nom} » de la carte ?`)) return;
+            del.disabled = true;
+            try { await api('/api/plats/' + encodeURIComponent(p.id), { method: 'DELETE' }); toast('Supprimé', 'ok'); if (editingId === p.id) resetForm(); }
+            catch (err) { toast(err.message, 'err'); del.disabled = false; }
+        }
+    });
+    $('search').addEventListener('input', renderList);
+    $('mobileAdd').addEventListener('click', () => $('platForm').classList.toggle('open'));
+
+    /* ===== Formulaire ===== */
+    const sc = $('sousCategorie');
+    function updateFormVisibility() {
+        const v = sc.value;
+        const isForm = v === 'formule', isBiere = v === 'biere', isSA = v === 'sans_alcool', isVin = v === 'vin';
+        const tailles = isBiere || (isSA && $('isBiereToggle').checked);
+        $('gFormule').hidden = !isForm;
+        $('gDesc').hidden = isForm;
+        $('gVin').hidden = !isVin;
+        $('gSansAlcool').hidden = !isSA;
+        $('gTailles').hidden = !tailles;
+        $('gPrix').hidden = isForm || tailles;
+        $('nom').placeholder = isForm ? 'Ex : Formule Cocotte' : isVin ? 'Ex : Bordeaux supérieur' : 'Nom';
+    }
+    sc.addEventListener('change', updateFormVisibility);
+    $('isBiereToggle').addEventListener('change', updateFormVisibility);
+
+    const DYN = { entrees: 'dynEntrees', plats: 'dynPlats', desserts: 'dynDesserts' };
+    const DYN_LABEL = { entrees: 'Entrées', plats: 'Plats', desserts: 'Desserts' };
+    function initDyn() {
+        Object.entries(DYN).forEach(([k, id]) => {
+            $(id).innerHTML = `<div class="dyn-title"><span>${DYN_LABEL[k]}</span><button type="button" class="btn btn-soft btn-sm" data-add="${k}"><i class="fas fa-plus"></i> Ajouter</button></div><div data-rows="${k}"></div>`;
+        });
+    }
+    function addDynRow(kind, v = {}) {
+        const row = document.createElement('div'); row.className = 'dyn-row';
+        row.innerHTML = `<input type="text" placeholder="Nom" maxlength="120" value="${esc(v.nom)}" data-f="nom">
+            <input type="text" placeholder="Description" maxlength="200" value="${esc(v.desc)}" data-f="desc">
+            <input type="text" placeholder="Prix €" maxlength="30" value="${esc(v.prix)}" data-f="prix">
+            <button type="button" aria-label="Retirer"><i class="fas fa-xmark"></i></button>`;
+        row.querySelector('button').addEventListener('click', () => row.remove());
+        $('platForm').querySelector(`[data-rows="${kind}"]`).appendChild(row);
+    }
+    $('platForm').addEventListener('click', (e) => { const a = e.target.closest('[data-add]'); if (a) addDynRow(a.dataset.add); });
+    const readRows = (kind) => Array.from($('platForm').querySelectorAll(`[data-rows="${kind}"] .dyn-row`)).map((r) => ({
+        nom: r.querySelector('[data-f=nom]').value.trim(), desc: r.querySelector('[data-f=desc]').value.trim(), prix: r.querySelector('[data-f=prix]').value.trim()
+    })).filter((r) => r.nom);
+
+    function buildPayload() {
+        const v = sc.value; let nom = $('nom').value.trim();
+        const base = { categorie: $('categorie').value, sousCategorie: v };
+        if (v === 'formule') {
+            return { ...base, nom, prixCombos: { epd: $('pEPD').value.trim(), ep: $('pEP').value.trim(), pd: $('pPD').value.trim() },
+                detailsFormule: { entrees: readRows('entrees'), plats: readRows('plats'), desserts: readRows('desserts') } };
+        }
+        if (v === 'vin') nom = `${$('couleurVin').value} : ${nom}`;
+        const p = { ...base, nom, description: $('desc').value.trim() };
+        if (v === 'biere' || (v === 'sans_alcool' && $('isBiereToggle').checked)) p.prixTailles = { cl25: $('p25').value.trim(), cl33: $('p33').value.trim(), cl50: $('p50').value.trim() };
+        else p.prix = $('prix').value.trim();
+        return p;
+    }
+
+    function resetForm() {
+        editingId = null; $('platForm').reset(); initDyn(); updateFormVisibility(); hideMsg($('formMsg'));
+        $('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Ajouter à la carte';
+        $('saveLabel').textContent = 'Ajouter à la carte'; $('cancelEdit').hidden = true;
+    }
+    $('cancelEdit').addEventListener('click', resetForm);
+
+    function startEdit(id) {
+        const p = plats.find((x) => x.id === id); if (!p) return;
+        resetForm(); editingId = id;
+        $('categorie').value = p.categorie; sc.value = p.sousCategorie;
+        let nom = p.nom || '';
+        if (p.sousCategorie === 'vin') { const m = nom.match(/^(Rouge|Blanc|Rosé) : (.*)$/); if (m) { $('couleurVin').value = m[1]; nom = m[2]; } }
+        $('nom').value = nom; $('desc').value = p.description || '';
+        if (p.prixTailles) {
+            if (p.sousCategorie === 'sans_alcool') $('isBiereToggle').checked = true;
+            $('p25').value = p.prixTailles.cl25 || ''; $('p33').value = p.prixTailles.cl33 || ''; $('p50').value = p.prixTailles.cl50 || '';
+        } else $('prix').value = p.prix || '';
+        if (p.sousCategorie === 'formule') {
+            const c = p.prixCombos || {}; $('pEPD').value = c.epd || ''; $('pEP').value = c.ep || ''; $('pPD').value = c.pd || '';
+            const d = p.detailsFormule || {};
+            (d.entrees || []).forEach((r) => addDynRow('entrees', r)); (d.plats || []).forEach((r) => addDynRow('plats', r)); (d.desserts || []).forEach((r) => addDynRow('desserts', r));
+        }
+        updateFormVisibility();
+        $('formTitle').innerHTML = '<i class="fas fa-pen"></i> Modifier';
+        $('saveLabel').textContent = 'Enregistrer'; $('cancelEdit').hidden = false;
+        $('platForm').classList.add('open'); $('platForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    $('platForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = $('formMsg'), btn = $('saveBtn');
+        if (!$('nom').value.trim()) return showMsg(msg, 'Le nom est obligatoire.');
+        btn.disabled = true; hideMsg(msg);
+        try {
+            const wasEdit = !!editingId;
+            if (wasEdit) await api('/api/plats/' + encodeURIComponent(editingId), { method: 'PUT', body: buildPayload() });
+            else await api('/api/plats', { method: 'POST', body: buildPayload() });
+            toast(wasEdit ? 'Modifications enregistrées' : 'Ajouté à la carte', 'ok');
+            const keep = { cat: $('categorie').value, sub: sc.value };
+            resetForm();
+            if (!wasEdit) { $('categorie').value = keep.cat; sc.value = keep.sub; updateFormVisibility(); }
+        } catch (err) { showMsg(msg, err.message); }
+        finally { btn.disabled = false; }
+    });
+
+    /* ===== Démarrage ===== */
+    initDyn();
+    readStoredToken();
+    if (token) openDashboard();
+</script>
+</body>
+</html>

@@ -2,621 +2,445 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Montadé</title>
-    <link rel="icon" type="image/png" href="asset\logo.jpg"> 
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Le Montadé — Bar à vins, brasserie du midi & working café · Saint-Caprais-de-Bordeaux</title>
+    <meta name="description" content="Le Montadé à Saint-Caprais-de-Bordeaux : working café la journée, cocotte du midi 100 % fait maison, bar à vins dès le soir. Découvrez la carte, les horaires et réservez votre table.">
+    <meta name="theme-color" content="#17233f">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Le Montadé — Bar à vins, brasserie du midi & working café">
+    <meta property="og:description" content="Un lieu, trois ambiances : working café, cocotte du midi, bar à vins. Saint-Caprais-de-Bordeaux.">
+    <meta property="og:image" content="logo.jpg">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Le Montadé",
+        "description": "Bar à vins, brasserie du midi et working café.",
+        "image": "logo.jpg",
+        "telephone": "+33556843159",
+        "email": "lemontade.tierslieu@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "1 Av. de Loustallaut",
+            "postalCode": "33880",
+            "addressLocality": "Saint-Caprais-de-Bordeaux",
+            "addressCountry": "FR"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": 44.7431873, "longitude": -0.4571966 },
+        "sameAs": [
+            "https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/",
+            "https://www.instagram.com/lemontade_lelieu/"
+        ],
+        "openingHoursSpecification": [
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "12:00", "closes": "18:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "08:30", "closes": "18:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "12:00", "closes": "14:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "17:30", "closes": "23:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "08:30", "closes": "23:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:30", "closes": "23:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "17:30", "closes": "23:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "13:00" }
+        ]
+    }
+    </script>
 
     <style>
-        /* ================= VARIABLES & RESET ================= */
+        /* ===== Photos (remplace ces adresses par tes propres photos, ex: url('images/salle.jpg')) ===== */
         :root {
-            --primary: #1e2a45; --accent: #d4af37; --accent-hover: #b5952f;
-            --bg-light: #fdfcfaf5; --bg-gray: #f4f4f4; --text-main: #333333;
-            --text-light: #666666; --white: #ffffff; --transition: all 0.3s ease;
+            --photo-hero: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');
+            --photo-cafe: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80');
+            --photo-midi: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80');
+            --photo-vin: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=80');
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; color: var(--text-main); background-color: var(--bg-light); line-height: 1.6; overflow-x: hidden; }
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        /* ===== HERO ===== */
+        .hero { position: relative; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; text-align: center; color: #fff; padding: calc(var(--header-h) + 2rem) 1.25rem 8rem; isolation: isolate; background: var(--blue-dark); overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--photo-hero) center / cover no-repeat; animation: slowZoom 24s ease-in-out infinite alternate; }
+        .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(23, 35, 63, .78) 0%, rgba(23, 35, 63, .55) 45%, rgba(23, 35, 63, .9) 100%); }
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
+        .hero-inner { max-width: 880px; }
+        .hero .eyebrow { color: var(--yellow); letter-spacing: .32em; }
+        .hero h1 { font-size: clamp(3.2rem, 11vw, 7rem); letter-spacing: -.01em; text-shadow: 0 6px 30px rgba(0, 0, 0, .4); }
+        .hero h1 em { color: var(--yellow); font-style: italic; }
+        .hero p.lead { font-size: clamp(1rem, 2.3vw, 1.3rem); font-weight: 400; max-width: 680px; margin: 1.4rem auto 2.2rem; color: rgba(255, 255, 255, .92); }
+        .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+        .status-pill { display: inline-flex; align-items: center; gap: .6rem; padding: .5rem 1.1rem; border-radius: 999px; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font-size: .82rem; font-weight: 600; margin-bottom: 1.6rem; }
+        .status-pill::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #9aa6c4; }
+        .status-pill.open::before { background: #4ade80; box-shadow: 0 0 0 5px rgba(74, 222, 128, .25); animation: pulse 2s infinite; }
+        .status-pill.closed::before { background: #f87171; }
+        @keyframes pulse { 50% { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); } }
+        .scroll-hint { position: absolute; bottom: 5.5rem; left: 50%; transform: translateX(-50%); color: rgba(255, 255, 255, .7); font-size: 1.3rem; animation: bob 2s ease-in-out infinite; text-decoration: none; }
+        @keyframes bob { 50% { transform: translate(-50%, 8px); } }
 
-        /* ================= NAVBAR ================= */
-        header { position: fixed; top: 0; width: 100%; background: rgb(255, 255, 255); box-shadow: 0 2px 15px rgba(0,0,0,0.08); z-index: 1000; transition: var(--transition); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 10px 20px; }
-        .logo img { height: 140px; transition: var(--transition); }
-        .nav-links { display: flex; gap: 30px; list-style: none; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--primary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); position: relative; }
-        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent); transition: var(--transition); }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { color: var(--accent); }
-        .btn-reserve { background: var(--accent); color: var(--white) !important; padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; transition: var(--transition); }
-        .btn-reserve:hover { background: var(--accent-hover); transform: translateY(-2px); }
-        .btn-reserve::after { display: none; }
-        .mobile-menu-btn { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
+        /* ===== BANDEAU INFOS ===== */
+        .info-strip { position: relative; z-index: 5; max-width: 1100px; margin: -5.2rem auto 0; padding: 0 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .info-card { background: #fff; border-radius: var(--radius); padding: 1.4rem 1.5rem; box-shadow: var(--shadow); display: flex; gap: 1rem; align-items: center; text-decoration: none; transition: transform .3s var(--ease), box-shadow .3s; }
+        a.info-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(23, 35, 63, .18); }
+        .info-card i { width: 50px; height: 50px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--yellow-soft); color: var(--blue); font-size: 1.15rem; }
+        .info-card small { display: block; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+        .info-card strong { display: block; color: var(--blue); font-size: .98rem; line-height: 1.35; }
 
-        /* ================= HERO SECTION ================= */
-        .hero { height: 100vh; background: linear-gradient(rgba(30, 42, 69, 0.7), rgba(30, 42, 69, 0.7)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); padding: 0 20px; margin-top: 80px; }
-        .hero-content h1 { font-size: 4.5rem; margin-bottom: 20px; color: var(--accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero-content p { font-size: 1.3rem; max-width: 800px; margin: 0 auto 40px; font-weight: 300; letter-spacing: 0.5px; }
+        /* ===== CONCEPT ===== */
+        .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+        .concept-card { background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 34px rgba(23, 35, 63, .08); transition: transform .4s var(--ease), box-shadow .4s; display: flex; flex-direction: column; }
+        .concept-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
+        .concept-photo { height: 210px; background: linear-gradient(135deg, var(--blue), var(--blue-mid)) center / cover no-repeat; position: relative; }
+        .concept-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(23, 35, 63, .55)); }
+        .concept-card:nth-child(1) .concept-photo { background-image: var(--photo-cafe); }
+        .concept-card:nth-child(2) .concept-photo { background-image: var(--photo-midi); }
+        .concept-card:nth-child(3) .concept-photo { background-image: var(--photo-vin); }
+        .concept-tag { position: absolute; left: 1.2rem; bottom: 1rem; z-index: 1; background: var(--yellow); color: var(--blue-dark); font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: .35rem .8rem; border-radius: 999px; }
+        .concept-body { padding: 1.6rem 1.7rem 2rem; }
+        .concept-body h3 { font-size: 1.55rem; color: var(--blue); margin-bottom: .6rem; }
+        .concept-body p { color: var(--muted); font-size: .96rem; }
 
-        /* ================= CONCEPT ================= */
-        .section-padding { padding: 80px 10px; max-width: 1200px; margin: 0 auto; }
-        .section-title { text-align: center; font-size: 2.8rem; color: var(--primary); margin-bottom: 60px; }
-        .section-title span { color: var(--accent); font-style: italic; }
-        .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .concept-card { background: var(--white); padding: 40px 30px; text-align: center; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: var(--transition); border-bottom: 4px solid transparent; }
-        .concept-card:hover { transform: translateY(-10px); border-bottom: 4px solid var(--accent); }
-        .concept-icon { width: 80px; height: 80px; background: var(--bg-gray); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--accent); font-size: 2rem; }
-        .concept-card h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 15px; }
+        /* ===== CARTE ===== */
+        .carte { background: var(--blue-dark); color: #fff; position: relative; overflow: hidden; }
+        .carte::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 15% 0%, rgba(247, 222, 78, .09), transparent 45%), radial-gradient(circle at 90% 100%, rgba(58, 85, 135, .55), transparent 50%); pointer-events: none; }
+        .carte .container { position: relative; max-width: 1040px; }
+        .board { background: var(--blue); border: 1px solid rgba(255, 255, 255, .14); border-radius: 26px; padding: clamp(1.2rem, 4vw, 3rem); box-shadow: inset 0 0 0 7px rgba(23, 35, 63, .35), 0 30px 80px rgba(0, 0, 0, .35); }
+        .menu-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: .7rem; margin-bottom: 2.2rem; }
+        .tab-btn { background: transparent; color: #fff; border: 2px solid rgba(247, 222, 78, .75); padding: .7rem 1.5rem; border-radius: 999px; cursor: pointer; font-family: var(--ff-body); font-weight: 700; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; transition: background .25s, color .25s, transform .25s; }
+        .tab-btn:hover { transform: translateY(-2px); }
+        .tab-btn.active, .tab-btn:hover { background: var(--yellow); color: var(--blue-dark); }
+        .menu-panel { animation: fadeUp .5s var(--ease); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+        .fait-maison { text-align: center; font-family: var(--ff-title); font-style: italic; color: var(--yellow); font-size: 1.25rem; margin-bottom: .6rem; }
+        .cat-title { display: flex; align-items: center; gap: 1rem; font-size: 1.5rem; color: var(--yellow); margin: 2.4rem 0 1.1rem; text-transform: uppercase; letter-spacing: .06em; }
+        .cat-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(247, 222, 78, .6), transparent); }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3.2rem; }
+        .menu-item { padding: .8rem 0; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+        .mi-head { display: flex; align-items: baseline; gap: .6rem; }
+        .mi-head h4 { font-family: var(--ff-body); font-size: .98rem; font-weight: 600; letter-spacing: .03em; overflow-wrap: anywhere; }
+        .leader { flex: 1; min-width: 1rem; border-bottom: 1px dotted rgba(255, 255, 255, .35); transform: translateY(-4px); }
+        .price { color: var(--yellow); font-weight: 700; white-space: nowrap; font-size: 1.02rem; }
+        .sizes { display: flex; flex-wrap: wrap; gap: .3rem .9rem; justify-content: flex-end; }
+        .sizes .price { font-size: .9rem; }
+        .sizes .price small { color: #c4cde3; font-weight: 600; margin-right: .3rem; }
+        .menu-item p { margin-top: .2rem; font-size: .84rem; color: #c4cde3; font-style: italic; overflow-wrap: anywhere; }
+        .formule { background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .15); border-radius: 20px; padding: clamp(1.1rem, 3vw, 2rem); margin-top: 1.4rem; }
+        .formule > h3 { font-size: 1.7rem; color: var(--yellow); text-align: center; margin-bottom: 1rem; }
+        .formule .combos { max-width: 520px; margin: 0 auto 1.2rem; }
+        .formule .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 2rem; }
+        .formule .cols h5 { font-family: var(--ff-body); font-size: .78rem; letter-spacing: .24em; text-transform: uppercase; color: var(--yellow); text-align: center; padding: .6rem 0; border-bottom: 1px solid rgba(247, 222, 78, .4); }
+        .carte-state { text-align: center; color: #c4cde3; padding: 2.5rem 1rem; }
+        .carte-state i { display: block; font-size: 1.8rem; color: var(--yellow); margin-bottom: .8rem; }
 
-        /* ================= MENU ================= */
-        .menu-section { background-color: var(--primary); color: var(--white); border-radius: 20px; width: 90%; max-width: 800px; margin: 40px auto; padding: 60px 40px; }
-        .menu-section .section-title { color: var(--white); }
-        .menu-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
-        .tab-btn { background: transparent; color: var(--white); border: 2px solid var(--accent); padding: 10px 25px; font-size: 1rem; cursor: pointer; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-weight: 600; transition: var(--transition); display: none; }
-        .tab-btn.active, .tab-btn:hover { background: var(--accent); color: var(--primary); }
-        .menu-content { display: none; animation: fadeIn 0.5s; max-width: 900px; margin: 0 auto; }
-        .menu-content.active { display: block; }
-        
-        .menu-category { margin-top: 40px; margin-bottom: 15px; border-bottom: 2px solid var(--accent); padding-bottom: 10px; color: var(--accent); font-size: 1.5rem; text-align: left; transition: 0.3s; text-transform: uppercase;}
-        
-        .menu-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.2); padding: 12px 0; text-align: left; }
-        .menu-item-info { flex: 1; padding-right: 15px; min-width: 0; }
-        .menu-item-info h4 { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; letter-spacing: 1px; margin: 0; overflow-wrap: break-word; }
-        .menu-item-info p { font-size: 0.85rem; color: #a0aabf; margin-top: 3px; font-style: italic; margin-bottom: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;}
-        .menu-price { font-weight: 700; color: var(--white); font-size: 1.2rem; white-space: nowrap; text-align: right;}
-        .fait-maison { text-align: center; font-style: italic; color: var(--accent); margin-bottom: 20px; font-size: 1.1rem; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* ===== HORAIRES ===== */
+        .split { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+        .split-text p { color: var(--muted); margin: 1.1rem 0 1.6rem; }
+        .chips { display: flex; flex-wrap: wrap; gap: .6rem; }
+        .chips span { display: inline-flex; align-items: center; gap: .5rem; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: .5rem 1rem; font-size: .84rem; font-weight: 600; color: var(--blue); }
+        .chips i { color: var(--gold); }
+        .hours-card { background: #fff; border-radius: 24px; box-shadow: var(--shadow); padding: clamp(.8rem, 2.5vw, 1.6rem) clamp(1rem, 3vw, 2rem); list-style: none; }
+        .hours-card li { display: grid; grid-template-columns: 7.5rem 1fr; grid-template-areas: 'd h' 'd a'; column-gap: 1rem; padding: .95rem .8rem; border-bottom: 1px solid var(--cream-2); border-radius: 12px; align-items: baseline; }
+        .hours-card li:last-child { border-bottom: 0; }
+        .hours-card .d { grid-area: d; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .82rem; color: var(--blue); }
+        .hours-card .h { grid-area: h; font-weight: 700; }
+        .hours-card .a { grid-area: a; font-size: .82rem; color: var(--muted); font-style: italic; }
+        .hours-card li.today { background: var(--yellow-soft); box-shadow: inset 4px 0 0 var(--gold); border-bottom-color: transparent; }
+        .hours-card li.today .d::after { content: " · aujourd'hui"; text-transform: none; letter-spacing: 0; font-weight: 600; color: var(--gold); }
 
-        /* ================= HORAIRES ================= */
-        .horaires-container { max-width: 800px; margin: 0 auto; background: var(--white); padding: 50px; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
-        .schedule-row { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--bg-gray); }
-        .schedule-row:last-child { border-bottom: none; }
-        .day { flex: 0 0 33%; font-weight: 700; color: var(--primary); text-align: left; }
-        .hours { flex: 0 0 34%; font-weight: 600; color: var(--text-main); text-align: center; } 
-        .activity { flex: 0 0 33%; font-size: 0.85rem; color: var(--text-light); text-align: right; font-style: italic; }
+        /* ===== RÉSERVER ===== */
+        .reserver { background: var(--cream-2); }
+        .booking-card { max-width: 900px; margin: 0 auto; background: #fff; border-radius: 26px; box-shadow: var(--shadow); padding: clamp(.6rem, 2vw, 1.2rem); }
+        .booking-card iframe { width: 100%; height: 680px; border: 0; border-radius: 18px; background: #fff; }
+        .booking-alt { text-align: center; margin-top: 1.6rem; color: var(--muted); }
+        .booking-alt a { color: var(--blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--yellow); }
 
-        /* ================= CONTACT & RÉSERVATION ================= */
-        .contact-section-dark { background-color: var(--primary); color: var(--white); padding: 80px 20px; }
-        .section-header-dark { text-align: center; width: 100%; margin-bottom: 60px; }
-        .section-header-dark h2 { font-size: 2.8rem; color: var(--accent); margin: 0 0 15px 0; display: flex; align-items: center; justify-content: center; gap: 15px; font-family: 'Playfair Display', serif; }
-        .subtle-line { border: 0; border-top: 1px solid rgba(212, 175, 55, 0.4); width: 80px; margin: 0 auto; }
-        
-        .contact-grid-dark { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 50px; 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            align-items: stretch;
+        /* ===== CONTACT ===== */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(2rem, 5vw, 4rem); align-items: stretch; }
+        .contact-list { list-style: none; display: grid; gap: 1.2rem; margin: 1.6rem 0 2rem; }
+        .contact-list li { display: flex; gap: 1rem; align-items: flex-start; }
+        .contact-list i { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--blue); color: var(--yellow); }
+        .contact-list small { display: block; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+        .contact-list a, .contact-list span.v { color: var(--blue); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+        .contact-list a:hover { color: var(--gold); }
+        .map-card { border-radius: 24px; overflow: hidden; box-shadow: var(--shadow); min-height: 420px; background: var(--cream-2); }
+        .map-card iframe { width: 100%; height: 100%; min-height: 420px; border: 0; display: block; }
+
+        /* ===== BARRE MOBILE ===== */
+        .mobile-cta { display: none; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 960px) {
+            .info-strip { grid-template-columns: 1fr; margin-top: -4.5rem; max-width: 560px; }
+            .concept-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+            .split, .contact-grid { grid-template-columns: 1fr; }
+            .formule .cols { grid-template-columns: 1fr; }
+            .menu-grid { gap: 0 2rem; }
         }
-        
-        .address-col .business-name { font-size: 1.5rem; font-weight: bold; color: var(--white); margin-bottom: 10px; font-family: 'Montserrat', sans-serif; }
-        .address-col .address-line { font-size: 1.1rem; color: var(--white); margin: 0 0 5px 0; }
-        .address-col .address-accent { color: var(--accent); font-weight: bold; }
-        
-        .contact-link { color: var(--white); text-decoration: none; transition: color 0.3s ease; }
-        .contact-link:hover { color: var(--accent) !important; }
-
-        .widget-box {
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            padding: 10px; 
-            border-radius: 8px; 
-            width: 100%; 
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-        .widget-iframe {
-            width: 100%;
-            height: 550px; 
-            border: none;
-            border-radius: 8px;
-        }
-
-        /* ================= FOOTER ================= */
-        footer { background: #111827; color: rgba(255, 255, 255, 0.85); padding: 50px 20px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; }
-        .footer-round-logo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--white); cursor: pointer; transition: 0.3s; }
-        .footer-round-logo:hover { border-color: var(--accent); transform: scale(1.05); }
-        .social-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
-        .social-links a { color: var(--white); font-size: 1.8rem; transition: var(--transition); text-decoration: none;}
-        .social-links a:hover { color: var(--accent); }
-        .footer-separator { width: 80%; max-width: 400px; height: 1px; background: rgba(255,255,255,0.1); margin: 5px 0; }
-        .footer-bottom { font-size: 0.9rem; width: 100%; margin-top: 5px;}
-        .creator-credit { margin-top: 5px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.85); }
-        .creator-credit a { color: var(--white) !important; text-decoration: none; transition: 0.3s; }
-        .creator-credit a:hover { color: var(--accent) !important; }
-        .legal-links { margin-top: 10px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); }
-        .legal-links a { color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: 0.3s; }
-        .legal-links a:hover { color: var(--accent); }
-
-        .btn-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: var(--accent); color: var(--white); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1001; opacity: 0; visibility: hidden; transition: var(--transition); }
-        .btn-top.show { opacity: 1; visibility: visible; }
-        .btn-top:hover { background-color: var(--accent-hover); transform: translateY(-5px); }
-
-        /* ================= ADMIN MODAL ================= */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .modal-content { background: var(--bg-gray); padding: 40px; border-radius: 10px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; color: var(--text-main); box-sizing: border-box;}
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--primary); transition: 0.3s; }
-        .close-modal:hover { color: #e74c3c; }
-        
-        .admin-form-group { margin-bottom: 15px; text-align: left; width: 100%; }
-        .admin-form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
-        .admin-form-group input, .admin-form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; box-sizing: border-box; }
-        .admin-btn { background: var(--accent); color: var(--white); padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; width: 100%; font-size: 1.1rem; margin-top: 10px; transition: 0.3s;}
-        .admin-btn:hover { background: var(--accent-hover); }
-        
-        .menu-item-admin { display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 15px; margin-bottom: 10px; border-left: 4px solid var(--accent); border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 10px;}
-        .delete-btn { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; transition: 0.3s;}
-        .delete-btn:hover { background: #c0392b; }
-        .badge { background: var(--primary); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px; white-space: nowrap; }
-
-        .formule-options { display: none; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .dynamic-inputs { margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--accent); }
-        .dynamic-row { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;}
-        .dynamic-row input { margin-bottom: 0 !important; }
-
-        /* ================= RESPONSIVE (MOBILE) ================= */
-        @media (max-width: 768px) {
-            .logo img { height: 100px; }
-            .nav-links { position: absolute; top: 100%; left: 0; width: 100%; background: var(--white); flex-direction: column; padding: 20px 0; clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: 0.4s ease-in-out; box-shadow: 0 10px 10px rgba(0,0,0,0.1); }
-            .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-            .mobile-menu-btn { display: block; }
-            .hero-content h1 { font-size: 2.8rem; }
-            .concept-grid { grid-template-columns: 1fr; }
-            .contact-grid-dark { grid-template-columns: 1fr; text-align: center; }
-            .address-col { text-align: center; }
-            .address-col p { justify-content: center; text-align: center; }
-            .address-col i { margin-right: 5px; }
-            .menu-section { width: 95%; padding: 40px 15px; margin: 20px auto; }
-            .menu-tabs { flex-direction: column; align-items: center; gap: 10px; }
-            .tab-btn { width: 100%; max-width: 300px; padding: 12px; }
-            .menu-category { margin-top: 20px; margin-bottom: 5px; padding-bottom: 5px; font-size: 1.3rem; }
-            .menu-item { flex-direction: row; align-items: center; padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.2); }
-            .menu-item-info { flex: 1; padding-right: 10px; min-width: 0; }
-            .menu-item-info h4 { font-size: 1rem; margin: 0; }
-            .menu-item-info p { margin-top: 3px; font-size: 0.8rem; margin-bottom: 0;}
-            .menu-price { align-self: center; margin-left: 10px; font-size: 1.1rem; color: var(--accent); margin-top: 0;}
-            .schedule-row { flex-direction: column; text-align: center; gap: 5px; }
-            .day, .hours, .activity { width: 100%; text-align: center; flex: auto; }
-            .modal-content { padding: 20px; margin: 10px; width: 100%; }
-            .admin-form-group.flex-container { flex-direction: column; gap: 10px; }
-            .dynamic-row { flex-direction: column; gap: 5px; }
+        @media (max-width: 720px) {
+            .menu-grid { grid-template-columns: 1fr; }
+            .hero { padding-bottom: 9rem; }
+            .scroll-hint { display: none; }
+            .tab-btn { flex: 1 1 calc(50% - .7rem); padding: .75rem .6rem; font-size: .72rem; }
+            .booking-card iframe { height: 760px; }
+            .hours-card li { grid-template-columns: 6rem 1fr; }
+            body.home { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
+            .mobile-cta { display: flex; gap: .7rem; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; padding: .7rem .9rem calc(.7rem + env(safe-area-inset-bottom)); background: rgba(23, 35, 63, .96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 -8px 24px rgba(0, 0, 0, .25); }
+            .mobile-cta .btn { flex: 1; padding: .85rem .5rem; }
+            .btn-top { bottom: calc(86px + env(safe-area-inset-bottom)); }
         }
     </style>
 </head>
-<body>
+<body class="home">
+    <a href="#carte" class="skip-link">Aller à la carte</a>
 
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <img src="logo.jpg" alt="Le Montadé Logo" onerror="this.src='https://via.placeholder.com/150x70?text=LE+MONTADE'">
-            </a>
-            <div class="mobile-menu-btn" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#concept">Le Concept</a></li>
-                <li><a href="#menu">La Carte</a></li>
-                <li><a href="#horaires">Horaires</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#contact" class="btn-reserve">Réserver</a></li>
-            </ul>
+    <header class="site-header">
+        <div class="nav-wrap">
+            <a href="#top" class="brand" aria-label="Le Montadé — haut de page"><img src="logo.jpg" alt="Le Montadé"></a>
+            <nav id="mainNav" aria-label="Navigation principale">
+                <ul>
+                    <li><a href="#concept">Le concept</a></li>
+                    <li><a href="#carte">La carte</a></li>
+                    <li><a href="#horaires">Horaires</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <a href="#reserver" class="btn btn-primary btn-sm">Réserver</a>
+            </nav>
+            <button id="burger" class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Le Montadé</h1>
-            <p>Pour boire un café, travailler, rencontrer des amis, déjeuner la cocotte du midi préparée par notre chef Paul, ou passer une soirée au bar à vin.</p>
-            <a href="#menu" class="btn-reserve" style="font-size: 1.1rem; padding: 15px 30px; text-decoration: none; display: inline-block; margin-top: 20px;">Découvrir la carte</a>
-        </div>
-    </section>
-
-    <section id="concept" class="section-padding">
-        <h2 class="section-title">Un lieu, <span>trois ambiances</span></h2>
-        <div class="concept-grid">
-            <div class="concept-card"><div class="concept-icon"><i class="fas fa-laptop-code"></i></div><h3>Working Café</h3><p>Installez-vous avec un bon café, profitez du Wi-Fi et travaillez dans un cadre inspirant.</p></div>
-            <div class="concept-card"><div class="concept-icon"><i class="fas fa-utensils"></i></div><h3>Brasserie du Midi</h3><p>Découvrez la fameuse "Cocotte du jour" préparée par notre chef Paul. 100% fait maison.</p></div>
-            <div class="concept-card"><div class="concept-icon"><i class="fas fa-wine-glass-alt"></i></div><h3>Bar à Vin</h3><p>Dès le mercredi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
-        </div>
-    </section>
-
-    <section id="menu" class="section-padding menu-section">
-        <h2 class="section-title">L'Ardoise du <span>Montadé</span></h2>
-        
-        <div class="menu-tabs">
-            <button id="btn-midi" class="tab-btn" onclick="openTab(event, 'midi')">Le Midi</button>
-            <button id="btn-menu_du_jour" class="tab-btn" onclick="openTab(event, 'menu_du_jour')">Menu du Jour</button>
-            <button id="btn-soir" class="tab-btn" onclick="openTab(event, 'soir')">Le Soir (On Mange)</button>
-            <button id="btn-boissons" class="tab-btn" onclick="openTab(event, 'boissons')">Le Soir (On Boit)</button>
-        </div>
-
-        <div id="midi" class="menu-content active">
-            <div id="midi-content"></div>
-        </div>
-
-        <div id="menu_du_jour" class="menu-content">
-            <div id="menu_du_jour-content"></div>
-        </div>
-
-        <div id="soir" class="menu-content">
-            <div id="soir-content"></div>
-        </div>
-
-        <div id="boissons" class="menu-content">
-            <div id="boissons-content"></div>
-        </div>
-    </section>
-
-    <section id="horaires" class="section-padding">
-        <h2 class="section-title">On fait quoi <span>quand ?</span></h2>
-        <div class="horaires-container">
-            <div class="schedule-row"><div class="day">LUNDI</div><div class="hours">12H - 18H</div><div class="activity">Brasserie du midi & Working Café</div></div>
-            <div class="schedule-row"><div class="day">MARDI</div><div class="hours">8H30 - 18H</div><div class="activity">Brasserie du midi & Working Café</div></div>
-            <div class="schedule-row"><div class="day">MERCREDI</div><div class="hours">12H - 14H & 17H30 - 23H</div><div class="activity">Brasserie du midi & Bar à vins</div></div>
-            <div class="schedule-row"><div class="day">JEUDI</div><div class="hours">8H30 - 23H</div><div class="activity">Brasserie, Working Café & Bar à vins</div></div>
-            <div class="schedule-row"><div class="day">VENDREDI</div><div class="hours">8H30 - 23H</div><div class="activity">Brasserie, Working Café & Bar à vins</div></div>
-            <div class="schedule-row"><div class="day">SAMEDI</div><div class="hours">17H30 - 23H</div><div class="activity">Bar à vins exclusivement</div></div>
-            <div class="schedule-row"><div class="day">DIMANCHE</div><div class="hours">10H - 13H</div><div class="activity">Working Café (Matinée douce)</div></div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact-section-dark">
-        <div class="section-header-dark"><h2><i class="fas fa-map-marker-alt" style="color: var(--accent);"></i> Nous Trouver</h2><hr class="subtle-line"></div>
-        
-        <div class="contact-grid-dark">
-            <div style="display: flex; flex-direction: column; height: 100%;">
-               <div class="address-col" style="margin-bottom: 30px;">
-                    <p class="business-name">Le Montadé</p>
-                    <p class="address-line address-accent">1 Av. de Loustallaut</p>
-                    <p class="address-line">33880 Saint-Caprais-de-Bordeaux</p>
-                    <p class="address-line" style="margin-top: 15px;">
-                        <i class="fas fa-phone-alt" style="color: var(--accent); margin-right: 10px;"></i>
-                        <a href="tel:+33556843159" class="contact-link">05.56.84.31.59</a>
-                    </p>
-                    <p class="address-line">
-                        <i class="fas fa-envelope" style="color: var(--accent); margin-right: 10px;"></i>
-                        <a href="mailto:lemontade.tierslieu@gmail.com" class="contact-link">lemontade.tierslieu@gmail.com</a>
-                    </p>
+    <main>
+        <!-- ================= HERO ================= -->
+        <section class="hero" id="top">
+            <div class="hero-bg" aria-hidden="true"></div>
+            <div class="hero-inner">
+                <div class="status-pill" id="openStatus" role="status">Horaires du jour…</div>
+                <p class="eyebrow">Bar à vins · Brasserie du midi · Working café</p>
+                <h1>Le <em>Montadé</em></h1>
+                <p class="lead">Pour boire un café, travailler, rencontrer des amis, déjeuner la cocotte du midi préparée par notre chef Paul, ou passer une soirée au bar à vin.</p>
+                <div class="hero-cta">
+                    <a href="#carte" class="btn btn-primary">Découvrir la carte</a>
+                    <a href="#reserver" class="btn btn-outline">Réserver une table</a>
                 </div>
-                
-                <div style="width: 100%; text-align: left; display: flex; flex-direction: column;">
-                    <h3 style="color: var(--accent); margin-bottom: 20px; font-family: 'Playfair Display', serif;">Réserver une table</h3>
-                    
-                    <div class="widget-box">
-                        <iframe src="https://bookings.zenchef.com/results?rid=357246" 
-                                class="widget-iframe" 
-                                style="background-color: #ffffff;">
-                        </iframe>
+            </div>
+            <a href="#concept" class="scroll-hint" aria-label="Descendre"><i class="fas fa-chevron-down"></i></a>
+        </section>
+
+        <div class="info-strip">
+            <a class="info-card reveal" href="https://www.google.com/maps/dir/?api=1&destination=1+Av.+de+Loustallaut,+33880+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener">
+                <i class="fas fa-location-dot"></i><div><small>Adresse</small><strong>1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</strong></div>
+            </a>
+            <a class="info-card reveal d1" href="tel:+33556843159">
+                <i class="fas fa-phone"></i><div><small>Téléphone</small><strong>05.56.84.31.59</strong></div>
+            </a>
+            <a class="info-card reveal d2" href="#horaires">
+                <i class="far fa-clock"></i><div><small>Aujourd'hui</small><strong id="todayHours">Voir les horaires</strong></div>
+            </a>
+        </div>
+
+        <!-- ================= CONCEPT ================= -->
+        <section id="concept" class="section">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Le concept</span>
+                    <h2 class="title">Un lieu, <em>trois ambiances</em></h2>
+                </div>
+                <div class="concept-grid">
+                    <article class="concept-card reveal">
+                        <div class="concept-photo"><span class="concept-tag">La journée</span></div>
+                        <div class="concept-body"><h3>Working Café</h3><p>Installez-vous avec un bon café, profitez du Wi-Fi et travaillez dans un cadre inspirant.</p></div>
+                    </article>
+                    <article class="concept-card reveal d1">
+                        <div class="concept-photo"><span class="concept-tag">Le midi</span></div>
+                        <div class="concept-body"><h3>Brasserie du Midi</h3><p>Découvrez la fameuse « Cocotte du jour » préparée par notre chef Paul. 100 % fait maison.</p></div>
+                    </article>
+                    <article class="concept-card reveal d2">
+                        <div class="concept-photo"><span class="concept-tag">Le soir</span></div>
+                        <div class="concept-body"><h3>Bar à Vin</h3><p>Dès le mercredi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CARTE ================= -->
+        <section id="carte" class="section carte on-dark">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">La carte</span>
+                    <h2 class="title">L'Ardoise du <em>Montadé</em></h2>
+                </div>
+                <div class="board reveal">
+                    <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Choisir une partie de la carte"></div>
+                    <div id="menuPanel" class="menu-panel" role="tabpanel" aria-live="polite">
+                        <div class="carte-state"><i class="fas fa-spinner fa-spin"></i>Chargement de la carte…</div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%;">
-                <div class="widget-box">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2833.844390635955!2d-0.45719662369680373!3d44.74318728123281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5525049b78e2df%3A0xe62c82329bc0eb9e!2s1%20Av.%20de%20Loustallaut%2C%2033880%20Saint-Caprais-de-Bordeaux!5e0!3m2!1sfr!2sfr!4v1712860241000!5m2!1sfr!2sfr" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            class="widget-iframe" 
-                            style="filter: invert(90%) hue-rotate(180deg) contrast(110%) brightness(90%);">
-                    </iframe>
+        <!-- ================= HORAIRES ================= -->
+        <section id="horaires" class="section">
+            <div class="container split">
+                <div class="split-text reveal">
+                    <span class="eyebrow">Horaires</span>
+                    <h2 class="title">On fait quoi <em>quand ?</em></h2>
+                    <p>Café et travail en journée, cocotte du midi, puis bar à vins quand la lumière baisse : le Montadé change d'ambiance au fil des heures.</p>
+                    <div class="chips">
+                        <span><i class="fas fa-laptop-code"></i> Working café</span>
+                        <span><i class="fas fa-utensils"></i> Brasserie du midi</span>
+                        <span><i class="fas fa-wine-glass-alt"></i> Bar à vins</span>
+                    </div>
+                </div>
+                <ul class="hours-card reveal d1" id="hoursList">
+                    <li data-dow="1"><span class="d">Lundi</span><span class="h">12h – 18h</span><span class="a">Brasserie du midi & Working café</span></li>
+                    <li data-dow="2"><span class="d">Mardi</span><span class="h">8h30 – 18h</span><span class="a">Brasserie du midi & Working café</span></li>
+                    <li data-dow="3"><span class="d">Mercredi</span><span class="h">12h – 14h & 17h30 – 23h</span><span class="a">Brasserie du midi & Bar à vins</span></li>
+                    <li data-dow="4"><span class="d">Jeudi</span><span class="h">8h30 – 23h</span><span class="a">Brasserie, Working café & Bar à vins</span></li>
+                    <li data-dow="5"><span class="d">Vendredi</span><span class="h">8h30 – 23h</span><span class="a">Brasserie, Working café & Bar à vins</span></li>
+                    <li data-dow="6"><span class="d">Samedi</span><span class="h">17h30 – 23h</span><span class="a">Bar à vins exclusivement</span></li>
+                    <li data-dow="0"><span class="d">Dimanche</span><span class="h">10h – 13h</span><span class="a">Working café (matinée douce)</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ================= RÉSERVER ================= -->
+        <section id="reserver" class="section reserver">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Réservation</span>
+                    <h2 class="title">Réserver <em>une table</em></h2>
+                    <p>Choisissez votre date, votre horaire et le nombre de convives : la confirmation est immédiate.</p>
+                </div>
+                <div class="booking-card reveal">
+                    <iframe src="https://bookings.zenchef.com/results?rid=357246" title="Réservation en ligne Le Montadé" loading="lazy"></iframe>
+                </div>
+                <p class="booking-alt">Vous préférez nous appeler ? <a href="tel:+33556843159">05.56.84.31.59</a></p>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT ================= -->
+        <section id="contact" class="section">
+            <div class="container contact-grid">
+                <div class="reveal">
+                    <span class="eyebrow">Nous trouver</span>
+                    <h2 class="title">À deux pas <em>de chez vous</em></h2>
+                    <ul class="contact-list">
+                        <li><i class="fas fa-location-dot"></i><div><small>Adresse</small><span class="v">1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</span></div></li>
+                        <li><i class="fas fa-phone"></i><div><small>Téléphone</small><a href="tel:+33556843159">05.56.84.31.59</a></div></li>
+                        <li><i class="fas fa-envelope"></i><div><small>Email</small><a href="mailto:lemontade.tierslieu@gmail.com">lemontade.tierslieu@gmail.com</a></div></li>
+                    </ul>
+                    <a class="btn btn-dark" href="https://www.google.com/maps/dir/?api=1&destination=1+Av.+de+Loustallaut,+33880+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener"><i class="fas fa-route"></i> Itinéraire</a>
+                </div>
+                <div class="map-card reveal d1">
+                    <iframe title="Plan d'accès Le Montadé" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2833.844390635955!2d-0.45719662369680373!3d44.74318728123281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5525049b78e2df%3A0xe62c82329bc0eb9e!2s1%20Av.%20de%20Loustallaut%2C%2033880%20Saint-Caprais-de-Bordeaux!5e0!3m2!1sfr!2sfr!4v1712860241000!5m2!1sfr!2sfr"></iframe>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <footer>
-       <img src="logo.jpg" alt="Logo Rond Footer" class="footer-round-logo" onclick="handleAdminDoubleTap()" title="Double-clic pour Admin">
-        <div class="social-links">
-            <a href="https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/lemontade_lelieu/" target="_blank"><i class="fab fa-instagram"></i></a>
-        </div>
+        </section>
+    </main>
 
-        <div class="footer-separator"></div>
-
-        <div class="footer-bottom">
-            <p>© 2026 Le Montadé - Tous droits réservés.</p>
-            <p class="creator-credit">by <a href="https://www.instagram.com/uipact/" target="_blank">UIPACT</a></p>
-            <div class="legal-links">
-                <a href="#">CGU</a> | <a href="#">Politique de confidentialité</a> | <a href="#">Mentions légales</a>
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="logo.jpg" alt="Le Montadé" id="secretLogo" draggable="false">
+                <p>Bar à vins, brasserie du midi et working café à Saint-Caprais-de-Bordeaux.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/lemontade_lelieu/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#concept">Le concept</a></li>
+                    <li><a href="#carte">La carte</a></li>
+                    <li><a href="#horaires">Horaires</a></li>
+                    <li><a href="#reserver">Réserver</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</li>
+                    <li><a href="tel:+33556843159">05.56.84.31.59</a></li>
+                    <li><a href="mailto:lemontade.tierslieu@gmail.com">lemontade.tierslieu@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Le Montadé · Site by <a href="https://www.instagram.com/uipact/" target="_blank" rel="noopener">UIPACT</a></span>
+            <span class="legal-links"><a href="cgu.html">CGU</a><a href="confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a></span>
         </div>
     </footer>
 
-    <button id="backToTop" class="btn-top" onclick="scrollToTop()"><i class="fas fa-chevron-up"></i></button>
-
-    <div class="modal-overlay" id="adminModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeAdminModal()">×</span>
-            
-            <div id="loginPanel" style="text-align: center;">
-                
-                <div id="step1">
-                    <h2 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-lock"></i> Accès Admin</h2>
-                    <div class="admin-form-group"><input type="password" id="passwordInput" placeholder="Mot de passe" style="text-align: center;" onkeypress="if(event.key === 'Enter') checkPassword()"></div>
-                    <button class="admin-btn" onclick="checkPassword()">Suivant</button>
-                    <p id="error-msg" style="color: #e74c3c; margin-top: 10px; font-size: 0.9rem; display: none;">Mot de passe incorrect.</p>
-                </div>
-
-                <div id="step2" style="display: none;">
-                    <h2 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-shield-alt"></i> Sécurité 2FA</h2>
-                    <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-light);">Entrez le code à 6 chiffres généré par votre application Google Authenticator.</p>
-                    <div class="admin-form-group">
-                        <input type="text" id="pinInput" placeholder="000000" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 15px;" onkeypress="if(event.key === 'Enter') checkPin()">
-                    </div>
-                    <button class="admin-btn" onclick="checkPin()">Valider et Connecter</button>
-                    <p id="error-msg-pin" style="color: #e74c3c; margin-top: 10px; font-size: 0.9rem; display: none;">Code incorrect.</p>
-                    <button onclick="backToPassword()" style="background: none; border: none; color: var(--text-light); text-decoration: underline; margin-top: 15px; cursor: pointer; font-size: 0.8rem;">Retour</button>
-                </div>
-
-            </div>
-
-            <div id="adminPanel" style="display: none;">
-                <h2 style="color: var(--primary); text-align: center; margin-bottom: 30px;"><i class="fas fa-cogs"></i> Gestion de la Carte</h2>
-                <form id="addPlatForm">
-                    <div class="admin-form-group flex-container" style="display: flex; gap: 15px;">
-                        <div style="flex: 1;">
-                            <label>Onglet</label>
-                            <select id="categorie" required>
-                                <option value="midi">Le Midi</option>
-                                <option value="menu_du_jour">Menu du Jour</option>
-                                <option value="soir">Le Soir (On Mange)</option>
-                                <option value="boissons">Le Soir (On Boit)</option>
-                            </select>
-                        </div>
-                        <div style="flex: 1;">
-                            <label>Catégorie</label>
-                            <select id="sousCategorie" required>
-                                <option value="formule">Formule Complète (Menu Ardoise)</option>
-                                <option value="entree">Entrée Individuelle</option>
-                                <option value="plat">Plat Individuel</option>
-                                <option value="menu_enfant">Menu Enfant</option>
-                                <option value="dessert">Dessert Individuel</option>
-                                <option value="planche">Planches & Tapas</option>
-                                <option value="biere">Bière</option>
-                                <option value="vin">Vin au verre</option>
-                                <option value="sans_alcool">Sans Alcool</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="admin-form-group">
-                        <label id="labelNom">Nom de la formule / plat / boisson</label>
-                        <input type="text" id="nomPlat" placeholder="Ex: Formule Cocotte" required>
-                    </div>
-
-                    <div class="admin-form-group" id="groupDesc"><label>Description</label><input type="text" id="descPlat" placeholder="Ex: Frites + Salade"></div>
-
-                    <div class="admin-form-group" id="groupBiereSansAlcoolToggle" style="display:none; background: #eef; padding: 10px; border-radius: 5px;">
-                        <label style="display: flex; align-items: center; gap: 10px; margin: 0; cursor: pointer;">
-                            <input type="checkbox" id="isBiereToggle" style="width: auto;"> S'agit-il d'une bière sans alcool (choix des cl) ?
-                        </label>
-                    </div>
-
-                    <div class="formule-options" id="groupBoissons" style="display:none; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                        <label style="color: var(--primary); font-weight: 600; display: block;">Formats (Laissez à 0 ou vide si non disponible) :</label>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <div style="flex:1;"><label style="font-size:0.75rem;">25 cl</label><input type="text" id="prix25cl" placeholder="Prix (€)"></div>
-                            <div style="flex:1;"><label style="font-size:0.75rem;">33 cl</label><input type="text" id="prix33cl" placeholder="Prix (€)"></div>
-                            <div style="flex:1;"><label style="font-size:0.75rem;">50 cl</label><input type="text" id="prix50cl" placeholder="Prix (€)"></div>
-                        </div>
-                    </div>
-
-                    <div class="formule-options" id="groupVin" style="display:none; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                        <label style="color: var(--primary); font-weight: 600; display: block;">Couleur du Vin :</label>
-                        <select id="couleurVin" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-                            <option value="Rouge">Rouge</option>
-                            <option value="Blanc">Blanc</option>
-                            <option value="Rosé">Rosé</option>
-                        </select>
-                    </div>
-
-                    <div class="formule-options" id="groupFormule" style="display:none; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                        <label style="color: var(--primary); font-weight: 600; display: block;">Prix des combinaisons :</label>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
-                            <input type="text" id="prixEPD" placeholder="Entrées + Plats + Desserts (€)" style="flex:1;">
-                            <input type="text" id="prixEP" placeholder="Entrées + Plats (€)" style="flex:1;">
-                            <input type="text" id="prixPD" placeholder="Plats + Desserts (€)" style="flex:1;">
-                        </div>
-                        <label style="color: var(--primary); font-weight: 600;">Générer les choix :</label>
-                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                            <div style="flex:1;"><label style="font-size:0.75rem;">Nombre d'Entrées</label><input type="number" id="nbEntrees" min="0" value="0"></div>
-                            <div style="flex:1;"><label style="font-size:0.75rem;">Nombre de Plats</label><input type="number" id="nbPlats" min="0" value="0"></div>
-                            <div style="flex:1;"><label style="font-size:0.75rem;">Nombre de Desserts</label><input type="number" id="nbDesserts" min="0" value="0"></div>
-                        </div>
-                        <div id="containerEntreesList" class="dynamic-inputs"></div>
-                        <div id="containerPlatsList" class="dynamic-inputs"></div>
-                        <div id="containerDessertsList" class="dynamic-inputs"></div>
-                    </div>
-
-                    <div class="admin-form-group" id="groupPrixGlobal"><label>Prix Unique</label><input type="text" id="prixPlat" placeholder="Prix (€)"></div>
-                    <button type="submit" class="admin-btn">Ajouter à la carte</button>
-                </form>
-                <div style="margin-top: 40px;"><div id="listePlatsContainer"></div></div>
-            </div>
-        </div>
+    <div class="mobile-cta">
+        <a href="tel:+33556843159" class="btn btn-dark"><i class="fas fa-phone"></i> Appeler</a>
+        <a href="#reserver" class="btn btn-primary">Réserver</a>
     </div>
+    <button id="backToTop" class="btn-top" type="button" aria-label="Retour en haut"><i class="fas fa-chevron-up"></i></button>
 
+    <script src="site.js"></script>
+
+    <!-- ===== Horaires : statut « ouvert / fermé » en temps réel (heure de Paris) ===== -->
     <script>
-        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
-        
-        function openTab(evt, tabName) {
-            let i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("menu-content");
-            for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; tabcontent[i].classList.remove("active"); }
-            tablinks = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
-            document.getElementById(tabName).style.display = "block";
-            setTimeout(() => { document.getElementById(tabName).classList.add("active"); }, 10);
-            
-            if (evt && evt.currentTarget) { 
-                evt.currentTarget.classList.add("active"); 
+    (() => {
+        const SCHEDULE = {
+            1: [['12:00', '18:00']],
+            2: [['08:30', '18:00']],
+            3: [['12:00', '14:00'], ['17:30', '23:00']],
+            4: [['08:30', '23:00']],
+            5: [['08:30', '23:00']],
+            6: [['17:30', '23:00']],
+            0: [['10:00', '13:00']]
+        };
+        const DAY_NAMES = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+        const toMin = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
+        const fmt = (s) => { const [h, m] = s.split(':').map(Number); return h + 'h' + (m ? String(m).padStart(2, '0') : ''); };
+
+        function update() {
+            const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+            const dow = now.getDay();
+            const mins = now.getHours() * 60 + now.getMinutes();
+            const slots = SCHEDULE[dow] || [];
+
+            document.querySelectorAll('#hoursList li').forEach((li) => li.classList.toggle('today', Number(li.dataset.dow) === dow));
+            document.getElementById('todayHours').textContent = slots.map((s) => `${fmt(s[0])} – ${fmt(s[1])}`).join(' & ') || 'Fermé';
+
+            let text, state;
+            const current = slots.find((s) => mins >= toMin(s[0]) && mins < toMin(s[1]));
+            if (current) {
+                state = 'open'; text = `Ouvert · jusqu'à ${fmt(current[1])}`;
             } else {
-                document.getElementById('btn-' + tabName).classList.add("active");
-            }
-        }
-        
-        window.addEventListener('scroll', () => {
-            const btn = document.getElementById("backToTop");
-            if (window.scrollY > 300) {
-                btn.classList.add("show");
-            } else {
-                btn.classList.remove("show");
-            }
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
-            } else {
-                header.style.boxShadow = '0 2px 15px rgba(0,0,0,0.08)';
-            }
-        });
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-        function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
-        
-        function closeAdminModal() { 
-            document.getElementById('adminModal').style.display = 'none'; 
-            document.getElementById('step1').style.display = 'block';
-            document.getElementById('step2').style.display = 'none';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('pinInput').value = '';
-            document.getElementById('error-msg').style.display = 'none';
-            document.getElementById('error-msg-pin').style.display = 'none';
-        }
-        
-        let tapCount = 0;
-        let tapTimer;
-        function handleAdminDoubleTap() {
-            tapCount++;
-            if (tapCount === 2) {
-                openAdminModal();
-                tapCount = 0;
-                clearTimeout(tapTimer);
-            } else {
-                tapTimer = setTimeout(() => { tapCount = 0; }, 400); 
-            }
-        }
-        
-        // VÉRIFICATION ÉTAPE 1
-        function checkPassword() {
-            if (document.getElementById('passwordInput').value === "Montade2026") {
-                document.getElementById('step1').style.display = 'none';
-                document.getElementById('step2').style.display = 'block';
-                document.getElementById('error-msg').style.display = 'none';
-                document.getElementById('pinInput').focus(); 
-            } else { 
-                document.getElementById('error-msg').style.display = 'block'; 
-            }
-        }
-
-        // RETOUR EN ARRIÈRE
-        function backToPassword() {
-            document.getElementById('step2').style.display = 'none';
-            document.getElementById('step1').style.display = 'block';
-            document.getElementById('error-msg-pin').style.display = 'none';
-            document.getElementById('pinInput').value = '';
-        }
-
-        // VÉRIFICATION ÉTAPE 2 (L'APPEL AU SERVEUR SÉCURISÉ)
-        async function checkPin() {
-            const codeInput = document.getElementById('pinInput').value;
-            const errorMsg = document.getElementById('error-msg-pin');
-
-            if (codeInput.length !== 6) {
-                errorMsg.innerText = "Le code doit faire 6 chiffres.";
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            try {
-                // Requête vers ton Backend Node.js
-                const response = await fetch('https://montade-backend-zdjf.onrender.com/api/verify-2fa', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: codeInput })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    document.getElementById('loginPanel').style.display = 'none';
-                    document.getElementById('adminPanel').style.display = 'block';
-                    document.getElementById('sousCategorie').dispatchEvent(new Event('change'));
-                } else {
-                    errorMsg.innerText = "Code Google Authenticator invalide ou expiré.";
-                    errorMsg.style.display = 'block';
+                state = 'closed';
+                const later = slots.find((s) => toMin(s[0]) > mins);
+                if (later) text = `Fermé · ouvre à ${fmt(later[0])}`;
+                else {
+                    for (let i = 1; i <= 7; i++) {
+                        const d = (dow + i) % 7;
+                        if (SCHEDULE[d] && SCHEDULE[d].length) {
+                            text = `Fermé · ouvre ${i === 1 ? 'demain' : DAY_NAMES[d]} à ${fmt(SCHEDULE[d][0][0])}`;
+                            break;
+                        }
+                    }
                 }
-            } catch (error) {
-                console.error("Erreur serveur", error);
-                errorMsg.innerText = "Serveur de sécurité injoignable. Le serveur Node.js est-il allumé ?";
-                errorMsg.style.display = 'block';
             }
+            const pill = document.getElementById('openStatus');
+            pill.textContent = text;
+            pill.className = 'status-pill ' + state;
         }
-        
-        document.getElementById('sousCategorie').addEventListener('change', function() {
-            const val = this.value;
-            const isF = val === 'formule';
-            const isBiere = val === 'biere';
-            const isSansAlcool = val === 'sans_alcool';
-            const isVin = val === 'vin';
-
-            document.getElementById('groupFormule').style.display = isF ? 'block' : 'none';
-            document.getElementById('groupVin').style.display = isVin ? 'block' : 'none';
-            document.getElementById('groupDesc').style.display = isF ? 'none' : 'block';
-
-            if (isBiere) {
-                document.getElementById('groupBoissons').style.display = 'block';
-                document.getElementById('groupBiereSansAlcoolToggle').style.display = 'none';
-                document.getElementById('groupPrixGlobal').style.display = 'none';
-            } else if (isSansAlcool) {
-                document.getElementById('groupBoissons').style.display = 'none';
-                document.getElementById('groupBiereSansAlcoolToggle').style.display = 'block';
-                document.getElementById('groupPrixGlobal').style.display = 'block';
-                document.getElementById('isBiereToggle').checked = false;
-            } else {
-                document.getElementById('groupBoissons').style.display = 'none';
-                document.getElementById('groupBiereSansAlcoolToggle').style.display = 'none';
-                document.getElementById('groupPrixGlobal').style.display = isF ? 'none' : 'block';
-            }
-        });
-
-        document.getElementById('isBiereToggle').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('groupBoissons').style.display = 'block';
-                document.getElementById('groupPrixGlobal').style.display = 'none';
-            } else {
-                document.getElementById('groupBoissons').style.display = 'none';
-                document.getElementById('groupPrixGlobal').style.display = 'block';
-            }
-        });
-        
-        function createInputs(count, containerId, placeholder, prefix) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = count > 0 ? `<p style="margin: 10px 0 5px; font-weight: bold; font-size: 0.9rem;">${placeholder}s :</p>` : '';
-            for (let i = 0; i < count; i++) {
-                const row = document.createElement('div'); row.className = 'dynamic-row';
-                row.innerHTML = `
-                    <input type="text" class="${prefix}-nom" placeholder="Nom" style="flex:2; min-width:120px;" required>
-                    <input type="text" class="${prefix}-desc" placeholder="Desc (Optionnel)" style="flex:2; min-width:120px;">
-                    <input type="text" class="${prefix}-prix" placeholder="Prix (€)" style="flex:1; min-width:70px;">
-                `;
-                container.appendChild(row);
-            }
-        }
-        
-        document.getElementById('nbEntrees').addEventListener('input', (e) => createInputs(e.target.value, 'containerEntreesList', 'Entrée', 'in-e'));
-        document.getElementById('nbPlats').addEventListener('input', (e) => createInputs(e.target.value, 'containerPlatsList', 'Plat', 'in-p'));
-        document.getElementById('nbDesserts').addEventListener('input', (e) => createInputs(e.target.value, 'containerDessertsList', 'Dessert', 'in-d'));
+        update();
+        setInterval(update, 60000);
+    })();
     </script>
 
+    <!-- ===== La carte : lecture en direct depuis Firebase Firestore ===== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
@@ -626,160 +450,107 @@
             messagingSenderId: "325197109352",
             appId: "1:325197109352:web:1b65a2c21cbc26aae7c3dd"
         };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const db = getFirestore(initializeApp(firebaseConfig));
 
-        document.getElementById('addPlatForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const sc = document.getElementById('sousCategorie').value;
-            let nomVal = document.getElementById('nomPlat').value;
-            let d = { categorie: document.getElementById('categorie').value, sousCategorie: sc, dateAjout: new Date() };
-            
-            if (sc === 'vin') {
-                d.nom = `${document.getElementById('couleurVin').value} : ${nomVal}`;
-                d.description = document.getElementById('descPlat').value; 
-                d.prix = document.getElementById('prixPlat').value;
-            } else if (sc === 'formule') {
-                d.nom = nomVal;
-                const getItems = (p) => Array.from(document.querySelectorAll(`.${p}-nom`)).map((el, i) => ({ 
-                    nom: el.value, 
-                    desc: document.querySelectorAll(`.${p}-desc`)[i] ? document.querySelectorAll(`.${p}-desc`)[i].value : '',
-                    prix: document.querySelectorAll(`.${p}-prix`)[i].value 
-                }));
-                d.prixCombos = { epd: document.getElementById('prixEPD').value, ep: document.getElementById('prixEP').value, pd: document.getElementById('prixPD').value };
-                d.detailsFormule = { entrees: getItems('in-e'), plats: getItems('in-p'), desserts: getItems('in-d') };
-            } else if (sc === 'biere' || (sc === 'sans_alcool' && document.getElementById('isBiereToggle').checked)) {
-                d.nom = nomVal;
-                d.description = document.getElementById('descPlat').value;
-                d.prixTailles = {
-                    cl25: document.getElementById('prix25cl').value,
-                    cl33: document.getElementById('prix33cl').value,
-                    cl50: document.getElementById('prix50cl').value
-                };
-            } else { 
-                d.nom = nomVal;
-                d.description = document.getElementById('descPlat').value; 
-                d.prix = document.getElementById('prixPlat').value; 
+        const TABS = [
+            { id: 'midi', label: 'Le Midi', note: '« Ici tout est fait maison ! »' },
+            { id: 'menu_du_jour', label: 'Menu du Jour', note: '« Nos suggestions du moment ! »' },
+            { id: 'soir', label: 'Le Soir (On Mange)', note: 'Commandes au comptoir 😊' },
+            { id: 'boissons', label: 'Le Soir (On Boit)', note: 'Commandes au comptoir 😊' }
+        ];
+        const TYPES = ['formule', 'entree', 'plat', 'menu_enfant', 'dessert', 'planche', 'biere', 'vin', 'sans_alcool'];
+        const TITLES = { entree: 'Entrées', plat: 'Plats / Cocotte', menu_enfant: 'Menu Enfant', dessert: 'Desserts', planche: 'Planches & Tapas', biere: 'Bières', vin: 'Vin au verre', sans_alcool: 'Sans alcool' };
+
+        const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const fmtPrix = (p) => {
+            const s = String(p ?? '').trim();
+            if (!s || s === '0') return '';
+            return /[€$£¥]/.test(s) ? s : s + ' €';
+        };
+
+        const tabsEl = document.getElementById('menuTabs');
+        const panelEl = document.getElementById('menuPanel');
+        let data = {};      // { onglet: { type: [plats] } }
+        let current = null;
+
+        const itemHtml = (nom, desc, priceHtml) => `
+            <div class="menu-item">
+                <div class="mi-head"><h4>${esc(nom)}</h4><span class="leader"></span>${priceHtml}</div>
+                ${desc ? `<p>${esc(desc)}</p>` : ''}
+            </div>`;
+
+        function platHtml(p) {
+            if (p.prixTailles) {
+                const sizes = [['25cl', p.prixTailles.cl25], ['33cl', p.prixTailles.cl33], ['50cl', p.prixTailles.cl50]]
+                    .filter(([, v]) => fmtPrix(v))
+                    .map(([l, v]) => `<span class="price"><small>${l}</small>${esc(fmtPrix(v))}</span>`).join('');
+                return itemHtml(p.nom, p.description, `<span class="sizes">${sizes}</span>`);
             }
+            const pr = fmtPrix(p.prix);
+            return itemHtml(p.nom, p.description, pr ? `<span class="price">${esc(pr)}</span>` : '');
+        }
 
-            await addDoc(collection(db, "plats"), d);
-            e.target.reset();
-            document.querySelectorAll('.dynamic-inputs').forEach(el => el.innerHTML = '');
-            document.getElementById('sousCategorie').dispatchEvent(new Event('change'));
+        function formuleHtml(p) {
+            const c = p.prixCombos || {};
+            const combo = (label, v) => fmtPrix(v) ? itemHtml(label, '', `<span class="price">${esc(fmtPrix(v))}</span>`) : '';
+            const d = p.detailsFormule || {};
+            const col = (title, items) => (items && items.length)
+                ? `<div><h5>${title}</h5>${items.map((it) => itemHtml(it.nom, it.desc, fmtPrix(it.prix) ? `<span class="price">${esc(fmtPrix(it.prix))}</span>` : '')).join('')}</div>` : '';
+            return `<div class="formule"><h3>${esc(p.nom)}</h3>
+                <div class="combos">${combo('Entrées + Plats + Desserts', c.epd)}${combo('Entrées + Plats', c.ep)}${combo('Plats + Desserts', c.pd)}</div>
+                <div class="cols">${col('Entrées', d.entrees)}${col('Plats', d.plats)}${col('Desserts', d.desserts)}</div></div>`;
+        }
+
+        function renderPanel() {
+            const tab = TABS.find((t) => t.id === current);
+            const groups = data[current] || {};
+            let html = `<p class="fait-maison">${tab.note}</p>`;
+            TYPES.forEach((t) => {
+                const list = groups[t];
+                if (!list || !list.length) return;
+                if (t === 'formule') html += list.map(formuleHtml).join('');
+                else html += `<h3 class="cat-title">${TITLES[t]}</h3><div class="menu-grid">${list.map(platHtml).join('')}</div>`;
+            });
+            panelEl.innerHTML = html;
+            panelEl.classList.remove('menu-panel'); void panelEl.offsetWidth; panelEl.classList.add('menu-panel');
+        }
+
+        function renderTabs() {
+            const available = TABS.filter((t) => data[t.id]);
+            if (!available.length) {
+                tabsEl.innerHTML = '';
+                panelEl.innerHTML = '<div class="carte-state"><i class="fas fa-utensils"></i>La carte est en cours de mise à jour. Revenez dans quelques instants ou appelez-nous au 05.56.84.31.59.</div>';
+                return;
+            }
+            if (!available.some((t) => t.id === current)) current = available[0].id;
+            tabsEl.innerHTML = available.map((t) =>
+                `<button type="button" role="tab" class="tab-btn${t.id === current ? ' active' : ''}" data-tab="${t.id}" aria-selected="${t.id === current}">${t.label}</button>`).join('');
+            renderPanel();
+        }
+
+        tabsEl.addEventListener('click', (e) => {
+            const b = e.target.closest('.tab-btn');
+            if (!b) return;
+            current = b.dataset.tab;
+            tabsEl.querySelectorAll('.tab-btn').forEach((x) => {
+                const on = x === b; x.classList.toggle('active', on); x.setAttribute('aria-selected', String(on));
+            });
+            renderPanel();
         });
 
-        onSnapshot(query(collection(db, "plats"), orderBy("dateAjout", "asc")), (snap) => {
-            const types = ['formule', 'entree', 'plat', 'menu_enfant', 'dessert', 'planche', 'biere', 'vin', 'sans_alcool'];
-            const mainCats = ['midi', 'menu_du_jour', 'soir', 'boissons'];
-            
-            let contentByMainCat = {
-                'midi': { hasItems: false, html: '' },
-                'menu_du_jour': { hasItems: false, html: '' },
-                'soir': { hasItems: false, html: '' },
-                'boissons': { hasItems: false, html: '' }
-            };
-
-            mainCats.forEach(mc => {
-                types.forEach(t => {
-                    contentByMainCat[mc][t] = ''; 
-                });
+        onSnapshot(query(collection(db, 'plats'), orderBy('dateAjout', 'asc')), (snap) => {
+            data = {};
+            snap.forEach((d) => {
+                const p = d.data();
+                if (!p.categorie || !p.sousCategorie) return;
+                ((data[p.categorie] ??= {})[p.sousCategorie] ??= []).push(p);
             });
-
-            document.getElementById('listePlatsContainer').innerHTML = '';
-
-            const formatPrix = (prix) => {
-                if (!prix) return '';
-                let strPrix = String(prix).trim();
-                if (strPrix === '' || strPrix === '0') return ''; 
-                if (/[€$£¥]/.test(strPrix)) return strPrix;
-                return strPrix + ' €';
-            };
-
-            snap.forEach((docSnap) => {
-                const p = docSnap.data();
-                const id = docSnap.id;
-                let html = '';
-                
-                contentByMainCat[p.categorie].hasItems = true;
-                
-                if (p.sousCategorie === 'formule') {
-                    html += `<div style="width: 100%; margin-bottom: 30px;"><h3 class="menu-category">${p.nom}</h3>`;
-                    
-                    if (p.prixCombos.epd) html += `<div class="menu-item"><div class="menu-item-info"><h4>ENTRÉES + PLATS + DESSERTS</h4></div><div class="menu-price">${formatPrix(p.prixCombos.epd)}</div></div>`;
-                    if (p.prixCombos.ep) html += `<div class="menu-item"><div class="menu-item-info"><h4>ENTRÉES + PLATS</h4></div><div class="menu-price">${formatPrix(p.prixCombos.ep)}</div></div>`;
-                    if (p.prixCombos.pd) html += `<div class="menu-item"><div class="menu-item-info"><h4>PLATS + DESSERTS</h4></div><div class="menu-price">${formatPrix(p.prixCombos.pd)}</div></div>`;
-                    
-                    const renderS = (title, items) => {
-                        if (!items || items.length === 0) return '';
-                        let s = `<h4 style="color: var(--accent); text-align: center; margin-top: 15px; margin-bottom: 5px; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase;">${title}</h4>`;
-                        items.forEach(it => {
-                            let descHtml = it.desc ? `<p style="font-size: 0.85rem; color: #a0aabf; margin-top: 3px; font-style: italic; margin-bottom: 0;">${it.desc}</p>` : '';
-                            s += `<div class="menu-item"><div class="menu-item-info"><h4>${it.nom}</h4>${descHtml}</div><div class="menu-price">${formatPrix(it.prix)}</div></div>`;
-                        });
-                        return s;
-                    };
-                    html += renderS('ENTRÉES', p.detailsFormule.entrees) + renderS('PLATS', p.detailsFormule.plats) + renderS('DESSERTS', p.detailsFormule.desserts) + `</div>`;
-                } else if (p.prixTailles) {
-                    let tailles = [];
-                    if (formatPrix(p.prixTailles.cl25)) tailles.push(`25cl : ${formatPrix(p.prixTailles.cl25)}`);
-                    if (formatPrix(p.prixTailles.cl33)) tailles.push(`33cl : ${formatPrix(p.prixTailles.cl33)}`);
-                    if (formatPrix(p.prixTailles.cl50)) tailles.push(`50cl : ${formatPrix(p.prixTailles.cl50)}`);
-                    let prixHtml = tailles.join(' / ');
-                    html = `<div class="menu-item"><div class="menu-item-info"><h4>${p.nom}</h4>${p.description ? `<p>${p.description}</p>` : ''}</div><div class="menu-price">${prixHtml}</div></div>`;
-                } else {
-                    html = `<div class="menu-item"><div class="menu-item-info"><h4>${p.nom}</h4>${p.description ? `<p>${p.description}</p>` : ''}</div><div class="menu-price">${formatPrix(p.prix)}</div></div>`;
-                }
-                
-                contentByMainCat[p.categorie][p.sousCategorie] += html;
-
-                document.getElementById('listePlatsContainer').innerHTML += `<div class="menu-item-admin"><div><strong>${p.nom}</strong> (${p.categorie})</div><button class="delete-btn" onclick="supprimerPlat('${id}')">×</button></div>`;
-            });
-
-            let firstVisibleCat = null; 
-
-            mainCats.forEach(mc => {
-                const container = document.getElementById(`${mc}-content`);
-                const btn = document.getElementById(`btn-${mc}`); 
-                
-                if(container && btn) {
-                    if (contentByMainCat[mc].hasItems) {
-                        btn.style.display = 'inline-block';
-                        if (!firstVisibleCat) firstVisibleCat = mc;
-
-                        let finalHtml = '';
-                        if (mc === 'midi') finalHtml += `<p class="fait-maison">"Ici tout est fait maison !"</p>`;
-                        else if (mc === 'menu_du_jour') finalHtml += `<p class="fait-maison">"Nos suggestions du moment !"</p>`;
-                        else if (mc === 'soir' || mc === 'boissons') finalHtml += `<p class="fait-maison">Commandes au comptoir 😊</p>`;
-
-                        const titles = {'entree':'Entrées','plat':'Plats / Cocotte','menu_enfant':'Menu Enfant','dessert':'Desserts','planche':'Planches & Tapas','biere':'Bières','vin':'Vin au Verre','sans_alcool':'Sans Alcool'};
-                        
-                        types.forEach(t => {
-                           if (contentByMainCat[mc][t] !== '') {
-                               if (t !== 'formule') {
-                                   finalHtml += `<h3 class="menu-category">${titles[t] || ''}</h3>`;
-                               }
-                               finalHtml += contentByMainCat[mc][t];
-                           }
-                        });
-                        container.innerHTML = finalHtml;
-
-                    } else {
-                         btn.style.display = 'none';
-                         container.innerHTML = '';
-                    }
-                }
-            });
-
-            if (firstVisibleCat) {
-                const activeBtn = document.querySelector('.tab-btn.active');
-                if (!activeBtn || activeBtn.style.display === 'none') {
-                    document.getElementById(`btn-${firstVisibleCat}`).click();
-                } else {
-                   openTab(null, activeBtn.id.replace('btn-', ''));
-                }
-            }
+            renderTabs();
+        }, (err) => {
+            console.error('Carte indisponible :', err);
+            tabsEl.innerHTML = '';
+            panelEl.innerHTML = '<div class="carte-state"><i class="fas fa-triangle-exclamation"></i>Impossible d\'afficher la carte pour le moment. Appelez-nous au 05.56.84.31.59.</div>';
         });
-        window.supprimerPlat = async (id) => { if(confirm("Supprimer ce plat ?")) await deleteDoc(doc(db, "plats", id)); };
     </script>
 </body>
 </html>

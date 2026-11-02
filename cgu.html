@@ -2,185 +2,104 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CGU - Le Montadé</title>
-    <link rel="icon" type="image/png" href="asset\logo.jpg"> 
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Conditions Générales d'Utilisation — Le Montadé</title>
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* ================= VARIABLES & RESET ================= */
-        :root {
-            --primary: #1e2a45; --accent: #d4af37; --accent-hover: #b5952f;
-            --bg-light: #fdfcfaf5; --bg-gray: #f4f4f4; --text-main: #333333;
-            --text-light: #666666; --white: #ffffff; --transition: all 0.3s ease;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; color: var(--text-main); background-color: var(--bg-light); line-height: 1.6; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
-
-        /* ================= NAVBAR ================= */
-        header { position: fixed; top: 0; width: 100%; background: rgb(255, 255, 255); box-shadow: 0 2px 15px rgba(0,0,0,0.08); z-index: 1000; transition: var(--transition); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 10px 20px; }
-        .logo img { height: 140px; transition: var(--transition); }
-        .nav-links { display: flex; gap: 30px; list-style: none; align-items: center; }
-        /* Les liens renvoient vers index.html */
-        .nav-links a { text-decoration: none; color: var(--primary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); position: relative; }
-        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent); transition: var(--transition); }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { color: var(--accent); }
-        .btn-reserve { background: var(--accent); color: var(--white) !important; padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; transition: var(--transition); }
-        .btn-reserve:hover { background: var(--accent-hover); transform: translateY(-2px); }
-        .btn-reserve::after { display: none; }
-        .mobile-menu-btn { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
-
-        /* ================= CONTENU LEGAL ================= */
-        .legal-wrapper { flex: 1; padding: 180px 20px 80px; max-width: 900px; margin: 0 auto; width: 100%; }
-        .legal-content { background: var(--white); padding: 50px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
-        .legal-title { text-align: center; font-size: 2.8rem; color: var(--primary); margin-bottom: 40px; }
-        .legal-title span { color: var(--accent); font-style: italic; }
-        .legal-content h3 { color: var(--primary); font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid var(--bg-gray); padding-bottom: 5px; }
-        .legal-content p { margin-bottom: 15px; color: var(--text-light); text-align: justify; }
-        .legal-content ul { margin-bottom: 15px; margin-left: 20px; color: var(--text-light); }
-        .legal-content li { margin-bottom: 5px; }
-
-        /* ================= FOOTER ================= */
-        footer { background: #111827; color: rgba(255, 255, 255, 0.85); padding: 50px 20px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; margin-top: auto;}
-        .footer-round-logo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--white); cursor: pointer; transition: 0.3s; }
-        .footer-round-logo:hover { border-color: var(--accent); transform: scale(1.05); }
-        .social-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
-        .social-links a { color: var(--white); font-size: 1.8rem; transition: var(--transition); text-decoration: none;}
-        .social-links a:hover { color: var(--accent); }
-        .footer-separator { width: 80%; max-width: 400px; height: 1px; background: rgba(255,255,255,0.1); margin: 5px 0; }
-        .footer-bottom { font-size: 0.9rem; width: 100%; margin-top: 5px;}
-        .creator-credit { margin-top: 5px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.85); }
-        .creator-credit a { color: var(--white) !important; text-decoration: none; transition: 0.3s; }
-        .creator-credit a:hover { color: var(--accent) !important; }
-        .legal-links { margin-top: 10px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); }
-        .legal-links a { color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: 0.3s; }
-        .legal-links a:hover { color: var(--accent); }
-
-        .btn-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: var(--accent); color: var(--white); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1001; opacity: 0; visibility: hidden; transition: var(--transition); }
-        .btn-top.show { opacity: 1; visibility: visible; }
-        .btn-top:hover { background-color: var(--accent-hover); transform: translateY(-5px); }
-
-        /* ================= RESPONSIVE ================= */
-        @media (max-width: 768px) {
-            .logo img { height: 100px; }
-            .nav-links { position: absolute; top: 100%; left: 0; width: 100%; background: var(--white); flex-direction: column; padding: 20px 0; clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: 0.4s ease-in-out; box-shadow: 0 10px 10px rgba(0,0,0,0.1); }
-            .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-            .mobile-menu-btn { display: block; }
-            .legal-wrapper { padding-top: 130px; }
-            .legal-content { padding: 30px 20px; }
-            .legal-title { font-size: 2rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="logo.jpg" alt="Le Montadé Logo" onerror="this.src='https://via.placeholder.com/150x70?text=LE+MONTADE'">
-            </a>
-            <div class="mobile-menu-btn" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html#concept">Le Concept</a></li>
-                <li><a href="index.html#menu">La Carte</a></li>
-                <li><a href="index.html#horaires">Horaires</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
-                <li><a href="index.html#contact" class="btn-reserve">Réserver</a></li>
-            </ul>
+    <header class="site-header">
+        <div class="nav-wrap">
+            <a href="index.html" class="brand" aria-label="Le Montadé — accueil"><img src="logo.jpg" alt="Le Montadé"></a>
+            <nav id="mainNav" aria-label="Navigation principale">
+                <ul>
+                    <li><a href="index.html#concept">Le concept</a></li>
+                    <li><a href="index.html#carte">La carte</a></li>
+                    <li><a href="index.html#horaires">Horaires</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <a href="index.html#reserver" class="btn btn-primary btn-sm">Réserver</a>
+            </nav>
+            <button id="burger" class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
         </div>
     </header>
 
-    <div class="legal-wrapper">
-        <div class="legal-content">
-            <h1 class="legal-title">Conditions Générales <span>d'Utilisation</span></h1>
-            
+    <main>
+        <section class="legal-hero"><h1>Conditions Générales <em>d'Utilisation</em></h1></section>
+        <div class="legal-wrap"><article class="legal-card">
+
             <p>Bienvenue sur le site web du restaurant <strong>Le Montadé</strong>. En naviguant sur ce site, vous acceptez sans réserve les présentes Conditions Générales d'Utilisation (CGU).</p>
 
-            <h3>1. Présentation du site</h3>
-            <p>Le site "Le Montadé" a pour objet de fournir des informations concernant les activités du restaurant, sa carte, ses horaires et de permettre des demandes de réservation en ligne. Le site est mis à jour régulièrement, mais des inexactitudes peuvent subsister.</p>
+            <h2>1. Présentation du site</h2>
+            <p>Le site « Le Montadé » a pour objet de fournir des informations concernant les activités du restaurant, sa carte, ses horaires et de permettre des demandes de réservation en ligne. Le site est mis à jour régulièrement, mais des inexactitudes peuvent subsister.</p>
 
-            <h3>2. Accès au site</h3>
+            <h2>2. Accès au site</h2>
             <p>L'accès au site est gratuit pour tout utilisateur disposant d'un accès à Internet. Tous les coûts afférents à l'accès au service (frais matériels, logiciels ou d'accès à Internet) sont exclusivement à la charge de l'utilisateur.</p>
             <p>L'éditeur met en œuvre tous les moyens raisonnables à sa disposition pour assurer un accès de qualité au site, mais n'est tenu à aucune obligation d'y parvenir. L'accès peut être interrompu ou suspendu temporairement pour des raisons de maintenance ou autre.</p>
 
-            <h3>3. Demandes de réservation</h3>
-            <p>Le formulaire de demande de réservation présent sur le site ne constitue pas une réservation ferme et définitive. La réservation n'est validée qu'après confirmation par téléphone ou par email de la part de l'équipe du Montadé.</p>
+            <h2>3. Réservations</h2>
+            <p>Le module de réservation en ligne présent sur le site est fourni par le service tiers <strong>Zenchef</strong>. Une réservation n'est considérée comme définitive qu'après sa confirmation, par le module de réservation, par téléphone ou par email, de la part de l'équipe du Montadé. Le restaurant se réserve le droit d'annuler ou de modifier une réservation en cas de circonstance exceptionnelle.</p>
 
-            <h3>4. Propriété intellectuelle</h3>
+            <h2>4. Propriété intellectuelle</h2>
             <p>Les marques, logos, signes ainsi que tous les contenus du site (textes, images, son) font l'objet d'une protection par le Code de la propriété intellectuelle. L'utilisateur doit solliciter l'autorisation préalable du site pour toute reproduction, publication ou copie des différents contenus.</p>
 
-            <h3>5. Responsabilité</h3>
+            <h2>5. Responsabilité</h2>
             <p>L'éditeur du site ne saurait être tenu pour responsable des dommages directs ou indirects causés au matériel de l'utilisateur lors de l'accès au site. De plus, Le Montadé décline toute responsabilité quant à l'utilisation qui pourrait être faite des informations et contenus présents sur ce site.</p>
             <p>Les prix indiqués sur la carte en ligne sont donnés à titre indicatif et sont susceptibles d'être modifiés sans préavis. Seuls les prix affichés sur place au restaurant font foi.</p>
 
-            <h3>6. Liens hypertextes</h3>
+            <h2>6. Liens hypertextes</h2>
             <p>Le site peut contenir des liens hypertextes vers d'autres sites web. L'éditeur du site Le Montadé n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu.</p>
 
-            <h3>7. Modification des CGU</h3>
+            <h2>7. Modification des CGU</h2>
             <p>Le Montadé se réserve le droit de modifier les clauses de ces CGU à tout moment et sans justification. L'utilisateur est invité à les consulter régulièrement.</p>
 
-            <h3>8. Droit applicable et juridiction compétente</h3>
+            <h2>8. Droit applicable et juridiction compétente</h2>
             <p>Le présent contrat est soumis à la législation française. En cas de litige non résolu à l'amiable, les tribunaux français seront seuls compétents pour en connaître.</p>
-        </div>
-    </div>
 
-    <footer>
-        <a href="index.html">
-            <img src="logo.jpg" alt="Logo Rond Footer" class="footer-round-logo">
-        </a>
-        
-        <div class="social-links">
-            <a href="https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/lemontade_lelieu/" target="_blank"><i class="fab fa-instagram"></i></a>
-        </div>
+        </article></div>
+    </main>
 
-        <div class="footer-separator"></div>
-
-        <div class="footer-bottom">
-            <p>© 2026 Le Montadé - Tous droits réservés.</p>
-            <p class="creator-credit">by <a href="https://www.instagram.com/uipact/" target="_blank">UIPACT</a></p>
-            <div class="legal-links">
-                <a href="cgu.html">CGU</a> | <a href="confidentialite.html">Politique de confidentialité</a> | <a href="mentions-legales.html">Mentions légales</a>
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="logo.jpg" alt="Le Montadé" id="secretLogo" draggable="false">
+                <p>Bar à vins, brasserie du midi et working café à Saint-Caprais-de-Bordeaux.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/lemontade_lelieu/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="index.html#concept">Le concept</a></li>
+                    <li><a href="index.html#carte">La carte</a></li>
+                    <li><a href="index.html#horaires">Horaires</a></li>
+                    <li><a href="index.html#reserver">Réserver</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</li>
+                    <li><a href="tel:+33556843159">05.56.84.31.59</a></li>
+                    <li><a href="mailto:lemontade.tierslieu@gmail.com">lemontade.tierslieu@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Le Montadé · Site by <a href="https://www.instagram.com/uipact/" target="_blank" rel="noopener">UIPACT</a></span>
+            <span class="legal-links"><a href="cgu.html">CGU</a><a href="confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a></span>
         </div>
     </footer>
 
-    <button id="backToTop" class="btn-top" onclick="scrollToTop()"><i class="fas fa-chevron-up"></i></button>
-
-    <script>
-        // Menu mobile
-        function toggleMenu() { 
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-
-        // Bouton Retour en haut
-        window.addEventListener('scroll', () => {
-            const btn = document.getElementById("backToTop");
-            if (window.scrollY > 300) {
-                btn.classList.add("show");
-            } else {
-                btn.classList.remove("show");
-            }
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
-            } else {
-                header.style.boxShadow = '0 2px 15px rgba(0,0,0,0.08)';
-            }
-        });
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-    </script>
-
+    <button id="backToTop" class="btn-top" type="button" aria-label="Retour en haut"><i class="fas fa-chevron-up"></i></button>
+    <script src="site.js"></script>
 </body>
 </html>
