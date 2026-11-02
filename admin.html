@@ -312,6 +312,14 @@
                 <div class="photo-count" id="photoCount"></div>
                 <div class="photo-grid" id="photoGrid"></div>
             </div>
+            <div class="card" style="padding:1.4rem;margin-top:1.2rem">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.4rem">
+                    <h3 style="font-family:var(--ff-title);color:var(--blue);font-size:1.25rem"><i class="fab fa-github"></i> Photos du dossier GitHub</h3>
+                    <button type="button" class="btn btn-soft btn-sm" id="ghRefresh"><i class="fas fa-rotate"></i> Actualiser</button>
+                </div>
+                <p class="hint">Photos déjà présentes dans le dossier <b>asset</b> de votre dépôt et pas encore utilisées. Choisissez où les placer.</p>
+                <div class="photo-grid" id="ghGrid"></div>
+            </div>
         </section>
     </div>
 
@@ -441,7 +449,7 @@
         clearTimeout(logoutTimer);
         if (unsub) { unsub(); unsub = null; }
         $('dashboard').hidden = true; $('loginScreen').hidden = false;
-        resetForm(); resetAvisForm();
+        resetForm(); resetAvisForm(); ghLoaded = false;
         if (message) showMsg($('loginMsg'), message, 'info');
     }
     $('logoutBtn').addEventListener('click', () => logout('Vous êtes déconnecté.'));
@@ -642,6 +650,7 @@
     document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
         Object.entries(VIEWS).forEach(([k, id]) => { $(id).hidden = k !== b.dataset.view; });
         document.querySelectorAll('[data-view]').forEach((x) => x.classList.toggle('active', x === b));
+        if (b.dataset.view === 'photos' && !ghLoaded) loadGithubPhotos();
         window.scrollTo(0, 0);
     }));
 
@@ -650,8 +659,43 @@
     const SLOT_LABELS = { galerie: 'Galerie', hero: 'Accueil (en-tête)', cafe: 'Working Café', midi: 'Brasserie du Midi', vin: 'Bar à Vin', footer: 'Pied de page' };
     const slotOptions = (cur) => Object.entries(SLOT_LABELS).map(([k, l]) => `<option value="${k}"${k === cur ? ' selected' : ''}>${esc(l)}</option>`).join('');
     const migrating = new Set();
+
+    /* Photos du dossier asset de GitHub */
+    const GH_REPO = 'LK10ar/montade', GH_BRANCH = 'main', GH_DIR = 'asset';
+    const GH_MANUAL = ['dedans.jpg', 'dehors.jpg']; // liste de secours si GitHub ne répond pas (dépôt privé)
+    let ghFiles = [], ghWarn = '', ghLoaded = false;
+    async function loadGithubPhotos() {
+        ghLoaded = true;
+        $('ghGrid').innerHTML = '<div class="empty" style="grid-column:1/-1">Chargement…</div>';
+        try {
+            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_DIR}?ref=${GH_BRANCH}`);
+            if (!r.ok) throw new Error(r.status === 404 ? 'dépôt introuvable ou privé' : 'erreur GitHub ' + r.status);
+            const list = await r.json();
+            ghFiles = list.filter((f) => f.type === 'file' && /\.(jpe?g|png|webp)$/i.test(f.name) && !/^logo\./i.test(f.name)).map((f) => f.name);
+            ghWarn = '';
+        } catch (e) { ghFiles = GH_MANUAL; ghWarn = e.message; }
+        renderGithub();
+    }
+    function renderGithub() {
+        const used = new Set(photos.map((p) => p.src));
+        const free = ghFiles.filter((n) => !used.has(GH_DIR + '/' + n));
+        const warn = ghWarn ? `<div class="hint" style="grid-column:1/-1">Lecture automatique impossible (${esc(ghWarn)}) : liste de secours affichée.</div>` : '';
+        $('ghGrid').innerHTML = warn + (free.length
+            ? free.map((n) => `<div class="photo-card"><div class="photo-item"><img src="${GH_DIR}/${esc(n)}" alt="${esc(n)}"></div>
+                <select data-ghpick="${esc(n)}" aria-label="Placer ${esc(n)}"><option value="">Placer dans…</option>${slotOptions('')}</select></div>`).join('')
+            : '<div class="empty" style="grid-column:1/-1"><i class="fas fa-check"></i>Toutes les photos du dossier sont déjà utilisées.</div>');
+    }
+    $('ghRefresh').addEventListener('click', loadGithubPhotos);
+    document.addEventListener('change', async (e) => {
+        const sel = e.target.closest('[data-ghpick]'); if (!sel || !sel.value) return;
+        const slot = sel.value; sel.disabled = true;
+        try { await api('/api/photos', { method: 'POST', body: { src: GH_DIR + '/' + sel.dataset.ghpick, emplacement: slot } }); toast('Photo placée : ' + SLOT_LABELS[slot], 'ok'); }
+        catch (err) { toast(err.message, 'err'); sel.value = ''; }
+        finally { sel.disabled = false; }
+    });
     function renderPhotos() {
-        $('photoCount').textContent = `${photos.length} / ${MAX_PHOTOS} photos`;
+        const nUp = photos.filter((p) => String(p.src).startsWith('data:')).length;
+        $('photoCount').textContent = `${photos.length} photo${photos.length > 1 ? 's' : ''} utilisée${photos.length > 1 ? 's' : ''} · ${nUp} / ${MAX_PHOTOS} envoyées depuis l'admin`;
         $('photoGrid').innerHTML = photos.length
             ? photos.map((p) => `<div class="photo-card"><div class="photo-item"><img src="${esc(p.src)}" alt=""><button type="button" class="btn btn-danger btn-sm" data-pdel="${esc(p.id)}" aria-label="Supprimer la photo"><i class="fas fa-trash"></i></button></div>
                 <select data-pslot="${esc(p.id)}" aria-label="Emplacement de la photo">${slotOptions(p.emplacement || 'galerie')}</select></div>`).join('')
@@ -661,6 +705,7 @@
             migrating.add(p.id);
             api('/api/photos/' + encodeURIComponent(p.id), { method: 'PUT', body: { emplacement: 'galerie' } }).catch(() => {});
         });
+        if (ghLoaded) renderGithub();
     }
     function loadImage(file) {
         return new Promise((resolve, reject) => {
@@ -698,7 +743,9 @@
     });
     document.addEventListener('click', async (e) => {
         const d = e.target.closest('[data-pdel]'); if (!d) return;
-        if (!confirm('Supprimer cette photo du site ?')) return;
+        const ph = photos.find((x) => x.id === d.dataset.pdel);
+        const isAsset = ph && !String(ph.src).startsWith('data:');
+        if (!confirm(isAsset ? 'Retirer cette photo du site ? (le fichier reste dans votre dossier GitHub)' : 'Supprimer cette photo du site ?')) return;
         d.disabled = true;
         try { await api('/api/photos/' + encodeURIComponent(d.dataset.pdel), { method: 'DELETE' }); toast('Photo supprimée', 'ok'); }
         catch (err) { toast(err.message, 'err'); d.disabled = false; }
