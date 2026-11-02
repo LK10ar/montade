@@ -9,9 +9,9 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Le Montadé — Bar à vins, brasserie du midi & working café">
     <meta property="og:description" content="Un lieu, trois ambiances : working café, cocotte du midi, bar à vins. Saint-Caprais-de-Bordeaux.">
-    <meta property="og:image" content="logo.jpg">
+    <meta property="og:image" content="asset/logo.jpg">
     <meta property="og:locale" content="fr_FR">
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="asset/logo.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@
         "@type": "Restaurant",
         "name": "Le Montadé",
         "description": "Bar à vins, brasserie du midi et working café.",
-        "image": "logo.jpg",
+        "image": "asset/logo.jpg",
         "telephone": "+33556843159",
         "email": "lemontade.tierslieu@gmail.com",
         "address": {
@@ -41,25 +41,23 @@
             "https://www.instagram.com/lemontade_lelieu/"
         ],
         "openingHoursSpecification": [
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "12:00", "closes": "18:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "08:30", "closes": "18:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "12:00", "closes": "14:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "17:30", "closes": "23:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "08:30", "closes": "15:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "08:30", "closes": "15:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "11:00", "closes": "15:00" },
             { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "08:30", "closes": "23:00" },
             { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:30", "closes": "23:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "17:30", "closes": "23:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "13:00" }
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "18:00", "closes": "23:00" }
         ]
     }
     </script>
 
     <style>
-        /* ===== Photos (remplace ces adresses par tes propres photos, ex: url('images/salle.jpg')) ===== */
+        /* ===== Photos : dossier asset/ de ton dépôt GitHub ===== */
         :root {
-            --photo-hero: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');
-            --photo-cafe: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80');
-            --photo-midi: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80');
-            --photo-vin: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=80');
+            --photo-hero: url('asset/dehors.jpg');
+            --photo-cafe: url('asset/dedans.jpg');
+            --photo-midi: url('asset/midi.jpg');
+            --photo-vin: url('asset/vin.jpg');
         }
 
         /* ===== HERO ===== */
@@ -96,8 +94,8 @@
         .concept-photo { height: 210px; background: linear-gradient(135deg, var(--blue), var(--blue-mid)) center / cover no-repeat; position: relative; }
         .concept-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(23, 35, 63, .55)); }
         .concept-card:nth-child(1) .concept-photo { background-image: var(--photo-cafe); }
-        .concept-card:nth-child(2) .concept-photo { background-image: var(--photo-midi); }
-        .concept-card:nth-child(3) .concept-photo { background-image: var(--photo-vin); }
+        .concept-card:nth-child(2) .concept-photo { background-image: var(--photo-midi), linear-gradient(135deg, var(--blue), var(--blue-mid)); }
+        .concept-card:nth-child(3) .concept-photo { background-image: var(--photo-vin), linear-gradient(135deg, var(--blue), var(--blue-mid)); }
         .concept-tag { position: absolute; left: 1.2rem; bottom: 1rem; z-index: 1; background: var(--yellow); color: var(--blue-dark); font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: .35rem .8rem; border-radius: 999px; }
         .concept-body { padding: 1.6rem 1.7rem 2rem; }
         .concept-body h3 { font-size: 1.55rem; color: var(--blue); margin-bottom: .6rem; }
@@ -191,6 +189,27 @@
             .mobile-cta .btn { flex: 1; padding: .85rem .5rem; }
             .btn-top { bottom: calc(86px + env(safe-area-inset-bottom)); }
         }
+    
+        /* ===== Galerie ===== */
+        .galerie[hidden] { display: none; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .gallery-grid figure { border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--cream-2); box-shadow: 0 10px 30px rgba(23, 35, 63, .1); }
+        .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+        .gallery-grid figure:hover img { transform: scale(1.05); }
+
+        /* ===== Avis Google ===== */
+        .avis { background: #fff; }
+        .rating-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 2rem; margin: 0 auto 2.5rem; }
+        .rating-score { font-family: var(--ff-title); font-size: clamp(3.4rem, 8vw, 5rem); font-weight: 700; color: var(--blue); line-height: 1; }
+        .stars { color: #e0a800; font-size: 1.5rem; letter-spacing: .15em; }
+        .rating-count { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
+        .review-card { background: var(--cream); border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem; display: flex; flex-direction: column; gap: .9rem; }
+        .review-card .stars { font-size: 1.05rem; }
+        .review-card blockquote { color: var(--ink); font-size: .95rem; }
+        .review-card footer { margin-top: auto; display: flex; align-items: center; gap: .7rem; font-size: .85rem; color: var(--muted); }
+        .review-card .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-weight: 700; }
+        .review-card strong { display: block; color: var(--ink); }
     </style>
 </head>
 <body class="home">
@@ -198,7 +217,7 @@
 
     <header class="site-header">
         <div class="nav-wrap">
-            <a href="#top" class="brand" aria-label="Le Montadé — haut de page"><img src="logo.jpg" alt="Le Montadé"></a>
+            <a href="#top" class="brand" aria-label="Le Montadé — haut de page"><img src="asset/logo.jpg" alt="Le Montadé"></a>
             <nav id="mainNav" aria-label="Navigation principale">
                 <ul>
                     <li><a href="#concept">Le concept</a></li>
@@ -259,9 +278,20 @@
                     </article>
                     <article class="concept-card reveal d2">
                         <div class="concept-photo"><span class="concept-tag">Le soir</span></div>
-                        <div class="concept-body"><h3>Bar à Vin</h3><p>Dès le mercredi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
+                        <div class="concept-body"><h3>Bar à Vin</h3><p>Dès le jeudi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
                     </article>
                 </div>
+            </div>
+        </section>
+
+        <!-- ================= GALERIE ================= -->
+        <section id="galerie" class="section galerie" hidden>
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">En images</span>
+                    <h2 class="title">Le Montadé <em>en photos</em></h2>
+                </div>
+                <div class="gallery-grid" id="galleryGrid"></div>
             </div>
         </section>
 
@@ -281,6 +311,25 @@
             </div>
         </section>
 
+        <!-- ================= AVIS GOOGLE ================= -->
+        <section id="avis" class="section avis">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Avis</span>
+                    <h2 class="title">Ils en <em>parlent</em></h2>
+                </div>
+                <div class="rating-box reveal">
+                    <div class="rating-score">4,9</div>
+                    <div>
+                        <div class="stars" aria-label="Note de 4,9 sur 5">★★★★★</div>
+                        <p class="rating-count">54 avis Google</p>
+                    </div>
+                    <a class="btn btn-dark btn-sm" href="https://www.google.com/maps/search/?api=1&query=Le+Montad%C3%A9+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener"><i class="fab fa-google"></i> Voir tous les avis</a>
+                </div>
+                <div class="reviews-grid" id="reviewsGrid"></div>
+            </div>
+        </section>
+
         <!-- ================= HORAIRES ================= -->
         <section id="horaires" class="section">
             <div class="container split">
@@ -295,13 +344,13 @@
                     </div>
                 </div>
                 <ul class="hours-card reveal d1" id="hoursList">
-                    <li data-dow="1"><span class="d">Lundi</span><span class="h">12h – 18h</span><span class="a">Brasserie du midi & Working café</span></li>
-                    <li data-dow="2"><span class="d">Mardi</span><span class="h">8h30 – 18h</span><span class="a">Brasserie du midi & Working café</span></li>
-                    <li data-dow="3"><span class="d">Mercredi</span><span class="h">12h – 14h & 17h30 – 23h</span><span class="a">Brasserie du midi & Bar à vins</span></li>
+                    <li data-dow="1"><span class="d">Lundi</span><span class="h">8h30 – 15h</span><span class="a">Brasserie du midi & Working café</span></li>
+                    <li data-dow="2"><span class="d">Mardi</span><span class="h">8h30 – 15h</span><span class="a">Brasserie du midi & Working café</span></li>
+                    <li data-dow="3"><span class="d">Mercredi</span><span class="h">11h – 15h</span><span class="a">Brasserie du midi</span></li>
                     <li data-dow="4"><span class="d">Jeudi</span><span class="h">8h30 – 23h</span><span class="a">Brasserie, Working café & Bar à vins</span></li>
                     <li data-dow="5"><span class="d">Vendredi</span><span class="h">8h30 – 23h</span><span class="a">Brasserie, Working café & Bar à vins</span></li>
-                    <li data-dow="6"><span class="d">Samedi</span><span class="h">17h30 – 23h</span><span class="a">Bar à vins exclusivement</span></li>
-                    <li data-dow="0"><span class="d">Dimanche</span><span class="h">10h – 13h</span><span class="a">Working café (matinée douce)</span></li>
+                    <li data-dow="6"><span class="d">Samedi</span><span class="h">18h – 23h</span><span class="a">Bar à vins</span></li>
+                    <li data-dow="0"><span class="d">Dimanche</span><span class="h">Fermé</span></li>
                 </ul>
             </div>
         </section>
@@ -345,7 +394,7 @@
     <footer class="site-footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <img src="logo.jpg" alt="Le Montadé" id="secretLogo" draggable="false">
+                <img src="asset/logo.jpg" alt="Le Montadé" id="secretLogo" draggable="false">
                 <p>Bar à vins, brasserie du midi et working café à Saint-Caprais-de-Bordeaux.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -385,17 +434,61 @@
 
     <script src="site.js"></script>
 
+    <!-- ===== Avis Google + galerie photos ===== -->
+    <script>
+    (() => {
+        /* ---- AVIS : ajoute les tiens ici (un bloc { ... } par avis, séparés par une virgule) ---- */
+        const REVIEWS = [
+            { nom: 'Olena P.', texte: 'Une excellente adresse ! Les planches sont généreuses, composées de produits de grande qualité, et parfaitement présentées.', date: 'Août 2026' }
+            // { nom: 'Prénom N.', texte: 'Le texte de l\'avis…', date: 'Mois année' },
+        ];
+        const grid = document.getElementById('reviewsGrid');
+        REVIEWS.forEach((r) => {
+            const card = document.createElement('article');
+            card.className = 'review-card reveal in';
+            const st = document.createElement('div'); st.className = 'stars'; st.textContent = '★★★★★';
+            const q = document.createElement('blockquote'); q.textContent = '« ' + r.texte + ' »';
+            const f = document.createElement('footer');
+            const av = document.createElement('span'); av.className = 'avatar'; av.textContent = r.nom.charAt(0).toUpperCase();
+            const w = document.createElement('div'); const n = document.createElement('strong'); n.textContent = r.nom;
+            w.append(n, document.createTextNode(r.date + ' · Avis Google'));
+            f.append(av, w);
+            card.append(st, q, f);
+            grid.append(card);
+        });
+
+        /* ---- GALERIE : liste les fichiers de asset/ à afficher. Les fichiers absents sont ignorés. ---- */
+        const PHOTOS = ['dedans.jpg', 'dehors.jpg', 'galerie-1.jpg', 'galerie-2.jpg', 'galerie-3.jpg', 'galerie-4.jpg'];
+        const gg = document.getElementById('galleryGrid');
+        const sec = document.getElementById('galerie');
+        PHOTOS.forEach((file, i) => {
+            const img = new Image();
+            img.alt = 'Photo du Montadé';
+            img.loading = 'lazy';
+            img.onload = () => {
+                const fig = document.createElement('figure');
+                fig.dataset.n = i;
+                fig.append(img);
+                const before = [...gg.children].find((c) => Number(c.dataset.n) > i);
+                gg.insertBefore(fig, before || null);
+                sec.hidden = false;
+            };
+            img.src = 'asset/' + file;
+        });
+    })();
+    </script>
+
     <!-- ===== Horaires : statut « ouvert / fermé » en temps réel (heure de Paris) ===== -->
     <script>
     (() => {
         const SCHEDULE = {
-            1: [['12:00', '18:00']],
-            2: [['08:30', '18:00']],
-            3: [['12:00', '14:00'], ['17:30', '23:00']],
+            1: [['08:30', '15:00']],
+            2: [['08:30', '15:00']],
+            3: [['11:00', '15:00']],
             4: [['08:30', '23:00']],
             5: [['08:30', '23:00']],
-            6: [['17:30', '23:00']],
-            0: [['10:00', '13:00']]
+            6: [['18:00', '23:00']],
+            0: []
         };
         const DAY_NAMES = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
         const toMin = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
