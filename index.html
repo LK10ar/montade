@@ -60,6 +60,9 @@
             --photo-vin: url('asset/vin.jpg');
         }
 
+        /* ===== Pied de page avec photo (choisie dans l'admin) ===== */
+        footer.site-footer.has-photo { background: linear-gradient(rgba(23, 35, 63, .9), rgba(23, 35, 63, .94)), var(--photo-footer) center / cover no-repeat; }
+
         /* ===== HERO ===== */
         .hero { position: relative; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; text-align: center; color: #fff; padding: calc(var(--header-h) + 2rem) 1.25rem 8rem; isolation: isolate; background: var(--blue-dark); overflow: hidden; }
         .hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--photo-hero) center / cover no-repeat; animation: slowZoom 24s ease-in-out infinite alternate; }
@@ -203,8 +206,16 @@
         .rating-score { font-family: var(--ff-title); font-size: clamp(3.4rem, 8vw, 5rem); font-weight: 700; color: var(--blue); line-height: 1; }
         .stars { color: #e0a800; font-size: 1.5rem; letter-spacing: .15em; }
         .rating-count { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
-        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
-        .review-card { background: var(--cream); border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem; display: flex; flex-direction: column; gap: .9rem; }
+        .carousel { position: relative; }
+        .car-track { display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: .5rem .25rem 1rem; -webkit-overflow-scrolling: touch; }
+        .car-track::-webkit-scrollbar { display: none; }
+        .car-track:focus-visible { outline-offset: 0; }
+        .car-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; box-shadow: 0 8px 22px rgba(23, 35, 63, .25); transition: background .2s, transform .2s; }
+        .car-btn:hover { background: var(--blue-dark); transform: translateY(-50%) scale(1.06); }
+        .car-btn.prev { left: -14px; }
+        .car-btn.next { right: -14px; }
+        @media (max-width: 700px) { .car-btn { display: none; } }
+        .review-card { flex: 0 0 min(370px, 86%); scroll-snap-align: start; background: var(--cream); border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem; display: flex; flex-direction: column; gap: .9rem; }
         .review-card .stars { font-size: 1.05rem; }
         .review-card blockquote { color: var(--ink); font-size: .95rem; }
         .review-card footer { margin-top: auto; display: flex; align-items: center; gap: .7rem; font-size: .85rem; color: var(--muted); }
@@ -326,7 +337,11 @@
                     </div>
                     <a class="btn btn-dark btn-sm" href="https://www.google.com/maps/search/?api=1&query=Le+Montad%C3%A9+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener"><i class="fab fa-google"></i> Voir tous les avis</a>
                 </div>
-                <div class="reviews-grid" id="reviewsGrid"></div>
+                <div class="carousel reveal" role="region" aria-roledescription="carrousel" aria-label="Avis des clients">
+                    <button class="car-btn prev" id="revPrev" type="button" aria-label="Avis précédent"><i class="fas fa-chevron-left"></i></button>
+                    <div class="car-track" id="reviewsTrack" tabindex="0"></div>
+                    <button class="car-btn next" id="revNext" type="button" aria-label="Avis suivant"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
         </section>
 
@@ -434,47 +449,77 @@
 
     <script src="site.js"></script>
 
-    <!-- ===== Avis Google + galerie photos ===== -->
+    <!-- ===== Avis Google (carrousel) + galerie photos : alimentés depuis l'admin ===== -->
     <script>
     (() => {
-        /* ---- AVIS : ajoute les tiens ici (un bloc { ... } par avis, séparés par une virgule) ---- */
-        const REVIEWS = [
-            { nom: 'Olena P.', texte: 'Une excellente adresse ! Les planches sont généreuses, composées de produits de grande qualité, et parfaitement présentées.', date: 'Août 2026' }
-            // { nom: 'Prénom N.', texte: 'Le texte de l\'avis…', date: 'Mois année' },
+        /* Affichés seulement tant que l'admin n'a encore ajouté ni avis ni photos */
+        const FALLBACK_REVIEWS = [
+            { nom: 'Olena P.', texte: 'Une excellente adresse ! Les planches sont généreuses, composées de produits de grande qualité, et parfaitement présentées.', date: 'Août 2026', note: 5 }
         ];
-        const grid = document.getElementById('reviewsGrid');
-        REVIEWS.forEach((r) => {
-            const card = document.createElement('article');
-            card.className = 'review-card reveal in';
-            const st = document.createElement('div'); st.className = 'stars'; st.textContent = '★★★★★';
-            const q = document.createElement('blockquote'); q.textContent = '« ' + r.texte + ' »';
-            const f = document.createElement('footer');
-            const av = document.createElement('span'); av.className = 'avatar'; av.textContent = r.nom.charAt(0).toUpperCase();
-            const w = document.createElement('div'); const n = document.createElement('strong'); n.textContent = r.nom;
-            w.append(n, document.createTextNode(r.date + ' · Avis Google'));
-            f.append(av, w);
-            card.append(st, q, f);
-            grid.append(card);
-        });
+        const FALLBACK_PHOTOS = ['asset/dedans.jpg', 'asset/dehors.jpg'];
 
-        /* ---- GALERIE : liste les fichiers de asset/ à afficher. Les fichiers absents sont ignorés. ---- */
-        const PHOTOS = ['dedans.jpg', 'dehors.jpg', 'galerie-1.jpg', 'galerie-2.jpg', 'galerie-3.jpg', 'galerie-4.jpg'];
+        const car = document.querySelector('.carousel');
+        const track = document.getElementById('reviewsTrack');
         const gg = document.getElementById('galleryGrid');
         const sec = document.getElementById('galerie');
-        PHOTOS.forEach((file, i) => {
-            const img = new Image();
-            img.alt = 'Photo du Montadé';
-            img.loading = 'lazy';
-            img.onload = () => {
+        let revDone = false, galDone = false;
+
+        window.renderReviews = (list) => {
+            revDone = true;
+            const items = list && list.length ? list : FALLBACK_REVIEWS;
+            track.textContent = '';
+            items.forEach((r) => {
+                const note = Math.min(5, Math.max(1, Number(r.note) || 5));
+                const card = document.createElement('article');
+                card.className = 'review-card';
+                const st = document.createElement('div'); st.className = 'stars'; st.textContent = '★'.repeat(note) + '☆'.repeat(5 - note);
+                st.setAttribute('aria-label', 'Note de ' + note + ' sur 5');
+                const q = document.createElement('blockquote'); q.textContent = '« ' + r.texte + ' »';
+                const f = document.createElement('footer');
+                const av = document.createElement('span'); av.className = 'avatar'; av.textContent = String(r.nom || '?').charAt(0).toUpperCase();
+                const w = document.createElement('div'); const n = document.createElement('strong'); n.textContent = r.nom;
+                w.append(n, document.createTextNode((r.date ? r.date + ' · ' : '') + 'Avis Google'));
+                f.append(av, w);
+                card.append(st, q, f);
+                track.append(card);
+            });
+            track.scrollLeft = 0;
+        };
+
+        window.renderGallery = (list) => {
+            galDone = true;
+            const srcs = list && list.length ? list.map((p) => p.src) : FALLBACK_PHOTOS;
+            gg.textContent = '';
+            sec.hidden = true;
+            srcs.forEach((src) => {
                 const fig = document.createElement('figure');
-                fig.dataset.n = i;
+                const img = new Image();
+                img.alt = 'Photo du Montadé';
+                img.onload = () => { sec.hidden = false; };
+                img.onerror = () => fig.remove();
+                img.src = src;
                 fig.append(img);
-                const before = [...gg.children].find((c) => Number(c.dataset.n) > i);
-                gg.insertBefore(fig, before || null);
-                sec.hidden = false;
-            };
-            img.src = 'asset/' + file;
-        });
+                gg.append(fig);
+            });
+        };
+
+        /* Si Firebase ne répond pas, on affiche quand même le contenu de secours */
+        setTimeout(() => { if (!revDone) window.renderReviews(null); if (!galDone) window.renderGallery(null); }, 8000);
+
+        /* Carrousel : boutons, défilement automatique (en pause au survol / au toucher) */
+        const step = () => { const c = track.querySelector('.review-card'); return c ? c.getBoundingClientRect().width + 20 : 300; };
+        const nextSlide = () => {
+            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 8) track.scrollTo({ left: 0, behavior: 'smooth' });
+            else track.scrollBy({ left: step(), behavior: 'smooth' });
+        };
+        document.getElementById('revPrev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        document.getElementById('revNext').addEventListener('click', nextSlide);
+        let paused = false;
+        ['mouseenter', 'focusin', 'touchstart'].forEach((ev) => car.addEventListener(ev, () => { paused = true; }));
+        ['mouseleave', 'focusout', 'touchend'].forEach((ev) => car.addEventListener(ev, () => { paused = false; }));
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setInterval(() => { if (!paused && !document.hidden) nextSlide(); }, 5500);
+        }
     })();
     </script>
 
@@ -533,7 +578,7 @@
     <!-- ===== La carte : lecture en direct depuis Firebase Firestore ===== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
@@ -644,6 +689,38 @@
             tabsEl.innerHTML = '';
             panelEl.innerHTML = '<div class="carte-state"><i class="fas fa-triangle-exclamation"></i>Impossible d\'afficher la carte pour le moment. Appelez-nous au 05.56.84.31.59.</div>';
         });
+
+        /* Avis et photos gérés depuis l'admin */
+        onSnapshot(query(collection(db, 'avis'), orderBy('dateAjout', 'desc')),
+            (snap) => window.renderReviews(snap.docs.map((d) => d.data())),
+            (err) => { console.warn('Avis indisponibles :', err); window.renderReviews(null); });
+        /* Photos placées dans l'en-tête, les 3 ambiances et le pied de page (choisies depuis l'admin) */
+        const ts = (d) => (d && d.toMillis ? d.toMillis() : 0);
+        const SLOT_VARS = { hero: '--photo-hero', cafe: '--photo-cafe', midi: '--photo-midi', vin: '--photo-vin' };
+        onSnapshot(query(collection(db, 'photos'), where('emplacement', 'in', ['hero', 'cafe', 'midi', 'vin', 'footer'])), (snap) => {
+            const best = {};
+            snap.docs.forEach((d) => {
+                const p = d.data();
+                if (!best[p.emplacement] || ts(p.dateAffectation) > ts(best[p.emplacement].dateAffectation)) best[p.emplacement] = p;
+            });
+            Object.entries(SLOT_VARS).forEach(([slot, cssVar]) => {
+                if (best[slot]) document.documentElement.style.setProperty(cssVar, `url("${best[slot].src}")`);
+                else document.documentElement.style.removeProperty(cssVar);
+            });
+            const foot = document.querySelector('footer.site-footer');
+            if (best.footer) { foot.style.setProperty('--photo-footer', `url("${best.footer.src}")`); foot.classList.add('has-photo'); }
+            else { foot.style.removeProperty('--photo-footer'); foot.classList.remove('has-photo'); }
+        }, (err) => console.warn('Photos des emplacements indisponibles :', err));
+
+        /* Galerie : chargée après l'affichage de la page pour ne pas ralentir le début */
+        const loadGallery = async () => {
+            try {
+                const snap = await getDocs(query(collection(db, 'photos'), where('emplacement', '==', 'galerie')));
+                window.renderGallery(snap.docs.map((d) => d.data()).sort((a, b) => ts(a.dateAjout) - ts(b.dateAjout)));
+            } catch (err) { console.warn('Galerie indisponible :', err); window.renderGallery(null); }
+        };
+        if (document.readyState === 'complete') setTimeout(loadGallery, 300);
+        else window.addEventListener('load', () => setTimeout(loadGallery, 300));
     </script>
 </body>
 </html>
