@@ -54,7 +54,7 @@
     </script>
 
     <style>
-        /* ===== Photos ===== */
+        /* ===== Photos : valeurs par défaut, remplacées par celles choisies dans l'admin ===== */
         :root {
             --photo-hero: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');
             --photo-cafe: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80');
@@ -217,6 +217,16 @@
             .mobile-cta .btn { flex: 1; padding: .85rem .5rem; }
             .btn-top { bottom: calc(86px + env(safe-area-inset-bottom)); }
         }
+    
+        /* ===== Pied de page avec photo (choisie dans l'admin) ===== */
+        footer.site-footer.has-photo { background: linear-gradient(rgba(23, 35, 63, .9), rgba(23, 35, 63, .94)), var(--photo-footer) center / cover no-repeat; }
+
+        /* ===== Galerie ===== */
+        .galerie[hidden] { display: none; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .gallery-grid figure { border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--cream-2); box-shadow: 0 10px 30px rgba(23, 35, 63, .1); }
+        .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+        .gallery-grid figure:hover img { transform: scale(1.05); }
     </style>
 </head>
 <body class="home">
@@ -289,6 +299,17 @@
                         <div class="concept-body"><h3>Bar à Vin</h3><p>Dès le mercredi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
                     </article>
                 </div>
+            </div>
+        </section>
+
+        <!-- ================= GALERIE ================= -->
+        <section id="galerie" class="section galerie" hidden>
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">En images</span>
+                    <h2 class="title">Le Montadé <em>en photos</em></h2>
+                </div>
+                <div class="gallery-grid" id="galleryGrid"></div>
             </div>
         </section>
 
@@ -545,9 +566,30 @@
     </script>
 
     <!-- ===== La carte : lecture en direct depuis Firebase Firestore ===== -->
+    <script>
+    (() => {
+        const gg = document.getElementById('galleryGrid');
+        const sec = document.getElementById('galerie');
+        window.renderGallery = (list) => {
+            gg.textContent = '';
+            sec.hidden = true;
+            (list || []).forEach((p) => {
+                const fig = document.createElement('figure');
+                const img = new Image();
+                img.alt = 'Photo du Montadé';
+                img.onload = () => { sec.hidden = false; };
+                img.onerror = () => fig.remove();
+                img.src = p.src;
+                fig.append(img);
+                gg.append(fig);
+            });
+        };
+    })();
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, onSnapshot, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
@@ -664,6 +706,34 @@
             tabsEl.innerHTML = '';
             panelEl.innerHTML = '<div class="carte-state"><i class="fas fa-triangle-exclamation"></i>Impossible d\'afficher la carte pour le moment. Appelez-nous au 05.56.84.31.59.</div>';
         });
+
+        /* Photos placées dans l'en-tête, les 3 ambiances et le pied de page (choisies depuis l'admin) */
+        const ts = (d) => (d && d.toMillis ? d.toMillis() : 0);
+        const SLOT_VARS = { hero: '--photo-hero', cafe: '--photo-cafe', midi: '--photo-midi', vin: '--photo-vin' };
+        onSnapshot(query(collection(db, 'photos'), where('emplacement', 'in', ['hero', 'cafe', 'midi', 'vin', 'footer'])), (snap) => {
+            const best = {};
+            snap.docs.forEach((d) => {
+                const p = d.data();
+                if (!best[p.emplacement] || ts(p.dateAffectation) > ts(best[p.emplacement].dateAffectation)) best[p.emplacement] = p;
+            });
+            Object.entries(SLOT_VARS).forEach(([slot, cssVar]) => {
+                if (best[slot]) document.documentElement.style.setProperty(cssVar, `url("${best[slot].src}")`);
+                else document.documentElement.style.removeProperty(cssVar);
+            });
+            const foot = document.querySelector('footer.site-footer');
+            if (best.footer) { foot.style.setProperty('--photo-footer', `url("${best.footer.src}")`); foot.classList.add('has-photo'); }
+            else { foot.style.removeProperty('--photo-footer'); foot.classList.remove('has-photo'); }
+        }, (err) => console.warn('Photos des emplacements indisponibles :', err));
+
+        /* Galerie : chargée après l'affichage de la page pour ne pas ralentir le début */
+        const loadGallery = async () => {
+            try {
+                const snap = await getDocs(query(collection(db, 'photos'), where('emplacement', '==', 'galerie')));
+                window.renderGallery(snap.docs.map((d) => d.data()).sort((a, b) => ts(a.dateAjout) - ts(b.dateAjout)));
+            } catch (err) { console.warn('Galerie indisponible :', err); window.renderGallery([]); }
+        };
+        if (document.readyState === 'complete') setTimeout(loadGallery, 300);
+        else window.addEventListener('load', () => setTimeout(loadGallery, 300));
     </script>
 </body>
 </html>
