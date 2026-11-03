@@ -27,6 +27,7 @@ body { font-family: var(--ff-body); color: var(--ink); background: var(--cream);
 body.no-scroll { overflow: hidden; }
 main { flex: 1; }
 img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
 a { color: inherit; }
 h1, h2, h3, h4 { font-family: var(--ff-title); line-height: 1.15; font-weight: 700; }
 :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 6px; }
