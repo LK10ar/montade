@@ -204,7 +204,6 @@
     <nav class="sections" aria-label="Sections">
         <button type="button" class="ftab active" data-view="carte"><i class="fas fa-utensils"></i> Carte</button>
         <button type="button" class="ftab" data-view="photos"><i class="fas fa-images"></i> Photos</button>
-        <button type="button" class="ftab" data-view="avis"><i class="fas fa-star"></i> Avis</button>
     </nav>
 
     <div class="dash" id="viewCarte">
@@ -323,30 +322,6 @@
         </section>
     </div>
 
-    <!-- ===== AVIS ===== -->
-    <div class="dash" id="viewAvis" hidden>
-        <aside>
-            <form class="card side-card" id="avisForm" novalidate>
-                <h2 id="avisFormTitle"><i class="fas fa-plus-circle"></i> Ajouter un avis</h2>
-                <p class="hint">Copiez l'avis depuis votre fiche Google (Google Maps → Avis), puis collez-le ici.</p>
-                <div class="field"><label for="avNom">Prénom (et initiale)</label><input type="text" id="avNom" maxlength="60" placeholder="Ex : Olena P."></div>
-                <div class="row2">
-                    <div class="field"><label for="avNote">Note</label>
-                        <select id="avNote"><option value="5">5 étoiles</option><option value="4">4 étoiles</option><option value="3">3 étoiles</option><option value="2">2 étoiles</option><option value="1">1 étoile</option></select></div>
-                    <div class="field"><label for="avDate">Date</label><input type="text" id="avDate" maxlength="30" placeholder="Ex : Octobre 2026"></div>
-                </div>
-                <div class="field"><label for="avTexte">Texte de l'avis</label><textarea id="avTexte" maxlength="700"></textarea></div>
-                <div class="form-msg" id="avisMsg" role="alert"></div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" id="avisSave" type="submit"><i class="fas fa-check"></i> <span id="avisSaveLabel">Ajouter l'avis</span></button>
-                    <button class="btn btn-ghost" id="avisCancel" type="button" hidden>Annuler</button>
-                </div>
-            </form>
-        </aside>
-        <section>
-            <div id="avisList"></div>
-        </section>
-    </div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
@@ -376,7 +351,7 @@
 
     /* ===== Session (jeton signé par le serveur, valable 2 h, effacé à la fermeture de l'onglet) ===== */
     const TOKEN_KEY = 'montade_admin_token';
-    let photos = [], avisList = [], editingAvis = null;
+    let photos = [];
     let token = null, tokenExp = 0, unsub = null, plats = [], filter = 'all', editingId = null, logoutTimer;
 
     function readStoredToken() {
@@ -449,7 +424,7 @@
         clearTimeout(logoutTimer);
         if (unsub) { unsub(); unsub = null; }
         $('dashboard').hidden = true; $('loginScreen').hidden = false;
-        resetForm(); resetAvisForm(); ghLoaded = false;
+        resetForm(); ghLoaded = false;
         if (message) showMsg($('loginMsg'), message, 'info');
     }
     $('logoutBtn').addEventListener('click', () => logout('Vous êtes déconnecté.'));
@@ -472,10 +447,7 @@
         const u2 = onSnapshot(query(collection(db, 'photos'), orderBy('dateAjout', 'asc')),
             (snap) => { photos = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderPhotos(); },
             (err) => console.error('Photos :', err));
-        const u3 = onSnapshot(query(collection(db, 'avis'), orderBy('dateAjout', 'desc')),
-            (snap) => { avisList = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderAvis(); },
-            (err) => console.error('Avis :', err));
-        unsub = () => { u1(); u2(); u3(); };
+        unsub = () => { u1(); u2(); };
     }
 
     function summary(p) {
@@ -645,8 +617,8 @@
         finally { btn.disabled = false; }
     });
 
-    /* ===== Sections Carte / Photos / Avis ===== */
-    const VIEWS = { carte: 'viewCarte', photos: 'viewPhotos', avis: 'viewAvis' };
+    /* ===== Sections Carte / Photos ===== */
+    const VIEWS = { carte: 'viewCarte', photos: 'viewPhotos' };
     document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
         Object.entries(VIEWS).forEach(([k, id]) => { $(id).hidden = k !== b.dataset.view; });
         document.querySelectorAll('[data-view]').forEach((x) => x.classList.toggle('active', x === b));
@@ -757,54 +729,6 @@
         try { await api('/api/photos/' + encodeURIComponent(sel.dataset.pslot), { method: 'PUT', body: { emplacement: sel.value } }); toast('Photo déplacée : ' + SLOT_LABELS[sel.value], 'ok'); }
         catch (err) { toast(err.message, 'err'); renderPhotos(); }
         finally { sel.disabled = false; }
-    });
-
-    /* ===== Avis ===== */
-    const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
-    function renderAvis() {
-        $('avisList').innerHTML = avisList.length ? avisList.map((a) => `<div class="card plat">
-            <div class="plat-info"><strong>${esc(a.nom)} <span class="avis-stars">${stars(Math.min(5, Math.max(1, a.note || 5)))}</span>${a.date ? `<span class="badge">${esc(a.date)}</span>` : ''}</strong><span>${esc(a.texte)}</span></div>
-            <div class="plat-actions"><button class="btn btn-soft btn-sm" data-aedit="${esc(a.id)}"><i class="fas fa-pen"></i> Modifier</button>
-            <button class="btn btn-danger btn-sm" data-adel="${esc(a.id)}"><i class="fas fa-trash"></i> Supprimer</button></div></div>`).join('')
-            : '<div class="card empty"><i class="fas fa-star"></i>Aucun avis ajouté. Tant qu\'il n\'y en a pas, le site affiche un seul avis par défaut.</div>';
-    }
-    function resetAvisForm() {
-        editingAvis = null; $('avisForm').reset(); hideMsg($('avisMsg'));
-        $('avisFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Ajouter un avis';
-        $('avisSaveLabel').textContent = 'Ajouter l\'avis'; $('avisCancel').hidden = true;
-    }
-    $('avisCancel').addEventListener('click', resetAvisForm);
-    $('avisForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const msg = $('avisMsg'), btn = $('avisSave');
-        const body = { nom: $('avNom').value.trim(), texte: $('avTexte').value.trim(), date: $('avDate').value.trim(), note: Number($('avNote').value) };
-        if (!body.nom || !body.texte) return showMsg(msg, 'Le prénom et le texte sont obligatoires.');
-        btn.disabled = true; hideMsg(msg);
-        try {
-            const wasEdit = !!editingAvis;
-            if (wasEdit) await api('/api/avis/' + encodeURIComponent(editingAvis), { method: 'PUT', body });
-            else await api('/api/avis', { method: 'POST', body });
-            toast(wasEdit ? 'Avis modifié' : 'Avis ajouté', 'ok'); resetAvisForm();
-        } catch (err) { showMsg(msg, err.message); }
-        finally { btn.disabled = false; }
-    });
-    document.addEventListener('click', async (e) => {
-        const ed = e.target.closest('[data-aedit]');
-        if (ed) {
-            const a = avisList.find((x) => x.id === ed.dataset.aedit); if (!a) return;
-            editingAvis = a.id; $('avNom').value = a.nom || ''; $('avTexte').value = a.texte || ''; $('avDate').value = a.date || ''; $('avNote').value = String(a.note || 5);
-            $('avisFormTitle').innerHTML = '<i class="fas fa-pen"></i> Modifier l\'avis'; $('avisSaveLabel').textContent = 'Enregistrer'; $('avisCancel').hidden = false;
-            $('avisForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            return;
-        }
-        const del = e.target.closest('[data-adel]');
-        if (del) {
-            const a = avisList.find((x) => x.id === del.dataset.adel);
-            if (!a || !confirm(`Supprimer l'avis de « ${a.nom} » ?`)) return;
-            del.disabled = true;
-            try { await api('/api/avis/' + encodeURIComponent(a.id), { method: 'DELETE' }); toast('Avis supprimé', 'ok'); if (editingAvis === a.id) resetAvisForm(); }
-            catch (err) { toast(err.message, 'err'); del.disabled = false; }
-        }
     });
 
     /* ===== Démarrage ===== */
