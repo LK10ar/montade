@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="referrer" content="no-referrer">
     <title>Espace pro — Le Montadé</title>
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="asset/logo.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
         .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border: 0; border-radius: 12px; padding: .85rem 1.3rem; font-weight: 700; cursor: pointer; transition: background .2s, transform .2s, box-shadow .2s; text-decoration: none; font-size: .92rem; }
         .btn:active { transform: translateY(1px); }
         .btn-primary { background: var(--blue); color: #fff; width: 100%; padding: 1rem; }
-        .btn-primary:hover { background: #d4af37; color: var(--blue-dark); }
+        .btn-primary:hover { background: var(--blue-dark); }
         .btn-primary:disabled { opacity: .6; cursor: wait; }
         .btn-yellow { background: var(--yellow); color: var(--blue-dark); }
         .btn-yellow:hover { background: #ffe863; }
@@ -89,19 +89,6 @@
         .form-actions { display: flex; gap: .6rem; margin-top: .4rem; }
         .form-actions .btn-primary { flex: 1; }
 
-        .setting { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding: 1.1rem 1.4rem; margin-bottom: 1.2rem; flex-wrap: wrap; border-left: 5px solid var(--blue); }
-        .setting-text { display: grid; gap: .15rem; min-width: 0; flex: 1 1 260px; }
-        .setting-text strong { color: var(--blue); }
-        .setting-text span { font-size: .84rem; color: var(--muted); }
-        .setting-hint { color: var(--danger) !important; }
-        .switch { display: inline-flex; align-items: center; gap: .7rem; cursor: pointer; font-weight: 700; font-size: .85rem; color: var(--blue); }
-        .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
-        .slider { position: relative; width: 52px; height: 30px; border-radius: 999px; background: #c3cadb; transition: background .25s; flex: none; }
-        .slider::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); transition: transform .25s; }
-        .switch input:checked + .slider { background: var(--ok); }
-        .switch input:checked + .slider::after { transform: translateX(22px); }
-        .switch input:focus-visible + .slider { outline: 3px solid var(--yellow); outline-offset: 2px; }
-        .switch input:disabled + .slider { opacity: .6; }
         .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; margin-bottom: 1.2rem; }
         .stat { padding: 1.1rem 1.2rem; display: flex; flex-direction: column; border-left: 5px solid var(--yellow); cursor: pointer; transition: transform .2s, box-shadow .2s; }
         .stat:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(23, 35, 63, .12); }
@@ -132,6 +119,24 @@
         .toast.ok { background: var(--ok); }
         .toast.err { background: var(--danger); }
 
+        .sections { max-width: 1500px; margin: 0 auto; padding: 1rem clamp(1rem, 3vw, 2rem) 0; display: flex; gap: .6rem; flex-wrap: wrap; }
+        .sections .ftab { padding: .65rem 1.3rem; font-size: .85rem; }
+        .side-card { padding: 1.6rem; position: sticky; top: 84px; }
+        .side-card h2 { font-family: var(--ff-title); color: var(--blue); font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: .6rem; }
+        .hint { font-size: .84rem; color: var(--muted); margin-bottom: 1rem; }
+        .field textarea { width: 100%; padding: .85rem 1rem; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); min-height: 140px; resize: vertical; font-family: inherit; font-size: 1rem; }
+        .field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(44, 69, 119, .12); }
+        .upload-btn { width: 100%; padding: 1rem; cursor: pointer; }
+        .photo-count { font-weight: 700; color: var(--blue); margin-bottom: 1rem; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem; }
+        .photo-item { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: #e3e7f1; box-shadow: 0 6px 20px rgba(23, 35, 63, .1); }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-item .btn { position: absolute; top: .5rem; right: .5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, .25); background: #fff; }
+        .photo-item .btn:hover { background: var(--danger); }
+        .photo-card select { width: 100%; margin-top: .5rem; padding: .55rem .7rem; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font-size: .85rem; font-weight: 600; }
+        .avis-stars { color: #e0a800; letter-spacing: .1em; }
+        @media (max-width: 1100px) { .side-card { position: static; } }
+
         @media (max-width: 1100px) {
             .dash { grid-template-columns: 1fr; }
             .form-card { position: static; max-height: none; display: none; }
@@ -161,7 +166,7 @@
 <!-- ================= ÉCRAN DE CONNEXION ================= -->
 <main class="login" id="loginScreen">
     <section class="login-brand">
-        <img src="logo.jpg" alt="Le Montadé">
+        <img src="asset/logo.jpg" alt="Le Montadé">
         <h1>Espace <em>professionnel</em></h1>
         <p>Gérez la carte du restaurant en toute sécurité.</p>
     </section>
@@ -190,13 +195,19 @@
 <!-- ================= TABLEAU DE BORD ================= -->
 <div id="dashboard" hidden>
     <header class="topbar">
-        <img src="logo.jpg" alt="">
-        <h1><small>Espace pro</small>Gestion de la carte</h1>
+        <img src="asset/logo.jpg" alt="">
+        <h1><small>Espace pro</small>Gestion du site</h1>
         <a class="btn btn-ghost btn-sm" href="index.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i><span class="label-long">Voir le site</span></a>
         <button class="btn btn-yellow btn-sm" id="logoutBtn" type="button"><i class="fas fa-right-from-bracket"></i><span class="label-long">Déconnexion</span></button>
     </header>
 
-    <div class="dash">
+    <nav class="sections" aria-label="Sections">
+        <button type="button" class="ftab active" data-view="carte"><i class="fas fa-utensils"></i> Carte</button>
+        <button type="button" class="ftab" data-view="photos"><i class="fas fa-images"></i> Photos</button>
+        <button type="button" class="ftab" data-view="avis"><i class="fas fa-star"></i> Avis</button>
+    </nav>
+
+    <div class="dash" id="viewCarte">
         <aside>
             <button class="btn btn-yellow mobile-add" id="mobileAdd" type="button"><i class="fas fa-plus"></i> Ajouter un élément</button>
             <form class="card form-card" id="platForm" novalidate>
@@ -266,14 +277,6 @@
         </aside>
 
         <section>
-            <div class="card setting">
-                <div class="setting-text">
-                    <strong><i class="fas fa-envelope"></i> Formulaire de contact</strong>
-                    <span>Affiche ou masque le bloc « Écrivez-nous » sur le site. Les messages arrivent par email.</span>
-                    <span class="setting-hint" id="contactHint"></span>
-                </div>
-                <label class="switch"><input type="checkbox" id="contactToggle" checked><span class="slider"></span><span class="switch-label" id="contactLabel">Activé</span></label>
-            </div>
             <div class="stats" id="stats"></div>
             <div class="card toolbar">
                 <div class="filter-tabs" id="filterTabs"></div>
@@ -282,13 +285,75 @@
             <div id="list"></div>
         </section>
     </div>
+
+    <!-- ===== PHOTOS ===== -->
+    <div class="dash" id="viewPhotos" hidden>
+        <aside>
+            <div class="card side-card">
+                <h2><i class="fas fa-image"></i> Ajouter des photos</h2>
+                <p class="hint">Choisissez une ou plusieurs photos. Elles sont réduites et compressées automatiquement avant l'envoi.</p>
+                <div class="field"><label for="photoSlot">Où placer la photo ?</label>
+                    <select id="photoSlot">
+                        <option value="galerie">Galerie</option>
+                        <option value="hero">Accueil (en-tête)</option>
+                        <option value="cafe">Working Café</option>
+                        <option value="midi">Brasserie du Midi</option>
+                        <option value="vin">Bar à Vin</option>
+                        <option value="footer">Pied de page</option>
+                    </select></div>
+                <p class="hint">Chaque emplacement (sauf la galerie) n'a qu'une photo : en choisir une nouvelle remplace l'ancienne, qui repart dans la galerie. Vous pouvez aussi déplacer une photo plus tard avec le menu sous chaque image.</p>
+                <label class="btn btn-yellow upload-btn" for="photoInput"><i class="fas fa-upload"></i> Choisir des photos</label>
+                <input type="file" id="photoInput" accept="image/*" multiple hidden>
+                <div class="form-msg" id="photoMsg" role="alert"></div>
+            </div>
+        </aside>
+        <section>
+            <div class="card" style="padding:1.4rem">
+                <div class="photo-count" id="photoCount"></div>
+                <div class="photo-grid" id="photoGrid"></div>
+            </div>
+            <div class="card" style="padding:1.4rem;margin-top:1.2rem">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.4rem">
+                    <h3 style="font-family:var(--ff-title);color:var(--blue);font-size:1.25rem"><i class="fab fa-github"></i> Photos du dossier GitHub</h3>
+                    <button type="button" class="btn btn-soft btn-sm" id="ghRefresh"><i class="fas fa-rotate"></i> Actualiser</button>
+                </div>
+                <p class="hint">Photos déjà présentes dans le dossier <b>asset</b> de votre dépôt et pas encore utilisées. Choisissez où les placer.</p>
+                <div class="photo-grid" id="ghGrid"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===== AVIS ===== -->
+    <div class="dash" id="viewAvis" hidden>
+        <aside>
+            <form class="card side-card" id="avisForm" novalidate>
+                <h2 id="avisFormTitle"><i class="fas fa-plus-circle"></i> Ajouter un avis</h2>
+                <p class="hint">Copiez l'avis depuis votre fiche Google (Google Maps → Avis), puis collez-le ici.</p>
+                <div class="field"><label for="avNom">Prénom (et initiale)</label><input type="text" id="avNom" maxlength="60" placeholder="Ex : Olena P."></div>
+                <div class="row2">
+                    <div class="field"><label for="avNote">Note</label>
+                        <select id="avNote"><option value="5">5 étoiles</option><option value="4">4 étoiles</option><option value="3">3 étoiles</option><option value="2">2 étoiles</option><option value="1">1 étoile</option></select></div>
+                    <div class="field"><label for="avDate">Date</label><input type="text" id="avDate" maxlength="30" placeholder="Ex : Octobre 2026"></div>
+                </div>
+                <div class="field"><label for="avTexte">Texte de l'avis</label><textarea id="avTexte" maxlength="700"></textarea></div>
+                <div class="form-msg" id="avisMsg" role="alert"></div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="avisSave" type="submit"><i class="fas fa-check"></i> <span id="avisSaveLabel">Ajouter l'avis</span></button>
+                    <button class="btn btn-ghost" id="avisCancel" type="button" hidden>Annuler</button>
+                </div>
+            </form>
+        </aside>
+        <section>
+            <div id="avisList"></div>
+        </section>
+    </div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     /* ===== RÉGLAGES ===== */
     // Adresse de ton backend Render (sans « / » à la fin)
@@ -302,7 +367,6 @@
         appId: "1:325197109352:web:1b65a2c21cbc26aae7c3dd"
     };
 
-    const db = getFirestore(initializeApp(firebaseConfig));
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const TABS = { midi: 'Le Midi', menu_du_jour: 'Menu du Jour', soir: 'Le Soir (On Mange)', boissons: 'Le Soir (On Boit)' };
@@ -312,7 +376,8 @@
 
     /* ===== Session (jeton signé par le serveur, valable 2 h, effacé à la fermeture de l'onglet) ===== */
     const TOKEN_KEY = 'montade_admin_token';
-    let token = null, tokenExp = 0, unsub = null, unsubSettings = null, plats = [], filter = 'all', editingId = null, logoutTimer;
+    let photos = [], avisList = [], editingAvis = null;
+    let token = null, tokenExp = 0, unsub = null, plats = [], filter = 'all', editingId = null, logoutTimer;
 
     function readStoredToken() {
         try {
@@ -383,9 +448,8 @@
         token = null; tokenExp = 0; sessionStorage.removeItem(TOKEN_KEY);
         clearTimeout(logoutTimer);
         if (unsub) { unsub(); unsub = null; }
-        if (unsubSettings) { unsubSettings(); unsubSettings = null; }
         $('dashboard').hidden = true; $('loginScreen').hidden = false;
-        resetForm();
+        resetForm(); resetAvisForm(); ghLoaded = false;
         if (message) showMsg($('loginMsg'), message, 'info');
     }
     $('logoutBtn').addEventListener('click', () => logout('Vous êtes déconnecté.'));
@@ -395,38 +459,23 @@
         window.scrollTo(0, 0);
         clearTimeout(logoutTimer);
         logoutTimer = setTimeout(() => logout('Session expirée, reconnectez-vous.'), Math.max(1000, tokenExp - Date.now()));
-        resetForm(); updateFormVisibility(); startListening(); startSettings();
+        resetForm(); updateFormVisibility(); startListening();
     }
-
-    /* ===== Réglages du site : formulaire de contact ===== */
-    function setContactToggle(on, hint = '') {
-        $('contactToggle').checked = on;
-        $('contactLabel').textContent = on ? 'Activé' : 'Désactivé';
-        $('contactHint').textContent = hint;
-    }
-    function startSettings() {
-        if (unsubSettings) unsubSettings();
-        unsubSettings = onSnapshot(doc(db, 'settings', 'site'),
-            (snap) => setContactToggle(!snap.exists() || snap.data().contactActive !== false),
-            () => setContactToggle(true, 'Lecture impossible : publiez les règles Firestore à jour (fichier firestore.rules).'));
-    }
-    $('contactToggle').addEventListener('change', async (e) => {
-        const wanted = e.target.checked, box = e.target;
-        box.disabled = true;
-        try {
-            await api('/api/settings', { method: 'PUT', body: { contactActive: wanted } });
-            toast(wanted ? 'Formulaire de contact activé' : 'Formulaire de contact désactivé', 'ok');
-        } catch (err) {
-            box.checked = !wanted; toast(err.message, 'err');
-        } finally { box.disabled = false; $('contactLabel').textContent = box.checked ? 'Activé' : 'Désactivé'; }
-    });
 
     /* ===== Lecture de la carte en direct ===== */
     function startListening() {
         if (unsub) unsub();
-        unsub = onSnapshot(query(collection(db, 'plats'), orderBy('dateAjout', 'asc')),
+        const db = getFirestore(initializeApp(firebaseConfig));
+        const u1 = onSnapshot(query(collection(db, 'plats'), orderBy('dateAjout', 'asc')),
             (snap) => { plats = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderAll(); },
             (err) => { console.error(err); $('list').innerHTML = '<div class="card empty"><i class="fas fa-triangle-exclamation"></i>Impossible de lire la carte (vérifiez les règles Firestore).</div>'; });
+        const u2 = onSnapshot(query(collection(db, 'photos'), orderBy('dateAjout', 'asc')),
+            (snap) => { photos = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderPhotos(); },
+            (err) => console.error('Photos :', err));
+        const u3 = onSnapshot(query(collection(db, 'avis'), orderBy('dateAjout', 'desc')),
+            (snap) => { avisList = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderAvis(); },
+            (err) => console.error('Avis :', err));
+        unsub = () => { u1(); u2(); u3(); };
     }
 
     function summary(p) {
@@ -594,6 +643,168 @@
             if (!wasEdit) { $('categorie').value = keep.cat; sc.value = keep.sub; updateFormVisibility(); }
         } catch (err) { showMsg(msg, err.message); }
         finally { btn.disabled = false; }
+    });
+
+    /* ===== Sections Carte / Photos / Avis ===== */
+    const VIEWS = { carte: 'viewCarte', photos: 'viewPhotos', avis: 'viewAvis' };
+    document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
+        Object.entries(VIEWS).forEach(([k, id]) => { $(id).hidden = k !== b.dataset.view; });
+        document.querySelectorAll('[data-view]').forEach((x) => x.classList.toggle('active', x === b));
+        if (b.dataset.view === 'photos' && !ghLoaded) loadGithubPhotos();
+        window.scrollTo(0, 0);
+    }));
+
+    /* ===== Photos ===== */
+    const MAX_PHOTOS = 12;
+    const SLOT_LABELS = { galerie: 'Galerie', hero: 'Accueil (en-tête)', cafe: 'Working Café', midi: 'Brasserie du Midi', vin: 'Bar à Vin', footer: 'Pied de page' };
+    const slotOptions = (cur) => Object.entries(SLOT_LABELS).map(([k, l]) => `<option value="${k}"${k === cur ? ' selected' : ''}>${esc(l)}</option>`).join('');
+    const migrating = new Set();
+
+    /* Photos du dossier asset de GitHub */
+    const GH_REPO = 'LK10ar/montade', GH_BRANCH = 'main', GH_DIR = 'asset';
+    const GH_MANUAL = ['dedans.jpg', 'dehors.jpg']; // liste de secours si GitHub ne répond pas (dépôt privé)
+    let ghFiles = [], ghWarn = '', ghLoaded = false;
+    async function loadGithubPhotos() {
+        ghLoaded = true;
+        $('ghGrid').innerHTML = '<div class="empty" style="grid-column:1/-1">Chargement…</div>';
+        try {
+            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_DIR}?ref=${GH_BRANCH}`);
+            if (!r.ok) throw new Error(r.status === 404 ? 'dépôt introuvable ou privé' : 'erreur GitHub ' + r.status);
+            const list = await r.json();
+            ghFiles = list.filter((f) => f.type === 'file' && /\.(jpe?g|png|webp)$/i.test(f.name) && !/^logo\./i.test(f.name)).map((f) => f.name);
+            ghWarn = '';
+        } catch (e) { ghFiles = GH_MANUAL; ghWarn = e.message; }
+        renderGithub();
+    }
+    function renderGithub() {
+        const used = new Set(photos.map((p) => p.src));
+        const free = ghFiles.filter((n) => !used.has(GH_DIR + '/' + n));
+        const warn = ghWarn ? `<div class="hint" style="grid-column:1/-1">Lecture automatique impossible (${esc(ghWarn)}) : liste de secours affichée.</div>` : '';
+        $('ghGrid').innerHTML = warn + (free.length
+            ? free.map((n) => `<div class="photo-card"><div class="photo-item"><img src="${GH_DIR}/${esc(n)}" alt="${esc(n)}"></div>
+                <select data-ghpick="${esc(n)}" aria-label="Placer ${esc(n)}"><option value="">Placer dans…</option>${slotOptions('')}</select></div>`).join('')
+            : '<div class="empty" style="grid-column:1/-1"><i class="fas fa-check"></i>Toutes les photos du dossier sont déjà utilisées.</div>');
+    }
+    $('ghRefresh').addEventListener('click', loadGithubPhotos);
+    document.addEventListener('change', async (e) => {
+        const sel = e.target.closest('[data-ghpick]'); if (!sel || !sel.value) return;
+        const slot = sel.value; sel.disabled = true;
+        try { await api('/api/photos', { method: 'POST', body: { src: GH_DIR + '/' + sel.dataset.ghpick, emplacement: slot } }); toast('Photo placée : ' + SLOT_LABELS[slot], 'ok'); }
+        catch (err) { toast(err.message, 'err'); sel.value = ''; }
+        finally { sel.disabled = false; }
+    });
+    function renderPhotos() {
+        const nUp = photos.filter((p) => String(p.src).startsWith('data:')).length;
+        $('photoCount').textContent = `${photos.length} photo${photos.length > 1 ? 's' : ''} utilisée${photos.length > 1 ? 's' : ''} · ${nUp} / ${MAX_PHOTOS} envoyées depuis l'admin`;
+        $('photoGrid').innerHTML = photos.length
+            ? photos.map((p) => `<div class="photo-card"><div class="photo-item"><img src="${esc(p.src)}" alt=""><button type="button" class="btn btn-danger btn-sm" data-pdel="${esc(p.id)}" aria-label="Supprimer la photo"><i class="fas fa-trash"></i></button></div>
+                <select data-pslot="${esc(p.id)}" aria-label="Emplacement de la photo">${slotOptions(p.emplacement || 'galerie')}</select></div>`).join('')
+            : '<div class="empty" style="grid-column:1/-1"><i class="fas fa-images"></i>Aucune photo ajoutée. Le site utilise les photos du dossier asset en attendant.</div>';
+        // photos ajoutées avant l'existence des emplacements : on les range dans la galerie
+        photos.filter((p) => !p.emplacement && !migrating.has(p.id)).forEach((p) => {
+            migrating.add(p.id);
+            api('/api/photos/' + encodeURIComponent(p.id), { method: 'PUT', body: { emplacement: 'galerie' } }).catch(() => {});
+        });
+        if (ghLoaded) renderGithub();
+    }
+    function loadImage(file) {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(file); const img = new Image();
+            img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+            img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image illisible : ' + file.name)); };
+            img.src = url;
+        });
+    }
+    async function toJpeg(file) {
+        const img = await loadImage(file);
+        const scale = Math.min(1, 1400 / Math.max(img.naturalWidth, img.naturalHeight));
+        let w = Math.round(img.naturalWidth * scale), h = Math.round(img.naturalHeight * scale);
+        for (let i = 0; i < 6; i++) {
+            const c = document.createElement('canvas'); c.width = w; c.height = h;
+            const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0, w, h);
+            const out = c.toDataURL('image/jpeg', Math.max(0.5, 0.85 - i * 0.07));
+            if (out.length < 450000) return out;
+            w = Math.round(w * 0.85); h = Math.round(h * 0.85);
+        }
+        throw new Error('Photo trop lourde : ' + file.name);
+    }
+    $('photoInput').addEventListener('change', async (e) => {
+        const files = Array.from(e.target.files); e.target.value = '';
+        if (!files.length) return;
+        const msg = $('photoMsg'), start = photos.length, slot = $('photoSlot').value; let done = 0;
+        if (slot !== 'galerie' && files.length > 1) return showMsg(msg, 'Choisissez une seule photo pour cet emplacement (ou envoyez-en plusieurs dans la galerie).');
+        for (const f of files) {
+            if (start + done >= MAX_PHOTOS) { showMsg(msg, `Maximum ${MAX_PHOTOS} photos : supprimez-en une avant d'en ajouter.`); return; }
+            showMsg(msg, `Envoi de la photo ${done + 1} sur ${files.length}…`, 'info');
+            try { const src = await toJpeg(f); await api('/api/photos', { method: 'POST', body: { src, emplacement: slot } }); done++; }
+            catch (err) { showMsg(msg, err.message); return; }
+        }
+        hideMsg(msg); toast(done > 1 ? `${done} photos ajoutées` : 'Photo ajoutée', 'ok');
+    });
+    document.addEventListener('click', async (e) => {
+        const d = e.target.closest('[data-pdel]'); if (!d) return;
+        const ph = photos.find((x) => x.id === d.dataset.pdel);
+        const isAsset = ph && !String(ph.src).startsWith('data:');
+        if (!confirm(isAsset ? 'Retirer cette photo du site ? (le fichier reste dans votre dossier GitHub)' : 'Supprimer cette photo du site ?')) return;
+        d.disabled = true;
+        try { await api('/api/photos/' + encodeURIComponent(d.dataset.pdel), { method: 'DELETE' }); toast('Photo supprimée', 'ok'); }
+        catch (err) { toast(err.message, 'err'); d.disabled = false; }
+    });
+
+    document.addEventListener('change', async (e) => {
+        const sel = e.target.closest('[data-pslot]'); if (!sel) return;
+        sel.disabled = true;
+        try { await api('/api/photos/' + encodeURIComponent(sel.dataset.pslot), { method: 'PUT', body: { emplacement: sel.value } }); toast('Photo déplacée : ' + SLOT_LABELS[sel.value], 'ok'); }
+        catch (err) { toast(err.message, 'err'); renderPhotos(); }
+        finally { sel.disabled = false; }
+    });
+
+    /* ===== Avis ===== */
+    const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
+    function renderAvis() {
+        $('avisList').innerHTML = avisList.length ? avisList.map((a) => `<div class="card plat">
+            <div class="plat-info"><strong>${esc(a.nom)} <span class="avis-stars">${stars(Math.min(5, Math.max(1, a.note || 5)))}</span>${a.date ? `<span class="badge">${esc(a.date)}</span>` : ''}</strong><span>${esc(a.texte)}</span></div>
+            <div class="plat-actions"><button class="btn btn-soft btn-sm" data-aedit="${esc(a.id)}"><i class="fas fa-pen"></i> Modifier</button>
+            <button class="btn btn-danger btn-sm" data-adel="${esc(a.id)}"><i class="fas fa-trash"></i> Supprimer</button></div></div>`).join('')
+            : '<div class="card empty"><i class="fas fa-star"></i>Aucun avis ajouté. Tant qu\'il n\'y en a pas, le site affiche un seul avis par défaut.</div>';
+    }
+    function resetAvisForm() {
+        editingAvis = null; $('avisForm').reset(); hideMsg($('avisMsg'));
+        $('avisFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Ajouter un avis';
+        $('avisSaveLabel').textContent = 'Ajouter l\'avis'; $('avisCancel').hidden = true;
+    }
+    $('avisCancel').addEventListener('click', resetAvisForm);
+    $('avisForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = $('avisMsg'), btn = $('avisSave');
+        const body = { nom: $('avNom').value.trim(), texte: $('avTexte').value.trim(), date: $('avDate').value.trim(), note: Number($('avNote').value) };
+        if (!body.nom || !body.texte) return showMsg(msg, 'Le prénom et le texte sont obligatoires.');
+        btn.disabled = true; hideMsg(msg);
+        try {
+            const wasEdit = !!editingAvis;
+            if (wasEdit) await api('/api/avis/' + encodeURIComponent(editingAvis), { method: 'PUT', body });
+            else await api('/api/avis', { method: 'POST', body });
+            toast(wasEdit ? 'Avis modifié' : 'Avis ajouté', 'ok'); resetAvisForm();
+        } catch (err) { showMsg(msg, err.message); }
+        finally { btn.disabled = false; }
+    });
+    document.addEventListener('click', async (e) => {
+        const ed = e.target.closest('[data-aedit]');
+        if (ed) {
+            const a = avisList.find((x) => x.id === ed.dataset.aedit); if (!a) return;
+            editingAvis = a.id; $('avNom').value = a.nom || ''; $('avTexte').value = a.texte || ''; $('avDate').value = a.date || ''; $('avNote').value = String(a.note || 5);
+            $('avisFormTitle').innerHTML = '<i class="fas fa-pen"></i> Modifier l\'avis'; $('avisSaveLabel').textContent = 'Enregistrer'; $('avisCancel').hidden = false;
+            $('avisForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        const del = e.target.closest('[data-adel]');
+        if (del) {
+            const a = avisList.find((x) => x.id === del.dataset.adel);
+            if (!a || !confirm(`Supprimer l'avis de « ${a.nom} » ?`)) return;
+            del.disabled = true;
+            try { await api('/api/avis/' + encodeURIComponent(a.id), { method: 'DELETE' }); toast('Avis supprimé', 'ok'); if (editingAvis === a.id) resetAvisForm(); }
+            catch (err) { toast(err.message, 'err'); del.disabled = false; }
+        }
     });
 
     /* ===== Démarrage ===== */
