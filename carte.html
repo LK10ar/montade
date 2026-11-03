@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>La carte & allergènes — Le Montadé</title>
+    <meta name="description" content="La carte du Montadé : plats, desserts, boissons, vins et la liste des allergènes. Saint-Caprais-de-Bordeaux.">
+    <meta name="theme-color" content="#17233f">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.carte-page { overflow-x: visible; }
+
+        /* ===== EN-TÊTE ===== */
+        .qr-header { background: var(--blue-dark); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: calc(.8rem + env(safe-area-inset-top)) 1rem .8rem; }
+        .qr-brand { display: flex; align-items: center; gap: .8rem; text-decoration: none; color: #fff; min-width: 0; }
+        .qr-brand img { width: 46px; height: 46px; flex: none; border-radius: 50%; border: 2px solid #fff; object-fit: cover; background: #fff; }
+        .qr-brand strong { display: block; font-family: var(--ff-title); font-size: 1.15rem; line-height: 1.1; }
+        .qr-brand small { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--yellow); font-weight: 700; }
+        .btn-alg { background: var(--yellow); color: var(--blue-dark); padding: .6rem 1rem; font-size: .72rem; flex: none; }
+        .btn-alg:hover, .btn-alg:focus-visible { background: var(--gold-btn); }
+
+        /* ===== INTRO + RECHERCHE ===== */
+        .qr-intro { text-align: center; max-width: 760px; margin: 0 auto; padding: 1.8rem 1rem .8rem; }
+        .qr-intro h1 { font-size: clamp(2.1rem, 9vw, 3.2rem); color: var(--blue); }
+        .qr-intro h1 em { color: var(--gold); }
+        .qr-note { font-family: var(--ff-title); font-style: italic; color: var(--gold); font-size: 1.1rem; min-height: 1.6rem; margin-top: .3rem; }
+        .qr-search { position: relative; display: block; margin-top: 1rem; }
+        .qr-search i { position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+        .qr-search input { width: 100%; padding: .95rem 3rem .95rem 2.8rem; border: 1.5px solid var(--line); border-radius: 999px; font: inherit; font-size: 1rem; background: #fff; color: var(--ink); box-shadow: 0 4px 18px rgba(23, 35, 63, .06); }
+        .qr-search input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(44, 69, 119, .12); }
+        .qr-search button { position: absolute; right: .5rem; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--cream-2); color: var(--blue); cursor: pointer; }
+
+        /* ===== BARRE COLLANTE : ONGLETS + CATÉGORIES ===== */
+        .qr-sticky { position: sticky; top: 0; z-index: 50; background: rgba(251, 248, 239, .96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top); }
+        .scroller { display: flex; gap: .5rem; overflow-x: auto; padding: .7rem 1rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .scroller::-webkit-scrollbar { display: none; }
+        .scroller.center { justify-content: center; }
+        .tab { flex: none; border: 2px solid var(--blue); background: transparent; color: var(--blue); border-radius: 999px; padding: .55rem 1.1rem; font: 700 .76rem var(--ff-body); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+        .tab.active, .tab:hover { background: var(--blue); color: #fff; }
+        .tab.active:hover { background: var(--gold-btn); border-color: var(--gold-btn); color: var(--blue-dark); }
+        .chips { padding-top: 0; padding-bottom: .65rem; }
+        .chip { flex: none; border: 0; background: #fff; color: var(--blue); border-radius: 999px; padding: .4rem .9rem; font: 600 .8rem var(--ff-body); cursor: pointer; box-shadow: 0 2px 8px rgba(23, 35, 63, .08); white-space: nowrap; transition: background .2s, color .2s; }
+        .chip.active { background: var(--yellow); color: var(--blue-dark); }
+        .chip:hover { background: var(--gold-btn); color: var(--blue-dark); }
+
+        /* ===== CONTENU ===== */
+        .qr-wrap { max-width: 1000px; margin: 0 auto; padding: 1rem 1rem 2.5rem; width: 100%; }
+        .sec { scroll-margin-top: calc(var(--sticky-h, 110px) + 8px); margin-bottom: 1.8rem; }
+        .sec > h2 { display: flex; align-items: center; gap: .7rem; font-size: clamp(1.4rem, 5vw, 1.8rem); color: var(--blue); margin: 1.2rem 0 .9rem; }
+        .sec > h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+        .grid { display: grid; gap: .75rem; }
+        .dish { background: #fff; border-radius: 16px; padding: .95rem 1.1rem; box-shadow: 0 4px 18px rgba(23, 35, 63, .06); }
+        .ctx { font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: .25rem; }
+        .dish-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+        .dish h3 { font-family: var(--ff-body); font-size: 1rem; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+        .price { font-weight: 800; color: var(--blue); white-space: nowrap; }
+        .sizes { display: flex; flex-direction: column; align-items: flex-end; gap: .05rem; font-size: .88rem; }
+        .sizes small { color: var(--muted); font-weight: 600; margin-right: .4rem; }
+        .desc { color: var(--muted); font-size: .88rem; font-style: italic; margin-top: .25rem; overflow-wrap: anywhere; }
+        .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem; }
+        .pill { display: inline-flex; align-items: center; gap: .3rem; background: var(--yellow-soft); color: #6b5600; border: 0; border-radius: 999px; padding: .22rem .65rem; font: 600 .7rem var(--ff-body); cursor: pointer; transition: background .2s; }
+        .pill:hover { background: var(--yellow); }
+
+        .formule { background: var(--blue); color: #fff; border-radius: 22px; padding: 1.3rem 1.2rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+        .formule > h3 { font-size: 1.5rem; color: var(--yellow); text-align: center; margin-bottom: .9rem; }
+        .combo { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 0; border-bottom: 1px dashed rgba(255, 255, 255, .25); font-weight: 600; font-size: .92rem; }
+        .combo .price { color: var(--yellow); }
+        .formule h4 { font-family: var(--ff-body); font-size: .74rem; letter-spacing: .22em; text-transform: uppercase; color: var(--yellow); margin: 1.2rem 0 .5rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(247, 222, 78, .4); }
+        .mini { padding: .55rem 0; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+        .mini .dish-top h3 { color: #fff; font-size: .96rem; }
+        .mini .price { color: var(--yellow); }
+        .mini .desc { color: #c4cde3; }
+        .mini .pill { background: rgba(255, 255, 255, .14); color: #fff4b0; }
+        .mini .pill:hover { background: rgba(255, 255, 255, .25); }
+
+        .state { text-align: center; color: var(--muted); padding: 3rem 1rem; }
+        .state i { display: block; font-size: 2rem; color: var(--blue); margin-bottom: .8rem; }
+        .results-count { color: var(--muted); font-size: .88rem; margin: .4rem 0 1rem; text-align: center; }
+
+        /* ===== ALLERGÈNES ===== */
+        .alg-info { background: #fff; padding: clamp(2.5rem, 7vw, 4rem) 1rem; }
+        .alg-info .inner { max-width: 1000px; margin: 0 auto; }
+        .alg-info h2 { font-size: clamp(1.7rem, 6vw, 2.4rem); color: var(--blue); text-align: center; }
+        .alg-info h2 em { color: var(--gold); }
+        .alg-lead { text-align: center; color: var(--muted); max-width: 640px; margin: .8rem auto 1.8rem; }
+        .alg-list { display: grid; gap: .7rem; }
+        .alg-item { display: flex; gap: .9rem; align-items: flex-start; background: var(--cream); border-radius: 14px; padding: .8rem 1rem; border: 2px solid transparent; transition: border-color .3s, background .3s; }
+        .alg-item.hl { border-color: var(--gold-btn); background: var(--yellow-soft); }
+        .alg-item .ic { font-size: 1.6rem; line-height: 1.2; flex: none; }
+        .alg-item strong { display: block; color: var(--blue); }
+        .alg-item span.d { color: var(--muted); font-size: .86rem; }
+        .alg-warn { display: flex; gap: .9rem; background: #fff6e0; border: 1px solid #f0d58a; color: #6b5100; border-radius: 14px; padding: 1rem 1.1rem; margin-top: 1.5rem; font-size: .92rem; }
+        .alg-warn i { font-size: 1.3rem; color: #c58a00; margin-top: .15rem; }
+
+        /* ===== FEUILLE ALLERGÈNES (fenêtre) ===== */
+        .sheet { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; background: rgba(23, 35, 63, 0); transition: background .25s; }
+        .sheet.open { background: rgba(23, 35, 63, .6); }
+        .sheet-panel { background: #fff; width: 100%; max-width: 640px; max-height: 88vh; max-height: 88dvh; overflow-y: auto; border-radius: 24px 24px 0 0; padding: 1.4rem 1.2rem calc(1.6rem + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .3s var(--ease); position: relative; }
+        .sheet.open .sheet-panel { transform: none; }
+        .sheet-panel > h2 { font-size: 1.5rem; color: var(--blue); padding-right: 3rem; margin-bottom: .3rem; }
+        .sheet-panel > p.sub { color: var(--muted); font-size: .88rem; margin-bottom: 1rem; }
+        .sheet-close { position: absolute; top: .9rem; right: .9rem; width: 42px; height: 42px; border: 0; border-radius: 50%; background: var(--cream-2); color: var(--blue); font-size: 1.1rem; cursor: pointer; }
+        .sheet-close:hover { background: var(--gold-btn); }
+        @media (min-width: 760px) { .sheet { align-items: center; } .sheet-panel { border-radius: 24px; } }
+
+        /* ===== PIED DE PAGE ===== */
+        .qr-footer { background: var(--blue-dark); color: rgba(255, 255, 255, .8); text-align: center; padding: 2.2rem 1rem calc(1.6rem + env(safe-area-inset-bottom)); font-size: .9rem; }
+        .qr-footer a { color: inherit; text-decoration: none; transition: color .2s; }
+        .qr-footer a:hover { color: var(--yellow); }
+        .qr-footer .row { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.4rem; margin-top: .7rem; }
+        .qr-footer .small { color: rgba(255, 255, 255, .55); font-size: .8rem; margin-top: 1.2rem; }
+        .qr-footer .credit a { color: rgba(255, 255, 255, .85); font-weight: 600; }
+        .qr-footer .credit a:hover { color: var(--yellow); }
+        .qr-footer .credit-ig { margin-left: .5rem; }
+
+        @media (min-width: 760px) {
+            .grid { grid-template-columns: 1fr 1fr; }
+            .formule .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 1.6rem; }
+            .alg-list { grid-template-columns: 1fr 1fr; }
+            .scroller { justify-content: center; }
+        }
+    </style>
+</head>
+<body class="carte-page">
+    <header class="qr-header">
+        <a href="index.html" class="qr-brand" aria-label="Retour au site du Montadé">
+            <img src="logo.jpg" alt="">
+            <span><strong>Le Montadé</strong><small>La carte</small></span>
+        </a>
+        <button type="button" class="btn btn-alg" id="algOpen"><i class="fas fa-triangle-exclamation"></i> Allergènes</button>
+    </header>
+
+    <main>
+        <section class="qr-intro">
+            <h1>La <em>carte</em></h1>
+            <p class="qr-note" id="tabNote"></p>
+            <label class="qr-search">
+                <i class="fas fa-magnifying-glass"></i>
+                <input type="search" id="q" placeholder="Rechercher un plat, une boisson…" aria-label="Rechercher dans la carte" autocomplete="off">
+                <button type="button" id="qClear" hidden aria-label="Effacer la recherche"><i class="fas fa-xmark"></i></button>
+            </label>
+        </section>
+
+        <div class="qr-sticky" id="sticky">
+            <div class="scroller" id="tabs" role="tablist" aria-label="Parties de la carte"></div>
+            <div class="scroller chips" id="chips" aria-label="Aller à une catégorie"></div>
+        </div>
+
+        <div class="qr-wrap" id="content" aria-live="polite">
+            <div class="state"><i class="fas fa-spinner fa-spin"></i>Chargement de la carte…</div>
+        </div>
+
+        <section class="alg-info" id="allergenes">
+            <div class="inner">
+                <h2>Les <em>allergènes</em></h2>
+                <p class="alg-lead">Voici les 14 allergènes à déclaration obligatoire. Lorsqu'ils sont renseignés, ils apparaissent sous chaque plat de la carte.</p>
+                <div class="alg-list" id="algList"></div>
+                <div class="alg-warn"><i class="fas fa-circle-info"></i><p><strong>Allergie ou intolérance ?</strong> Les informations affichées sont données à titre indicatif. Signalez-le à notre équipe avant de commander : elle vous renseignera précisément, y compris quand aucun allergène n'est indiqué sur un plat.</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="qr-footer">
+        <strong>Le Montadé</strong><br>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=1+Av.+de+Loustallaut,+33880+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener">1 Av. de Loustallaut, 33880 Saint-Caprais-de-Bordeaux</a>
+        <div class="row">
+            <a href="tel:+33556843159"><i class="fas fa-phone"></i> 05.56.84.31.59</a>
+            <a href="index.html"><i class="fas fa-house"></i> Retour au site</a>
+        </div>
+        <p class="small">© 2026 Le Montadé · <span class="credit">Site by <a href="https://lk10ar.github.io/uipact/index.html" target="_blank" rel="noopener">UIPACT</a><a href="https://www.instagram.com/uipact/" target="_blank" rel="noopener" class="credit-ig" aria-label="Instagram UIPACT"><i class="fab fa-instagram"></i></a></span> · <a href="mentions-legales.html">Mentions légales</a></p>
+    </footer>
+
+    <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+        <div class="sheet-panel" id="sheetPanel">
+            <button type="button" class="sheet-close" id="sheetClose" aria-label="Fermer"><i class="fas fa-xmark"></i></button>
+            <h2 id="sheetTitle">Les allergènes</h2>
+            <p class="sub">Signalez toute allergie ou intolérance à notre équipe avant de commander.</p>
+            <div class="alg-list" id="sheetList"></div>
+        </div>
+    </div>
+
+    <script src="allergenes.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
+            authDomain: "le-montade.firebaseapp.com",
+            projectId: "le-montade",
+            storageBucket: "le-montade.firebasestorage.app",
+            messagingSenderId: "325197109352",
+            appId: "1:325197109352:web:1b65a2c21cbc26aae7c3dd"
+        };
+        const db = getFirestore(initializeApp(firebaseConfig));
+
+        const $ = (id) => document.getElementById(id);
+        const ALG = window.ALLERGENS || [];
+        const ALG_BY = window.ALLERGENS_BY_KEY || {};
+        const TABS = [
+            { id: 'midi', label: 'Le Midi', note: '« Ici tout est fait maison ! »' },
+            { id: 'menu_du_jour', label: 'Menu du Jour', note: '« Nos suggestions du moment ! »' },
+            { id: 'soir', label: 'Le Soir (On Mange)', note: 'Commandes au comptoir 😊' },
+            { id: 'boissons', label: 'Le Soir (On Boit)', note: 'Commandes au comptoir 😊' }
+        ];
+        const TYPES = ['formule', 'entree', 'plat', 'menu_enfant', 'dessert', 'planche', 'biere', 'vin', 'sans_alcool'];
+        const META = {
+            formule: { t: 'Formules', i: '🍽️' }, entree: { t: 'Entrées', i: '🥗' }, plat: { t: 'Plats / Cocotte', i: '🍲' },
+            menu_enfant: { t: 'Menu enfant', i: '🧒' }, dessert: { t: 'Desserts', i: '🍰' }, planche: { t: 'Planches & Tapas', i: '🧀' },
+            biere: { t: 'Bières', i: '🍺' }, vin: { t: 'Vin au verre', i: '🍷' }, sans_alcool: { t: 'Sans alcool', i: '🥤' }
+        };
+        const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const norm = (s) => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        const fmtPrix = (p) => { const s = String(p ?? '').trim(); if (!s || s === '0') return ''; return /[€$£¥]/.test(s) ? s : s + ' €'; };
+
+        let data = {}, current = null;
+        const tabsEl = $('tabs'), chipsEl = $('chips'), content = $('content'), sticky = $('sticky');
+
+        /* ----- Rendu des plats ----- */
+        const pills = (keys) => {
+            const list = (keys || []).map((k) => ALG_BY[k]).filter(Boolean);
+            return list.length ? `<div class="pills">${list.map((a) => `<button type="button" class="pill" data-alg="${a.key}" aria-label="Allergène : ${esc(a.label)}">${a.icon} ${esc(a.label)}</button>`).join('')}</div>` : '';
+        };
+        const priceBlock = (p) => {
+            if (p.prixTailles) {
+                const rows = [['25 cl', p.prixTailles.cl25], ['33 cl', p.prixTailles.cl33], ['50 cl', p.prixTailles.cl50]]
+                    .filter(([, v]) => fmtPrix(v)).map(([l, v]) => `<span class="price"><small>${l}</small>${esc(fmtPrix(v))}</span>`).join('');
+                return rows ? `<span class="sizes">${rows}</span>` : '';
+            }
+            const pr = fmtPrix(p.prix);
+            return pr ? `<span class="price">${esc(pr)}</span>` : '';
+        };
+        const dishHtml = (p, ctx) => `<article class="dish">${ctx ? `<div class="ctx">${esc(ctx)}</div>` : ''}
+            <div class="dish-top"><h3>${esc(p.nom)}</h3>${priceBlock(p)}</div>
+            ${p.description ? `<p class="desc">${esc(p.description)}</p>` : ''}${pills(p.allergenes)}</article>`;
+
+        const miniHtml = (it) => `<div class="mini"><div class="dish-top"><h3>${esc(it.nom)}</h3>${fmtPrix(it.prix) ? `<span class="price">${esc(fmtPrix(it.prix))}</span>` : ''}</div>
+            ${it.desc ? `<p class="desc">${esc(it.desc)}</p>` : ''}${pills(it.allergenes)}</div>`;
+        function formuleHtml(p) {
+            const c = p.prixCombos || {}, d = p.detailsFormule || {};
+            const combo = (l, v) => fmtPrix(v) ? `<div class="combo"><span>${l}</span><span class="price">${esc(fmtPrix(v))}</span></div>` : '';
+            const col = (t, items) => (items && items.length) ? `<div><h4>${t}</h4>${items.map(miniHtml).join('')}</div>` : '';
+            return `<article class="formule"><h3>${esc(p.nom)}</h3>
+                ${combo('Entrée + Plat + Dessert', c.epd)}${combo('Entrée + Plat', c.ep)}${combo('Plat + Dessert', c.pd)}
+                <div class="cols">${col('Entrées', d.entrees)}${col('Plats', d.plats)}${col('Desserts', d.desserts)}</div></article>`;
+        }
+
+        /* ----- Affichage d'un onglet ----- */
+        let sections = [];
+        function renderTab() {
+            const groups = data[current] || {};
+            let html = ''; sections = [];
+            TYPES.forEach((t) => {
+                const list = groups[t];
+                if (!list || !list.length) return;
+                const id = `sec-${t}`; sections.push({ id, t });
+                html += `<section class="sec" id="${id}"><h2><span>${META[t].i}</span>${META[t].t}</h2>${t === 'formule' ? list.map(formuleHtml).join('') : `<div class="grid">${list.map((p) => dishHtml(p)).join('')}</div>`}</section>`;
+            });
+            content.innerHTML = html;
+            chipsEl.hidden = sections.length < 2;
+            chipsEl.innerHTML = sections.map((s) => `<button type="button" class="chip" data-sec="${s.id}">${META[s.t].i} ${META[s.t].t}</button>`).join('');
+            $('tabNote').textContent = TABS.find((t) => t.id === current).note;
+            tabsEl.querySelectorAll('.tab').forEach((b) => { const on = b.dataset.tab === current; b.classList.toggle('active', on); b.setAttribute('aria-selected', String(on)); });
+            measure(); spy();
+        }
+        function renderTabs() {
+            const avail = TABS.filter((t) => data[t.id]);
+            if (!avail.length) {
+                tabsEl.innerHTML = ''; chipsEl.hidden = true;
+                content.innerHTML = '<div class="state"><i class="fas fa-utensils"></i>La carte est en cours de mise à jour. N\'hésitez pas à demander à notre équipe.</div>';
+                return;
+            }
+            const hash = decodeURIComponent(location.hash.slice(1));
+            const parisHour = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })).getHours();
+            const wanted = avail.find((t) => t.id === hash) || avail.find((t) => t.id === (parisHour < 15 ? 'midi' : 'soir')) || avail[0];
+            current = wanted.id;
+            tabsEl.classList.toggle('center', avail.length < 4);
+            tabsEl.innerHTML = avail.map((t) => `<button type="button" role="tab" class="tab" data-tab="${t.id}">${t.label}</button>`).join('');
+            renderTab();
+        }
+
+        /* ----- Recherche ----- */
+        function renderSearch(q) {
+            const nq = norm(q), hits = [];
+            const KIND = { entrees: 'Entrée', plats: 'Plat', desserts: 'Dessert' };
+            TABS.forEach((tab) => {
+                const g = data[tab.id]; if (!g) return;
+                TYPES.forEach((t) => (g[t] || []).forEach((p) => {
+                    if (t === 'formule') {
+                        Object.keys(KIND).forEach((k) => ((p.detailsFormule || {})[k] || []).forEach((it) => {
+                            if (norm(`${it.nom} ${it.desc || ''}`).includes(nq)) hits.push({ p: { nom: it.nom, description: it.desc, prix: it.prix, allergenes: it.allergenes }, ctx: `${tab.label} · ${p.nom} · ${KIND[k]}` });
+                        }));
+                    } else if (norm(`${p.nom} ${p.description || ''}`).includes(nq)) hits.push({ p, ctx: `${tab.label} · ${META[t].t}` });
+                }));
+            });
+            chipsEl.hidden = true; sections = [];
+            content.innerHTML = hits.length
+                ? `<p class="results-count">${hits.length} résultat${hits.length > 1 ? 's' : ''}</p><div class="grid">${hits.map((h) => dishHtml(h.p, h.ctx)).join('')}</div>`
+                : '<div class="state"><i class="fas fa-magnifying-glass"></i>Aucun résultat. Essayez un autre mot.</div>';
+            measure();
+        }
+        $('q').addEventListener('input', (e) => {
+            const v = e.target.value.trim();
+            $('qClear').hidden = !v;
+            tabsEl.style.display = v ? 'none' : '';
+            if (v.length >= 2) renderSearch(v);
+            else if (!v && current) renderTab();
+        });
+        $('qClear').addEventListener('click', () => { $('q').value = ''; $('q').dispatchEvent(new Event('input')); $('q').focus(); });
+
+        /* ----- Navigation : onglets, catégories, défilement ----- */
+        function measure() { document.documentElement.style.setProperty('--sticky-h', sticky.offsetHeight + 'px'); }
+        function spy() {
+            if (!sections.length) return;
+            const h = sticky.offsetHeight + 40; let cur = sections[0].id;
+            sections.forEach((s) => { const el = $(s.id); if (el && el.getBoundingClientRect().top <= h) cur = s.id; });
+            chipsEl.querySelectorAll('.chip').forEach((c) => {
+                const on = c.dataset.sec === cur;
+                if (on && !c.classList.contains('active')) chipsEl.scrollTo({ left: c.offsetLeft - chipsEl.clientWidth / 2 + c.clientWidth / 2, behavior: 'smooth' });
+                c.classList.toggle('active', on);
+            });
+        }
+        let ticking = false;
+        window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { spy(); ticking = false; }); } }, { passive: true });
+        window.addEventListener('resize', measure);
+
+        tabsEl.addEventListener('click', (e) => {
+            const b = e.target.closest('.tab'); if (!b) return;
+            current = b.dataset.tab;
+            history.replaceState(null, '', '#' + current);
+            renderTab();
+            const top = content.getBoundingClientRect().top + window.scrollY - sticky.offsetHeight - 8;
+            if (window.scrollY > top) window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        });
+        chipsEl.addEventListener('click', (e) => {
+            const c = e.target.closest('.chip'); if (!c) return;
+            $(c.dataset.sec).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        /* ----- Allergènes : liste + fenêtre ----- */
+        const algHtml = () => ALG.map((a) => `<div class="alg-item" data-k="${a.key}"><span class="ic">${a.icon}</span><div><strong>${esc(a.label)}</strong><span class="d">${esc(a.desc)}</span></div></div>`).join('');
+        $('algList').innerHTML = algHtml();
+        $('sheetList').innerHTML = algHtml();
+        const sheet = $('sheet');
+        function openSheet(key) {
+            sheet.hidden = false; document.body.classList.add('no-scroll');
+            sheet.querySelectorAll('.alg-item').forEach((el) => el.classList.toggle('hl', el.dataset.k === key));
+            requestAnimationFrame(() => {
+                sheet.classList.add('open');
+                const target = key && sheet.querySelector(`.alg-item[data-k="${key}"]`);
+                if (target) target.scrollIntoView({ block: 'center' });
+                $('sheetClose').focus({ preventScroll: true });
+            });
+        }
+        function closeSheet() {
+            sheet.classList.remove('open'); document.body.classList.remove('no-scroll');
+            setTimeout(() => { sheet.hidden = true; }, 250);
+        }
+        $('algOpen').addEventListener('click', () => openSheet());
+        $('sheetClose').addEventListener('click', closeSheet);
+        sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
+        content.addEventListener('click', (e) => { const p = e.target.closest('.pill'); if (p) openSheet(p.dataset.alg); });
+
+        /* ----- Chargement de la carte ----- */
+        getDocs(query(collection(db, 'plats'), orderBy('dateAjout', 'asc'))).then((snap) => {
+            snap.forEach((d) => {
+                const p = d.data();
+                if (!p.categorie || !p.sousCategorie) return;
+                ((data[p.categorie] ??= {})[p.sousCategorie] ??= []).push(p);
+            });
+            renderTabs();
+        }).catch((err) => {
+            console.error('Carte indisponible :', err);
+            content.innerHTML = '<div class="state"><i class="fas fa-triangle-exclamation"></i>Impossible d\'afficher la carte pour le moment. Demandez-la à notre équipe, ou appelez le 05.56.84.31.59.</div>';
+        });
+    </script>
+</body>
+</html>
