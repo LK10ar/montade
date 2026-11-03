@@ -102,9 +102,9 @@ footer.site-footer { background: var(--blue-dark); color: rgba(255, 255, 255, .8
 .footer-bottom { max-width: 1180px; margin: 3rem auto 0; padding-top: 1.4rem; border-top: 1px solid rgba(255, 255, 255, .12); display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; justify-content: space-between; font-size: .82rem; color: rgba(255, 255, 255, .6); }
 .footer-bottom a { text-decoration: none; transition: color .2s; }
 .footer-bottom a:hover { color: var(--yellow); }
-.credit a { color: var(--yellow); font-weight: 600; }
-.credit .credit-ig { margin-left: .55rem; color: rgba(255, 255, 255, .8); }
-.credit .credit-ig:hover { color: var(--yellow); }
+.credit a { color: rgba(255, 255, 255, .85); font-weight: 600; transition: color .25s; }
+.credit a:hover, .credit a:focus-visible { color: var(--yellow); }
+.credit .credit-ig { margin-left: .55rem; }
 .legal-links { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; }
 
 .btn-top { position: fixed; right: 1.25rem; bottom: 1.25rem; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--yellow); color: var(--blue-dark); cursor: pointer; display: grid; place-items: center; font-size: 1rem; box-shadow: 0 8px 20px rgba(0, 0, 0, .25); z-index: 90; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .3s, visibility .3s, transform .3s; }
