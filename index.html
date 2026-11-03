@@ -9,9 +9,9 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Le Montadé — Bar à vins, brasserie du midi & working café">
     <meta property="og:description" content="Un lieu, trois ambiances : working café, cocotte du midi, bar à vins. Saint-Caprais-de-Bordeaux.">
-    <meta property="og:image" content="asset/logo.jpg">
+    <meta property="og:image" content="logo.jpg">
     <meta property="og:locale" content="fr_FR">
-    <link rel="icon" type="image/jpeg" href="asset/logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@
         "@type": "Restaurant",
         "name": "Le Montadé",
         "description": "Bar à vins, brasserie du midi et working café.",
-        "image": "asset/logo.jpg",
+        "image": "logo.jpg",
         "telephone": "+33556843159",
         "email": "lemontade.tierslieu@gmail.com",
         "address": {
@@ -35,34 +35,32 @@
             "addressLocality": "Saint-Caprais-de-Bordeaux",
             "addressCountry": "FR"
         },
-        "hasMap": "https://maps.app.goo.gl/78uWVUp89A8GMPJ29",
         "geo": { "@type": "GeoCoordinates", "latitude": 44.7431873, "longitude": -0.4571966 },
         "sameAs": [
             "https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/",
             "https://www.instagram.com/lemontade_lelieu/"
         ],
         "openingHoursSpecification": [
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "08:30", "closes": "15:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "08:30", "closes": "15:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "11:00", "closes": "15:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "12:00", "closes": "18:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "08:30", "closes": "18:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "12:00", "closes": "14:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "17:30", "closes": "23:00" },
             { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "08:30", "closes": "23:00" },
             { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:30", "closes": "23:00" },
-            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "18:00", "closes": "23:00" }
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "17:30", "closes": "23:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "13:00" }
         ]
     }
     </script>
 
     <style>
-        /* ===== Photos : dossier asset/ de ton dépôt GitHub ===== */
+        /* ===== Photos ===== */
         :root {
-            --photo-hero: url('asset/dehors.jpg');
-            --photo-cafe: url('asset/dedans.jpg');
-            --photo-midi: url('asset/midi.jpg');
-            --photo-vin: url('asset/vin.jpg');
+            --photo-hero: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');
+            --photo-cafe: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80');
+            --photo-midi: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80');
+            --photo-vin: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=80');
         }
-
-        /* ===== Pied de page avec photo (choisie dans l'admin) ===== */
-        footer.site-footer.has-photo { background: linear-gradient(rgba(23, 35, 63, .9), rgba(23, 35, 63, .94)), var(--photo-footer) center / cover no-repeat; }
 
         /* ===== HERO ===== */
         .hero { position: relative; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; text-align: center; color: #fff; padding: calc(var(--header-h) + 2rem) 1.25rem 8rem; isolation: isolate; background: var(--blue-dark); overflow: hidden; }
@@ -98,8 +96,8 @@
         .concept-photo { height: 210px; background: linear-gradient(135deg, var(--blue), var(--blue-mid)) center / cover no-repeat; position: relative; }
         .concept-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(23, 35, 63, .55)); }
         .concept-card:nth-child(1) .concept-photo { background-image: var(--photo-cafe); }
-        .concept-card:nth-child(2) .concept-photo { background-image: var(--photo-midi), linear-gradient(135deg, var(--blue), var(--blue-mid)); }
-        .concept-card:nth-child(3) .concept-photo { background-image: var(--photo-vin), linear-gradient(135deg, var(--blue), var(--blue-mid)); }
+        .concept-card:nth-child(2) .concept-photo { background-image: var(--photo-midi); }
+        .concept-card:nth-child(3) .concept-photo { background-image: var(--photo-vin); }
         .concept-tag { position: absolute; left: 1.2rem; bottom: 1rem; z-index: 1; background: var(--yellow); color: var(--blue-dark); font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: .35rem .8rem; border-radius: 999px; }
         .concept-body { padding: 1.6rem 1.7rem 2rem; }
         .concept-body h3 { font-size: 1.55rem; color: var(--blue); margin-bottom: .6rem; }
@@ -152,6 +150,10 @@
         .hours-card li.today { background: var(--yellow-soft); box-shadow: inset 4px 0 0 var(--gold); border-bottom-color: transparent; }
         .hours-card li.today .d::after { content: " · aujourd'hui"; text-transform: none; letter-spacing: 0; font-weight: 600; color: var(--gold); }
 
+        /* ===== AVIS ===== */
+        .avis { background: #fff; }
+        .reviews-box { max-width: 1100px; margin: 0 auto; min-height: 160px; }
+
         /* ===== RÉSERVER ===== */
         .reserver { background: var(--cream-2); }
         .booking-card { max-width: 900px; margin: 0 auto; background: #fff; border-radius: 26px; box-shadow: var(--shadow); padding: clamp(.6rem, 2vw, 1.2rem); }
@@ -193,35 +195,6 @@
             .mobile-cta .btn { flex: 1; padding: .85rem .5rem; }
             .btn-top { bottom: calc(86px + env(safe-area-inset-bottom)); }
         }
-    
-        /* ===== Galerie ===== */
-        .galerie[hidden] { display: none; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-        .gallery-grid figure { border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--cream-2); box-shadow: 0 10px 30px rgba(23, 35, 63, .1); }
-        .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
-        .gallery-grid figure:hover img { transform: scale(1.05); }
-
-        /* ===== Avis Google ===== */
-        .avis { background: #fff; }
-        .rating-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 2rem; margin: 0 auto 2.5rem; }
-        .rating-score { font-family: var(--ff-title); font-size: clamp(3.4rem, 8vw, 5rem); font-weight: 700; color: var(--blue); line-height: 1; }
-        .stars { color: #e0a800; font-size: 1.5rem; letter-spacing: .15em; }
-        .rating-count { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
-        .carousel { position: relative; }
-        .car-track { display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: .5rem .25rem 1rem; -webkit-overflow-scrolling: touch; }
-        .car-track::-webkit-scrollbar { display: none; }
-        .car-track:focus-visible { outline-offset: 0; }
-        .car-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; box-shadow: 0 8px 22px rgba(23, 35, 63, .25); transition: background .2s, transform .2s; }
-        .car-btn:hover { background: var(--blue-dark); transform: translateY(-50%) scale(1.06); }
-        .car-btn.prev { left: -14px; }
-        .car-btn.next { right: -14px; }
-        @media (max-width: 700px) { .car-btn { display: none; } }
-        .review-card { flex: 0 0 min(370px, 86%); scroll-snap-align: start; background: var(--cream); border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem; display: flex; flex-direction: column; gap: .9rem; }
-        .review-card .stars { font-size: 1.05rem; }
-        .review-card blockquote { color: var(--ink); font-size: .95rem; }
-        .review-card footer { margin-top: auto; display: flex; align-items: center; gap: .7rem; font-size: .85rem; color: var(--muted); }
-        .review-card .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-weight: 700; }
-        .review-card strong { display: block; color: var(--ink); }
     </style>
 </head>
 <body class="home">
@@ -229,12 +202,13 @@
 
     <header class="site-header">
         <div class="nav-wrap">
-            <a href="#top" class="brand" aria-label="Le Montadé — haut de page"><img src="asset/logo.jpg" alt="Le Montadé"></a>
+            <a href="#top" class="brand" aria-label="Le Montadé — haut de page"><img src="logo.jpg" alt="Le Montadé"></a>
             <nav id="mainNav" aria-label="Navigation principale">
                 <ul>
                     <li><a href="#concept">Le concept</a></li>
                     <li><a href="#carte">La carte</a></li>
                     <li><a href="#horaires">Horaires</a></li>
+                    <li><a href="#avis">Avis</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <a href="#reserver" class="btn btn-primary btn-sm">Réserver</a>
@@ -290,20 +264,9 @@
                     </article>
                     <article class="concept-card reveal d2">
                         <div class="concept-photo"><span class="concept-tag">Le soir</span></div>
-                        <div class="concept-body"><h3>Bar à Vin</h3><p>Dès le jeudi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
+                        <div class="concept-body"><h3>Bar à Vin</h3><p>Dès le mercredi soir, l'ambiance se tamise. Venez déguster notre sélection pointue de vins.</p></div>
                     </article>
                 </div>
-            </div>
-        </section>
-
-        <!-- ================= GALERIE ================= -->
-        <section id="galerie" class="section galerie" hidden>
-            <div class="container">
-                <div class="section-head reveal">
-                    <span class="eyebrow">En images</span>
-                    <h2 class="title">Le Montadé <em>en photos</em></h2>
-                </div>
-                <div class="gallery-grid" id="galleryGrid"></div>
             </div>
         </section>
 
@@ -323,29 +286,6 @@
             </div>
         </section>
 
-        <!-- ================= AVIS GOOGLE ================= -->
-        <section id="avis" class="section avis">
-            <div class="container">
-                <div class="section-head reveal">
-                    <span class="eyebrow">Avis</span>
-                    <h2 class="title">Ils en <em>parlent</em></h2>
-                </div>
-                <div class="rating-box reveal">
-                    <div class="rating-score">4,9</div>
-                    <div>
-                        <div class="stars" aria-label="Note de 4,9 sur 5">★★★★★</div>
-                        <p class="rating-count">54 avis Google</p>
-                    </div>
-                    <a class="btn btn-dark btn-sm" href="https://maps.app.goo.gl/78uWVUp89A8GMPJ29" target="_blank" rel="noopener"><i class="fab fa-google"></i> Voir tous les avis</a>
-                </div>
-                <div class="carousel reveal" role="region" aria-roledescription="carrousel" aria-label="Avis des clients">
-                    <button class="car-btn prev" id="revPrev" type="button" aria-label="Avis précédent"><i class="fas fa-chevron-left"></i></button>
-                    <div class="car-track" id="reviewsTrack" tabindex="0"></div>
-                    <button class="car-btn next" id="revNext" type="button" aria-label="Avis suivant"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </section>
-
         <!-- ================= HORAIRES ================= -->
         <section id="horaires" class="section">
             <div class="container split">
@@ -360,14 +300,28 @@
                     </div>
                 </div>
                 <ul class="hours-card reveal d1" id="hoursList">
-                    <li data-dow="1"><span class="d">Lundi</span><span class="h">8h30 – 15h</span><span class="a">Brasserie du midi & Working café</span></li>
-                    <li data-dow="2"><span class="d">Mardi</span><span class="h">8h30 – 15h</span><span class="a">Brasserie du midi & Working café</span></li>
-                    <li data-dow="3"><span class="d">Mercredi</span><span class="h">11h – 15h</span><span class="a">Brasserie du midi</span></li>
+                    <li data-dow="1"><span class="d">Lundi</span><span class="h">12h – 18h</span><span class="a">Brasserie du midi & Working café</span></li>
+                    <li data-dow="2"><span class="d">Mardi</span><span class="h">8h30 – 18h</span><span class="a">Brasserie du midi & Working café</span></li>
+                    <li data-dow="3"><span class="d">Mercredi</span><span class="h">12h – 14h & 17h30 – 23h</span><span class="a">Brasserie du midi & Bar à vins</span></li>
                     <li data-dow="4"><span class="d">Jeudi</span><span class="h">8h30 – 23h</span><span class="a">Brasserie, Working café & Bar à vins</span></li>
                     <li data-dow="5"><span class="d">Vendredi</span><span class="h">8h30 – 23h</span><span class="a">Brasserie, Working café & Bar à vins</span></li>
-                    <li data-dow="6"><span class="d">Samedi</span><span class="h">18h – 23h</span><span class="a">Bar à vins</span></li>
-                    <li data-dow="0"><span class="d">Dimanche</span><span class="h">Fermé</span></li>
+                    <li data-dow="6"><span class="d">Samedi</span><span class="h">17h30 – 23h</span><span class="a">Bar à vins exclusivement</span></li>
+                    <li data-dow="0"><span class="d">Dimanche</span><span class="h">10h – 13h</span><span class="a">Working café (matinée douce)</span></li>
                 </ul>
+            </div>
+        </section>
+
+        <!-- ================= AVIS GOOGLE (Trustindex) ================= -->
+        <section id="avis" class="section avis">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Avis clients</span>
+                    <h2 class="title">Ils nous <em>recommandent</em></h2>
+                    <p>Les avis Google de nos clients, en direct.</p>
+                </div>
+                <div class="reviews-box">
+                    <script defer async src='https://cdn.trustindex.io/loader.js?b45c39384eea95552b563b23eb7'></script>
+                </div>
             </div>
         </section>
 
@@ -393,7 +347,7 @@
                     <span class="eyebrow">Nous trouver</span>
                     <h2 class="title">À deux pas <em>de chez vous</em></h2>
                     <ul class="contact-list">
-                        <li><i class="fas fa-location-dot"></i><div><small>Adresse</small><span class="v">1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</span></div></li>
+                        <li><i class="fas fa-location-dot"></i><div><small>Adresse</small><a href="https://www.google.com/maps/dir/?api=1&destination=1+Av.+de+Loustallaut,+33880+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener" aria-label="Obtenir l'itinéraire vers Le Montadé">1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</a></div></li>
                         <li><i class="fas fa-phone"></i><div><small>Téléphone</small><a href="tel:+33556843159">05.56.84.31.59</a></div></li>
                         <li><i class="fas fa-envelope"></i><div><small>Email</small><a href="mailto:lemontade.tierslieu@gmail.com">lemontade.tierslieu@gmail.com</a></div></li>
                     </ul>
@@ -410,7 +364,7 @@
     <footer class="site-footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <img src="asset/logo.jpg" alt="Le Montadé" id="secretLogo" draggable="false">
+                <img src="logo.jpg" alt="Le Montadé" id="secretLogo" draggable="false">
                 <p>Bar à vins, brasserie du midi et working café à Saint-Caprais-de-Bordeaux.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/people/Le-Montad%C3%A9/61585855325055/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -423,6 +377,7 @@
                     <li><a href="#concept">Le concept</a></li>
                     <li><a href="#carte">La carte</a></li>
                     <li><a href="#horaires">Horaires</a></li>
+                    <li><a href="#avis">Avis</a></li>
                     <li><a href="#reserver">Réserver</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -430,14 +385,14 @@
             <div class="footer-col">
                 <h4>Contact</h4>
                 <ul>
-                    <li>1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</li>
+                    <li><a href="https://www.google.com/maps/dir/?api=1&destination=1+Av.+de+Loustallaut,+33880+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener" aria-label="Itinéraire vers Le Montadé">1 Av. de Loustallaut<br>33880 Saint-Caprais-de-Bordeaux</a></li>
                     <li><a href="tel:+33556843159">05.56.84.31.59</a></li>
                     <li><a href="mailto:lemontade.tierslieu@gmail.com">lemontade.tierslieu@gmail.com</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <span>© 2026 Le Montadé · Site by <a href="https://www.instagram.com/uipact/" target="_blank" rel="noopener">UIPACT</a></span>
+            <span class="credit">© 2026 Le Montadé · Site by <a href="https://lk10ar.github.io/uipact/index.html" target="_blank" rel="noopener">UIPACT</a><a href="https://www.instagram.com/uipact/" target="_blank" rel="noopener" class="credit-ig" aria-label="Instagram UIPACT"><i class="fab fa-instagram"></i></a></span>
             <span class="legal-links"><a href="cgu.html">CGU</a><a href="confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a></span>
         </div>
     </footer>
@@ -450,91 +405,17 @@
 
     <script src="site.js"></script>
 
-    <!-- ===== Avis Google (carrousel) + galerie photos : alimentés depuis l'admin ===== -->
-    <script>
-    (() => {
-        /* Affichés seulement tant que l'admin n'a encore ajouté ni avis ni photos */
-        const FALLBACK_REVIEWS = [
-            { nom: 'Olena P.', texte: 'Une excellente adresse ! Les planches sont généreuses, composées de produits de grande qualité, et parfaitement présentées.', date: 'Août 2026', note: 5 }
-        ];
-        const FALLBACK_PHOTOS = ['asset/dedans.jpg', 'asset/dehors.jpg'];
-
-        const car = document.querySelector('.carousel');
-        const track = document.getElementById('reviewsTrack');
-        const gg = document.getElementById('galleryGrid');
-        const sec = document.getElementById('galerie');
-        let revDone = false, galDone = false;
-
-        window.renderReviews = (list) => {
-            revDone = true;
-            const items = list && list.length ? list : FALLBACK_REVIEWS;
-            track.textContent = '';
-            items.forEach((r) => {
-                const note = Math.min(5, Math.max(1, Number(r.note) || 5));
-                const card = document.createElement('article');
-                card.className = 'review-card';
-                const st = document.createElement('div'); st.className = 'stars'; st.textContent = '★'.repeat(note) + '☆'.repeat(5 - note);
-                st.setAttribute('aria-label', 'Note de ' + note + ' sur 5');
-                const q = document.createElement('blockquote'); q.textContent = '« ' + r.texte + ' »';
-                const f = document.createElement('footer');
-                const av = document.createElement('span'); av.className = 'avatar'; av.textContent = String(r.nom || '?').charAt(0).toUpperCase();
-                const w = document.createElement('div'); const n = document.createElement('strong'); n.textContent = r.nom;
-                w.append(n, document.createTextNode((r.date ? r.date + ' · ' : '') + 'Avis Google'));
-                f.append(av, w);
-                card.append(st, q, f);
-                track.append(card);
-            });
-            track.scrollLeft = 0;
-        };
-
-        window.renderGallery = (list) => {
-            galDone = true;
-            const srcs = list && list.length ? list.map((p) => p.src) : FALLBACK_PHOTOS;
-            gg.textContent = '';
-            sec.hidden = true;
-            srcs.forEach((src) => {
-                const fig = document.createElement('figure');
-                const img = new Image();
-                img.alt = 'Photo du Montadé';
-                img.onload = () => { sec.hidden = false; };
-                img.onerror = () => fig.remove();
-                img.src = src;
-                fig.append(img);
-                gg.append(fig);
-            });
-        };
-
-        /* Si Firebase ne répond pas, on affiche quand même le contenu de secours */
-        setTimeout(() => { if (!revDone) window.renderReviews(null); if (!galDone) window.renderGallery(null); }, 8000);
-
-        /* Carrousel : boutons, défilement automatique (en pause au survol / au toucher) */
-        const step = () => { const c = track.querySelector('.review-card'); return c ? c.getBoundingClientRect().width + 20 : 300; };
-        const nextSlide = () => {
-            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 8) track.scrollTo({ left: 0, behavior: 'smooth' });
-            else track.scrollBy({ left: step(), behavior: 'smooth' });
-        };
-        document.getElementById('revPrev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-        document.getElementById('revNext').addEventListener('click', nextSlide);
-        let paused = false;
-        ['mouseenter', 'focusin', 'touchstart'].forEach((ev) => car.addEventListener(ev, () => { paused = true; }));
-        ['mouseleave', 'focusout', 'touchend'].forEach((ev) => car.addEventListener(ev, () => { paused = false; }));
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            setInterval(() => { if (!paused && !document.hidden) nextSlide(); }, 5500);
-        }
-    })();
-    </script>
-
     <!-- ===== Horaires : statut « ouvert / fermé » en temps réel (heure de Paris) ===== -->
     <script>
     (() => {
         const SCHEDULE = {
-            1: [['08:30', '15:00']],
-            2: [['08:30', '15:00']],
-            3: [['11:00', '15:00']],
+            1: [['12:00', '18:00']],
+            2: [['08:30', '18:00']],
+            3: [['12:00', '14:00'], ['17:30', '23:00']],
             4: [['08:30', '23:00']],
             5: [['08:30', '23:00']],
-            6: [['18:00', '23:00']],
-            0: []
+            6: [['17:30', '23:00']],
+            0: [['10:00', '13:00']]
         };
         const DAY_NAMES = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
         const toMin = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
@@ -579,7 +460,7 @@
     <!-- ===== La carte : lecture en direct depuis Firebase Firestore ===== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
@@ -690,38 +571,6 @@
             tabsEl.innerHTML = '';
             panelEl.innerHTML = '<div class="carte-state"><i class="fas fa-triangle-exclamation"></i>Impossible d\'afficher la carte pour le moment. Appelez-nous au 05.56.84.31.59.</div>';
         });
-
-        /* Avis et photos gérés depuis l'admin */
-        onSnapshot(query(collection(db, 'avis'), orderBy('dateAjout', 'desc')),
-            (snap) => window.renderReviews(snap.docs.map((d) => d.data())),
-            (err) => { console.warn('Avis indisponibles :', err); window.renderReviews(null); });
-        /* Photos placées dans l'en-tête, les 3 ambiances et le pied de page (choisies depuis l'admin) */
-        const ts = (d) => (d && d.toMillis ? d.toMillis() : 0);
-        const SLOT_VARS = { hero: '--photo-hero', cafe: '--photo-cafe', midi: '--photo-midi', vin: '--photo-vin' };
-        onSnapshot(query(collection(db, 'photos'), where('emplacement', 'in', ['hero', 'cafe', 'midi', 'vin', 'footer'])), (snap) => {
-            const best = {};
-            snap.docs.forEach((d) => {
-                const p = d.data();
-                if (!best[p.emplacement] || ts(p.dateAffectation) > ts(best[p.emplacement].dateAffectation)) best[p.emplacement] = p;
-            });
-            Object.entries(SLOT_VARS).forEach(([slot, cssVar]) => {
-                if (best[slot]) document.documentElement.style.setProperty(cssVar, `url("${best[slot].src}")`);
-                else document.documentElement.style.removeProperty(cssVar);
-            });
-            const foot = document.querySelector('footer.site-footer');
-            if (best.footer) { foot.style.setProperty('--photo-footer', `url("${best.footer.src}")`); foot.classList.add('has-photo'); }
-            else { foot.style.removeProperty('--photo-footer'); foot.classList.remove('has-photo'); }
-        }, (err) => console.warn('Photos des emplacements indisponibles :', err));
-
-        /* Galerie : chargée après l'affichage de la page pour ne pas ralentir le début */
-        const loadGallery = async () => {
-            try {
-                const snap = await getDocs(query(collection(db, 'photos'), where('emplacement', '==', 'galerie')));
-                window.renderGallery(snap.docs.map((d) => d.data()).sort((a, b) => ts(a.dateAjout) - ts(b.dateAjout)));
-            } catch (err) { console.warn('Galerie indisponible :', err); window.renderGallery(null); }
-        };
-        if (document.readyState === 'complete') setTimeout(loadGallery, 300);
-        else window.addEventListener('load', () => setTimeout(loadGallery, 300));
     </script>
 </body>
 </html>
