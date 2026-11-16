@@ -188,7 +188,7 @@
         .gw-score i { display: inline-block; width: 1px; height: 1em; background: #000; margin: 0 .55rem; vertical-align: -.12em; }
         .gw-write { font: 500 .9rem 'Poppins', var(--ff-body); color: #000; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: .65rem 1.7rem; text-decoration: none; transition: background .2s, border-color .2s; }
         .gw-write:hover, .gw-write:focus-visible { background: #f5f5f5; border-color: #999; }
-        .gw-wrap { position: relative; }
+        .gw-wrap { position: relative; padding: 0 58px; }
         .rev-track { display: flex; align-items: flex-start; gap: 1.6rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .3rem .1rem 1rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .rev-track::-webkit-scrollbar { display: none; }
         .rev-card { flex: 0 0 calc((100% - 3.2rem) / 3); scroll-snap-align: start; background: #fff; display: flex; flex-direction: column; min-width: 0; }
@@ -205,14 +205,16 @@
         .rev-card.open .rev-text { display: block; }
         .rev-more { align-self: flex-start; margin: .35rem 0 0; background: none; border: 0; color: #aaa; font: 400 .85rem 'Poppins', var(--ff-body); cursor: pointer; padding: .2rem 0; transition: color .2s; }
         .rev-more:hover, .rev-more:focus-visible { color: #333; }
-        .rev-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 1px solid #ddd; background: #fff; color: #555; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, .12); transition: background .2s, color .2s; z-index: 2; font-size: .8rem; }
+        .rev-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 1px solid #ddd; background: #fff; color: #555; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, .12); transition: background .2s, color .2s, opacity .25s, visibility .25s; z-index: 2; font-size: .8rem; opacity: 0; visibility: hidden; }
+        .gw-wrap:hover .rev-nav, .gw-wrap:focus-within .rev-nav { opacity: 1; visibility: visible; }
         .rev-nav:hover, .rev-nav:focus-visible { background: #f5f5f5; color: #000; }
-        #revPrev { left: -18px; } #revNext { right: -18px; }
+        #revPrev { left: 4px; } #revNext { right: 4px; }
         .gw-foot { text-align: center; margin-top: 1.2rem; }
         .gw-all { font: 500 .85rem 'Poppins', var(--ff-body); color: #555; text-decoration: none; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
         .gw-all:hover { color: #000; border-color: #000; }
+        @media (hover: none) { .rev-nav { display: none; } }
         @media (max-width: 960px) { .rev-card { flex-basis: calc((100% - 1.6rem) / 2); } }
-        @media (max-width: 640px) { .rev-card { flex-basis: 100%; } #revPrev { left: -6px; } #revNext { right: -6px; } .gw-head { justify-content: center; } }
+        @media (max-width: 640px) { .rev-card { flex-basis: 100%; } .gw-wrap { padding: 0; } .gw-head { justify-content: center; } }
 
         /* ===== RÉSERVER ===== */
         .reserver { background: var(--cream-2); }
@@ -619,8 +621,23 @@
         const track = document.getElementById('revTrack');
         if (!track) return;
         const step = () => { const c = track.querySelector('.rev-card'); return (c ? c.getBoundingClientRect().width : 300) + parseFloat(getComputedStyle(track).columnGap || 24); };
-        document.getElementById('revPrev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-        document.getElementById('revNext').addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+        const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+        const next = () => atEnd() ? track.scrollTo({ left: 0, behavior: 'smooth' }) : track.scrollBy({ left: step(), behavior: 'smooth' });
+        const prev = () => track.scrollLeft <= 4 ? track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' }) : track.scrollBy({ left: -step(), behavior: 'smooth' });
+        document.getElementById('revPrev').addEventListener('click', prev);
+        document.getElementById('revNext').addEventListener('click', next);
+        // Défilement automatique (en pause au survol, au toucher ou si un avis est déplié)
+        const wrap = track.closest('.gw-wrap');
+        let paused = false, timer = null;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const start = () => { if (reduce || timer) return; timer = setInterval(() => { if (!paused && !document.hidden && !track.querySelector('.rev-card.open')) next(); }, 4500); };
+        wrap.addEventListener('mouseenter', () => { paused = true; });
+        wrap.addEventListener('mouseleave', () => { paused = false; });
+        wrap.addEventListener('focusin', () => { paused = true; });
+        wrap.addEventListener('focusout', () => { paused = false; });
+        track.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+        track.addEventListener('touchend', () => { setTimeout(() => { paused = false; }, 6000); }, { passive: true });
+        start();
         const cards = track.querySelectorAll('.rev-card');
         const check = () => cards.forEach((card) => {
             const t = card.querySelector('.rev-text'), b = card.querySelector('.rev-more');
