@@ -2,6 +2,9 @@
 (() => {
     document.documentElement.classList.add('js');
 
+    // Sécurité : la grande photo de l'accueil s'affiche même si sa lecture en ligne échoue
+    setTimeout(() => { const h = document.querySelector('.hero-bg'); if (h) h.classList.add('ready'); }, 4000);
+
     const header = document.querySelector('.site-header');
     const burger = document.getElementById('burger');
     const nav = document.getElementById('mainNav');
