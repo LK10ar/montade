@@ -158,6 +158,14 @@
         .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
         .empty i { font-size: 2rem; display: block; margin-bottom: .8rem; color: var(--line); }
         .mobile-add { display: none; }
+        /* ---- Onglets Carte / Photos / Réglages ---- */
+        .viewbar { background: var(--cream, #fbf8ef); border-bottom: 1px solid var(--line); display: flex; gap: .5rem; padding: .7rem clamp(1rem, 3vw, 2rem); overflow-x: auto; }
+        .vtab { display: inline-flex; align-items: center; gap: .5rem; border: 1.5px solid var(--line); background: #fff; color: var(--blue); border-radius: 999px; padding: .6rem 1.2rem; font-weight: 700; font-size: .85rem; cursor: pointer; white-space: nowrap; transition: all .2s; }
+        .vtab:hover, .vtab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .dash:not([data-view="carte"]) { grid-template-columns: 1fr; max-width: 1100px; }
+        .dash[data-view="photos"] [data-view]:not([data-view="photos"]),
+        .dash[data-view="reglages"] [data-view]:not([data-view="reglages"]),
+        .dash[data-view="carte"] [data-view]:not([data-view="carte"]) { display: none !important; }
         .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 30px); background: var(--blue-dark); color: #fff; padding: .85rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: .9rem; opacity: 0; pointer-events: none; transition: all .35s; z-index: 200; box-shadow: 0 14px 40px rgba(0, 0, 0, .3); max-width: 90vw; text-align: center; }
         .toast.show { opacity: 1; transform: translate(-50%, 0); }
         .toast.ok { background: var(--ok); }
@@ -227,8 +235,14 @@
         <button class="btn btn-yellow btn-sm" id="logoutBtn" type="button"><i class="fas fa-right-from-bracket"></i><span class="label-long">Déconnexion</span></button>
     </header>
 
-    <div class="dash">
-        <aside>
+    <nav class="viewbar" id="viewbar" aria-label="Sections de l'espace pro">
+        <button type="button" class="vtab active" data-go="carte"><i class="fas fa-utensils"></i> Carte</button>
+        <button type="button" class="vtab" data-go="photos"><i class="fas fa-images"></i> Photos</button>
+        <button type="button" class="vtab" data-go="reglages"><i class="fas fa-gear"></i> Réglages</button>
+    </nav>
+
+    <div class="dash" id="dash" data-view="carte">
+        <aside data-view="carte">
             <button class="btn btn-yellow mobile-add" id="mobileAdd" type="button"><i class="fas fa-plus"></i> Ajouter un élément</button>
             <form class="card form-card" id="platForm" novalidate>
                 <h2 id="formTitle"><i class="fas fa-plus-circle"></i> Ajouter à la carte</h2>
@@ -299,7 +313,7 @@
         </aside>
 
         <section>
-            <div class="card setting">
+            <div class="card setting" data-view="reglages">
                 <div class="setting-text">
                     <strong><i class="fas fa-envelope"></i> Formulaire de contact</strong>
                     <span>Affiche ou masque le bloc « Écrivez-nous » sur le site. Les messages arrivent par email.</span>
@@ -307,7 +321,7 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="contactToggle" checked><span class="slider"></span><span class="switch-label" id="contactLabel">Activé</span></label>
             </div>
-            <div class="card qr-card">
+            <div class="card qr-card" data-view="reglages">
                 <div class="setting-text">
                     <strong><i class="fas fa-qrcode"></i> QR code des tables</strong>
                     <span>Génère le QR code qui mène à la page de la carte. À imprimer et à coller sur les tables.</span>
@@ -329,7 +343,7 @@
                     <a class="btn btn-yellow btn-sm" id="qrDl" download="qr-carte-le-montade.png"><i class="fas fa-download"></i> Télécharger (PNG)</a>
                 </div>
             </div>
-            <div class="card photos-card">
+            <div class="card photos-card" data-view="photos">
                 <div class="setting-text">
                     <strong><i class="fas fa-images"></i> Photos du site</strong>
                     <span>Changez les photos de l'accueil et gérez la galerie. Les photos sont réduites automatiquement avant l'envoi.</span>
@@ -341,12 +355,12 @@
                 <input type="file" id="slotInput" accept="image/*" hidden>
                 <input type="file" id="galInput" accept="image/*" multiple hidden>
             </div>
-            <div class="stats" id="stats"></div>
-            <div class="card toolbar">
+            <div class="stats" id="stats" data-view="carte"></div>
+            <div class="card toolbar" data-view="carte">
                 <div class="filter-tabs" id="filterTabs"></div>
                 <label class="search"><i class="fas fa-magnifying-glass"></i><input type="search" id="search" placeholder="Rechercher…" aria-label="Rechercher dans la carte"></label>
             </div>
-            <div id="list"></div>
+            <div id="list" data-view="carte"></div>
         </section>
     </div>
 </div>
@@ -460,7 +474,7 @@
     $('logoutBtn').addEventListener('click', () => logout('Vous êtes déconnecté.'));
 
     function openDashboard() {
-        $('loginScreen').hidden = true; $('dashboard').hidden = false;
+        $('loginScreen').hidden = true; $('dashboard').hidden = false; showView('carte');
         window.scrollTo(0, 0);
         clearTimeout(logoutTimer);
         logoutTimer = setTimeout(() => logout('Session expirée, reconnectez-vous.'), Math.max(1000, tokenExp - Date.now()));
@@ -580,6 +594,13 @@
         }
     });
     $('search').addEventListener('input', renderList);
+    /* ===== Onglets Carte / Photos / Réglages ===== */
+    function showView(v) {
+        $('dash').dataset.view = v;
+        document.querySelectorAll('.vtab').forEach((b) => b.classList.toggle('active', b.dataset.go === v));
+        window.scrollTo({ top: 0 });
+    }
+    $('viewbar').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) showView(b.dataset.go); });
     $('mobileAdd').addEventListener('click', () => $('platForm').classList.toggle('open'));
 
     /* ===== Formulaire ===== */
