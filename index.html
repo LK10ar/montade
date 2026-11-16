@@ -156,7 +156,24 @@
 
         /* ===== AVIS ===== */
         .avis { background: #fff; }
-        .reviews-box { max-width: 1100px; margin: 0 auto; min-height: 160px; }
+        .rev-track { display: flex; align-items: flex-start; gap: 1.2rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .4rem .2rem 1.6rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .rev-track::-webkit-scrollbar { display: none; }
+        .rev-card { flex: 0 0 calc((100% - 2.4rem) / 3); scroll-snap-align: start; background: var(--cream); border-radius: 22px; padding: 1.6rem 1.5rem 1.3rem; position: relative; box-shadow: 0 10px 30px rgba(23, 35, 63, .07); display: flex; flex-direction: column; }
+        .rev-card::before { content: '\201C'; position: absolute; top: .2rem; right: 1.2rem; font-family: var(--ff-title); font-size: 5rem; line-height: 1; color: var(--yellow); opacity: .7; }
+        .rev-stars { color: #e8a800; font-size: .95rem; display: flex; gap: .15rem; margin-bottom: .9rem; }
+        .rev-text { color: var(--ink); font-size: .94rem; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; }
+        .rev-card.open .rev-text { display: block; }
+        .rev-more { align-self: flex-start; margin: .6rem 0 0; background: none; border: 0; color: var(--gold); font: 700 .82rem var(--ff-body); cursor: pointer; padding: .2rem 0; border-bottom: 2px solid var(--yellow); transition: color .2s; }
+        .rev-more:hover { color: var(--blue); }
+        .rev-card footer { display: flex; align-items: center; gap: .8rem; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+        .rev-avatar { width: 42px; height: 42px; flex: none; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-weight: 700; }
+        .rev-card footer strong { display: block; color: var(--blue); line-height: 1.2; }
+        .rev-card footer small { color: var(--muted); font-size: .76rem; }
+        .rev-actions { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: .4rem; flex-wrap: wrap; }
+        .rev-nav { width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; background: var(--blue); color: #fff; cursor: pointer; transition: background .25s, color .25s, transform .25s; }
+        .rev-nav:hover, .rev-nav:focus-visible { background: var(--gold-btn); color: var(--blue-dark); transform: translateY(-2px); }
+        @media (max-width: 960px) { .rev-card { flex-basis: calc((100% - 1.2rem) / 2); } }
+        @media (max-width: 640px) { .rev-card { flex-basis: 88%; } }
 
         /* ===== RÉSERVER ===== */
         .reserver { background: var(--cream-2); }
@@ -338,16 +355,56 @@
             </div>
         </section>
 
-        <!-- ================= AVIS GOOGLE (Trustindex) ================= -->
+        <!-- ================= AVIS GOOGLE ================= -->
         <section id="avis" class="section avis">
             <div class="container">
                 <div class="section-head reveal">
                     <span class="eyebrow">Avis clients</span>
                     <h2 class="title">Ils nous <em>recommandent</em></h2>
-                    <p>Les avis Google de nos clients, en direct.</p>
+                    <p>Ce que nos clients disent de nous sur Google.</p>
                 </div>
-                <div class="reviews-box">
-                    <script defer async src='https://cdn.trustindex.io/loader.js?b45c39384eea95552b563b23eb7'></script>
+                <div class="rev-track" id="revTrack" tabindex="0" role="region" aria-label="Avis clients, défilement horizontal">
+                    <article class="rev-card">
+                        <div class="rev-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <blockquote class="rev-text">L'endroit parfait pour déjeuner et coworker. Ce restaurant est non seulement chaleureux et accueillant, mais sert également des plats simples, bons... et beaux !<br>Nous avons été accueillis par la propriétaire et avons pu passer un moment plus qu'agréable. Nous reviendrons pour boire un verre, déjeuner, dîner, travailler... bref, Le Montadé va très vite devenir un incontournable.</blockquote>
+                        <button type="button" class="rev-more" hidden>Lire la suite</button>
+                        <footer><span class="rev-avatar" aria-hidden="true">M</span><div><strong>Marine Lasserre</strong><small>Avis Google</small></div></footer>
+                    </article>
+                    <article class="rev-card">
+                        <div class="rev-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <blockquote class="rev-text">Encore une très belle soirée au Montadé 💗<br>Nous avons eu le plaisir de goûter à la côte de bœuf… et quel régal ! 🥩 🤩 Une vraie découverte gourmande !<br>Je recommande vraiment ce lieu, à la fois apaisant, convivial et festif. Les propriétaires sont adorables, toujours aux petits soins et soucieux de faire plaisir à chacun.<br>Nous sommes vraiment ravis d'avoir une si belle brasserie dans notre village. Un endroit où l'on aime revenir, tout simplement ! 💗</blockquote>
+                        <button type="button" class="rev-more" hidden>Lire la suite</button>
+                        <footer><span class="rev-avatar" aria-hidden="true">J</span><div><strong>Jo Anna</strong><small>Avis Google</small></div></footer>
+                    </article>
+                    <article class="rev-card">
+                        <div class="rev-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <blockquote class="rev-text">Avons mangé ce midi dans ce restaurant! Équipe tres accueillante, souriante et aux petits soins !<br>Carte réduite a 2 ou 3 choix par service mais en contre partie des produits frais, de qualite , bien cuisiné et bien servie/présenté ! La cerise sur le gâteau est donc le prix !<br>Un menu du jour (entrée, plat, dessert) pour 21€ avec cette qualité, de quoi donner l'envie de revenir !!!<br>Un cadre de repas agréable que se soit en terrasse ou en salle.<br>Un jolie espace est aménagé pour les enfants et des siestes sont proposées pour qu'ils puissent être avec nous !</blockquote>
+                        <button type="button" class="rev-more" hidden>Lire la suite</button>
+                        <footer><span class="rev-avatar" aria-hidden="true">C</span><div><strong>Cha liine</strong><small>Avis Google</small></div></footer>
+                    </article>
+                    <article class="rev-card">
+                        <div class="rev-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <blockquote class="rev-text">Une cuisine maison qui "fait plaisir" !<br>De passage à Camblanes j'ai eu la chance de goûter une "Cocotte" dans ce jeune restaurant et ce fût un beau moment.<br>L'accueil est chaleureux, la carte réduite car ici tout est fait maison avec des produits de saison.<br>De l'entrée au désert, tout est délicieux et le rapport qualité-prix est exceptionnel.<br>Enfin, une mention spéciale à la bienveillance et au sourire de l'équipe qui nous accueille et nous accompagne dans cette pause très agréable.</blockquote>
+                        <button type="button" class="rev-more" hidden>Lire la suite</button>
+                        <footer><span class="rev-avatar" aria-hidden="true">B</span><div><strong>Bruno Megret</strong><small>Avis Google</small></div></footer>
+                    </article>
+                    <article class="rev-card">
+                        <div class="rev-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <blockquote class="rev-text">Très belle surprise pour un petit repas en famille.<br>Des plats savoureux, faits maison, tant pour les enfants que pour les parents.<br>Ambiance familiale et conviviale avec des personnes très agréables.<br>Gros bonus pour l'espace réservé aux enfants, qu'ils ont adoré.<br>Une belle adresse où je n'hésiterai pas à revenir ⭐</blockquote>
+                        <button type="button" class="rev-more" hidden>Lire la suite</button>
+                        <footer><span class="rev-avatar" aria-hidden="true">M</span><div><strong>Marina Da Costa</strong><small>Avis Google</small></div></footer>
+                    </article>
+                    <article class="rev-card">
+                        <div class="rev-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <blockquote class="rev-text">Je suis venue avec des résidents d'un foyer d'hébergement.<br>Nous avons été très bien accueillis.<br>Nous avons eu droit à écouter les musiques préférées d'une des personnes du groupe !<br>Elle qui était un peu morose est repartie avec un grand sourire.<br>Un très bon début de journée !!!<br>Merci</blockquote>
+                        <button type="button" class="rev-more" hidden>Lire la suite</button>
+                        <footer><span class="rev-avatar" aria-hidden="true">C</span><div><strong>Celine Gillet</strong><small>Avis Google</small></div></footer>
+                    </article>
+                </div>
+                <div class="rev-actions">
+                    <button type="button" class="rev-nav" id="revPrev" aria-label="Avis précédents"><i class="fas fa-chevron-left"></i></button>
+                    <a class="btn btn-dark" href="https://www.google.com/maps/search/?api=1&query=Le+Montad%C3%A9+1+Av.+de+Loustallaut+33880+Saint-Caprais-de-Bordeaux" target="_blank" rel="noopener"><i class="fab fa-google"></i> Voir tous les avis</a>
+                    <button type="button" class="rev-nav" id="revNext" aria-label="Avis suivants"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         </section>
@@ -495,6 +552,27 @@
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer le message';
             }
         });
+    })();
+    </script>
+
+    <!-- ===== Avis : défilement et « Lire la suite » ===== -->
+    <script>
+    (() => {
+        const track = document.getElementById('revTrack');
+        if (!track) return;
+        const step = () => { const c = track.querySelector('.rev-card'); return (c ? c.getBoundingClientRect().width : 300) + 19; };
+        document.getElementById('revPrev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        document.getElementById('revNext').addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+        const cards = track.querySelectorAll('.rev-card');
+        const check = () => cards.forEach((card) => {
+            const t = card.querySelector('.rev-text'), b = card.querySelector('.rev-more');
+            b.hidden = !card.classList.contains('open') && t.scrollHeight <= t.clientHeight + 2;
+        });
+        cards.forEach((card) => card.querySelector('.rev-more').addEventListener('click', (e) => {
+            const open = card.classList.toggle('open');
+            e.currentTarget.textContent = open ? 'Réduire' : 'Lire la suite';
+        }));
+        check(); window.addEventListener('load', check); window.addEventListener('resize', check);
     })();
     </script>
 
