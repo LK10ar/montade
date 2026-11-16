@@ -54,7 +54,7 @@
     </script>
 
     <style>
-        /* ===== Photos : valeurs par défaut, remplacées par celles choisies dans l'admin ===== */
+        /* ===== Photos ===== */
         :root {
             --photo-hero: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');
             --photo-cafe: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80');
@@ -127,6 +127,10 @@
         .sizes .price { font-size: .9rem; }
         .sizes .price small { color: #c4cde3; font-weight: 600; margin-right: .3rem; }
         .menu-item p { margin-top: .2rem; font-size: .84rem; color: #c4cde3; font-style: italic; overflow-wrap: anywhere; }
+        .mi-alg { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .4rem; }
+        .mi-alg span { font-size: .72rem; font-weight: 600; background: rgba(255, 255, 255, .12); color: #fff4b0; border-radius: 999px; padding: .1rem .55rem; }
+        .board-link { text-align: center; margin-top: 2rem; }
+        .carte .btn-dark { border-color: rgba(255, 255, 255, .4); }
         .formule { background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .15); border-radius: 20px; padding: clamp(1.1rem, 3vw, 2rem); margin-top: 1.4rem; }
         .formule > h3 { font-size: 1.7rem; color: var(--yellow); text-align: center; margin-bottom: 1rem; }
         .formule .combos { max-width: 520px; margin: 0 auto 1.2rem; }
@@ -217,16 +221,6 @@
             .mobile-cta .btn { flex: 1; padding: .85rem .5rem; }
             .btn-top { bottom: calc(86px + env(safe-area-inset-bottom)); }
         }
-    
-        /* ===== Pied de page avec photo (choisie dans l'admin) ===== */
-        footer.site-footer.has-photo { background: linear-gradient(rgba(23, 35, 63, .9), rgba(23, 35, 63, .94)), var(--photo-footer) center / cover no-repeat; }
-
-        /* ===== Galerie ===== */
-        .galerie[hidden] { display: none; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-        .gallery-grid figure { border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--cream-2); box-shadow: 0 10px 30px rgba(23, 35, 63, .1); }
-        .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
-        .gallery-grid figure:hover img { transform: scale(1.05); }
     </style>
 </head>
 <body class="home">
@@ -302,17 +296,6 @@
             </div>
         </section>
 
-        <!-- ================= GALERIE ================= -->
-        <section id="galerie" class="section galerie" hidden>
-            <div class="container">
-                <div class="section-head reveal">
-                    <span class="eyebrow">En images</span>
-                    <h2 class="title">Le Montadé <em>en photos</em></h2>
-                </div>
-                <div class="gallery-grid" id="galleryGrid"></div>
-            </div>
-        </section>
-
         <!-- ================= CARTE ================= -->
         <section id="carte" class="section carte on-dark">
             <div class="container">
@@ -326,6 +309,7 @@
                         <div class="carte-state"><i class="fas fa-spinner fa-spin"></i>Chargement de la carte…</div>
                     </div>
                 </div>
+                <div class="board-link"><a class="btn btn-dark" href="carte.html"><i class="fas fa-qrcode"></i> Version mobile &amp; allergènes</a></div>
             </div>
         </section>
 
@@ -437,6 +421,7 @@
                 <ul>
                     <li><a href="#concept">Le concept</a></li>
                     <li><a href="#carte">La carte</a></li>
+                    <li><a href="carte.html">Carte &amp; allergènes</a></li>
                     <li><a href="#horaires">Horaires</a></li>
                     <li><a href="#avis">Avis</a></li>
                     <li><a href="#reserver">Réserver</a></li>
@@ -566,30 +551,10 @@
     </script>
 
     <!-- ===== La carte : lecture en direct depuis Firebase Firestore ===== -->
-    <script>
-    (() => {
-        const gg = document.getElementById('galleryGrid');
-        const sec = document.getElementById('galerie');
-        window.renderGallery = (list) => {
-            gg.textContent = '';
-            sec.hidden = true;
-            (list || []).forEach((p) => {
-                const fig = document.createElement('figure');
-                const img = new Image();
-                img.alt = 'Photo du Montadé';
-                img.onload = () => { sec.hidden = false; };
-                img.onerror = () => fig.remove();
-                img.src = p.src;
-                fig.append(img);
-                gg.append(fig);
-            });
-        };
-    })();
-    </script>
-
+    <script src="allergenes.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, doc, onSnapshot, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
@@ -628,10 +593,14 @@
         let data = {};      // { onglet: { type: [plats] } }
         let current = null;
 
-        const itemHtml = (nom, desc, priceHtml) => `
+        const algMini = (keys) => {
+            const list = (keys || []).map((k) => (window.ALLERGENS_BY_KEY || {})[k]).filter(Boolean);
+            return list.length ? `<div class="mi-alg" aria-label="Allergènes">${list.map((a) => `<span title="${esc(a.label)}">${a.icon} ${esc(a.label)}</span>`).join('')}</div>` : '';
+        };
+        const itemHtml = (nom, desc, priceHtml, alg) => `
             <div class="menu-item">
                 <div class="mi-head"><h4>${esc(nom)}</h4><span class="leader"></span>${priceHtml}</div>
-                ${desc ? `<p>${esc(desc)}</p>` : ''}
+                ${desc ? `<p>${esc(desc)}</p>` : ''}${algMini(alg)}
             </div>`;
 
         function platHtml(p) {
@@ -639,10 +608,10 @@
                 const sizes = [['25cl', p.prixTailles.cl25], ['33cl', p.prixTailles.cl33], ['50cl', p.prixTailles.cl50]]
                     .filter(([, v]) => fmtPrix(v))
                     .map(([l, v]) => `<span class="price"><small>${l}</small>${esc(fmtPrix(v))}</span>`).join('');
-                return itemHtml(p.nom, p.description, `<span class="sizes">${sizes}</span>`);
+                return itemHtml(p.nom, p.description, `<span class="sizes">${sizes}</span>`, p.allergenes);
             }
             const pr = fmtPrix(p.prix);
-            return itemHtml(p.nom, p.description, pr ? `<span class="price">${esc(pr)}</span>` : '');
+            return itemHtml(p.nom, p.description, pr ? `<span class="price">${esc(pr)}</span>` : '', p.allergenes);
         }
 
         function formuleHtml(p) {
@@ -650,7 +619,7 @@
             const combo = (label, v) => fmtPrix(v) ? itemHtml(label, '', `<span class="price">${esc(fmtPrix(v))}</span>`) : '';
             const d = p.detailsFormule || {};
             const col = (title, items) => (items && items.length)
-                ? `<div><h5>${title}</h5>${items.map((it) => itemHtml(it.nom, it.desc, fmtPrix(it.prix) ? `<span class="price">${esc(fmtPrix(it.prix))}</span>` : '')).join('')}</div>` : '';
+                ? `<div><h5>${title}</h5>${items.map((it) => itemHtml(it.nom, it.desc, fmtPrix(it.prix) ? `<span class="price">${esc(fmtPrix(it.prix))}</span>` : '', it.allergenes)).join('')}</div>` : '';
             return `<div class="formule"><h3>${esc(p.nom)}</h3>
                 <div class="combos">${combo('Entrées + Plats + Desserts', c.epd)}${combo('Entrées + Plats', c.ep)}${combo('Plats + Desserts', c.pd)}</div>
                 <div class="cols">${col('Entrées', d.entrees)}${col('Plats', d.plats)}${col('Desserts', d.desserts)}</div></div>`;
@@ -706,34 +675,6 @@
             tabsEl.innerHTML = '';
             panelEl.innerHTML = '<div class="carte-state"><i class="fas fa-triangle-exclamation"></i>Impossible d\'afficher la carte pour le moment. Appelez-nous au 05.56.84.31.59.</div>';
         });
-
-        /* Photos placées dans l'en-tête, les 3 ambiances et le pied de page (choisies depuis l'admin) */
-        const ts = (d) => (d && d.toMillis ? d.toMillis() : 0);
-        const SLOT_VARS = { hero: '--photo-hero', cafe: '--photo-cafe', midi: '--photo-midi', vin: '--photo-vin' };
-        onSnapshot(query(collection(db, 'photos'), where('emplacement', 'in', ['hero', 'cafe', 'midi', 'vin', 'footer'])), (snap) => {
-            const best = {};
-            snap.docs.forEach((d) => {
-                const p = d.data();
-                if (!best[p.emplacement] || ts(p.dateAffectation) > ts(best[p.emplacement].dateAffectation)) best[p.emplacement] = p;
-            });
-            Object.entries(SLOT_VARS).forEach(([slot, cssVar]) => {
-                if (best[slot]) document.documentElement.style.setProperty(cssVar, `url("${best[slot].src}")`);
-                else document.documentElement.style.removeProperty(cssVar);
-            });
-            const foot = document.querySelector('footer.site-footer');
-            if (best.footer) { foot.style.setProperty('--photo-footer', `url("${best.footer.src}")`); foot.classList.add('has-photo'); }
-            else { foot.style.removeProperty('--photo-footer'); foot.classList.remove('has-photo'); }
-        }, (err) => console.warn('Photos des emplacements indisponibles :', err));
-
-        /* Galerie : chargée après l'affichage de la page pour ne pas ralentir le début */
-        const loadGallery = async () => {
-            try {
-                const snap = await getDocs(query(collection(db, 'photos'), where('emplacement', '==', 'galerie')));
-                window.renderGallery(snap.docs.map((d) => d.data()).sort((a, b) => ts(a.dateAjout) - ts(b.dateAjout)));
-            } catch (err) { console.warn('Galerie indisponible :', err); window.renderGallery([]); }
-        };
-        if (document.readyState === 'complete') setTimeout(loadGallery, 300);
-        else window.addEventListener('load', () => setTimeout(loadGallery, 300));
     </script>
 </body>
 </html>
