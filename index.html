@@ -169,6 +169,9 @@
         .hours-card .d { grid-area: d; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .82rem; color: var(--blue); }
         .hours-card .h { grid-area: h; font-weight: 700; }
         .hours-card .a { grid-area: a; font-size: .82rem; color: var(--muted); font-style: italic; }
+        .annonce { position: fixed; left: 0; right: 0; top: var(--header-h); z-index: 99; background: var(--yellow); color: var(--blue-dark); text-align: center; font-weight: 700; font-size: .86rem; padding: .5rem 1rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .15); }
+        .no-resa a[href="#reserver"], .no-resa #reserver { display: none !important; }
+        .hours-card li.exc .d { color: var(--gold); }
         .hours-card li.today { background: var(--yellow-soft); box-shadow: inset 4px 0 0 var(--gold); border-bottom-color: transparent; }
         .hours-card li.today .d::after { content: " · aujourd'hui"; text-transform: none; letter-spacing: 0; font-weight: 600; color: var(--gold); }
 
@@ -259,6 +262,7 @@
     </style>
 </head>
 <body class="home">
+    <div class="annonce" id="annonce" role="status" hidden></div>
     <a href="#carte" class="skip-link">Aller à la carte</a>
 
     <header class="site-header">
@@ -614,7 +618,7 @@
     <!-- ===== Horaires : statut « ouvert / fermé » en temps réel (heure de Paris) ===== -->
     <script>
     (() => {
-        const SCHEDULE = {
+        let SCHEDULE = {
             1: [['12:00', '18:00']],
             2: [['08:30', '18:00']],
             3: [['12:00', '14:00'], ['17:30', '23:00']],
@@ -626,12 +630,37 @@
         const DAY_NAMES = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
         const toMin = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
         const fmt = (s) => { const [h, m] = s.split(':').map(Number); return h + 'h' + (m ? String(m).padStart(2, '0') : ''); };
+        const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const NAMES = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        let NOTES = null, EXC = [];
+        const iso = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        const fmtSlots = (sl) => sl.map((s) => `${fmt(s[0])} – ${fmt(s[1])}`).join(' & ') || 'Fermé';
+        // Plages du jour : une exception (jour férié, congés) remplace l'horaire habituel
+        function slotsFor(d) {
+            const k = iso(d), ex = EXC.find((e) => e.from <= k && k <= e.to);
+            return ex ? (ex.closed ? [] : ex.slots) : (SCHEDULE[d.getDay()] || []);
+        }
+        function renderHours(now) {
+            const k = iso(now), fr = (s) => s.slice(8) + '/' + s.slice(5, 7);
+            const week = [1, 2, 3, 4, 5, 6, 0].map((d) => `<li data-dow="${d}"><span class="d">${NAMES[d]}</span><span class="h">${fmtSlots(SCHEDULE[d] || [])}</span><span class="a">${esc(NOTES && NOTES[d])}</span></li>`).join('');
+            const exc = EXC.filter((e) => e.to >= k).slice(0, 6).map((e) => `<li class="exc"><span class="d">${fr(e.from)}${e.to !== e.from ? '→' + fr(e.to) : ''}</span><span class="h">${e.closed ? 'Fermé' : fmtSlots(e.slots)}</span><span class="a">${esc(e.label)}</span></li>`).join('');
+            document.getElementById('hoursList').innerHTML = week + exc;
+        }
+        window.__setHoraires = (h) => {
+            if (!h || !h.week) return;
+            const s = {}, n = {};
+            for (let d = 0; d < 7; d++) { const w = h.week[d] || {}; s[d] = (w.slots || []).map((x) => [x.o, x.c]); n[d] = w.note || ''; }
+            SCHEDULE = s; NOTES = n;
+            EXC = (Array.isArray(h.exceptions) ? h.exceptions : []).map((e) => ({ from: e.from, to: e.to, closed: e.closed !== false, slots: (e.slots || []).map((x) => [x.o, x.c]), label: e.label || '' }));
+            update();
+        };
 
         function update() {
             const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
             const dow = now.getDay();
             const mins = now.getHours() * 60 + now.getMinutes();
-            const slots = SCHEDULE[dow] || [];
+            const slots = slotsFor(now);
+            if (NOTES) renderHours(now);
 
             document.querySelectorAll('#hoursList li').forEach((li) => li.classList.toggle('today', Number(li.dataset.dow) === dow));
             document.getElementById('todayHours').textContent = slots.map((s) => `${fmt(s[0])} – ${fmt(s[1])}`).join(' & ') || 'Fermé';
@@ -645,10 +674,11 @@
                 const later = slots.find((s) => toMin(s[0]) > mins);
                 if (later) text = `Fermé · ouvre à ${fmt(later[0])}`;
                 else {
-                    for (let i = 1; i <= 7; i++) {
-                        const d = (dow + i) % 7;
-                        if (SCHEDULE[d] && SCHEDULE[d].length) {
-                            text = `Fermé · ouvre ${i === 1 ? 'demain' : DAY_NAMES[d]} à ${fmt(SCHEDULE[d][0][0])}`;
+                    for (let i = 1; i <= 14; i++) {
+                        const dd = new Date(now); dd.setDate(now.getDate() + i);
+                        const sl = slotsFor(dd);
+                        if (sl.length) {
+                            text = `Fermé · ouvre ${i === 1 ? 'demain' : DAY_NAMES[dd.getDay()]} à ${fmt(sl[0][0])}`;
                             break;
                         }
                     }
@@ -680,7 +710,7 @@
         const db = getFirestore(initializeApp(firebaseConfig));
 
         // ----- Photos modifiables depuis l'admin (accueil + galerie) -----
-        const okImg = (d) => typeof d === 'string' && d.startsWith('data:image/jpeg;base64,');
+        const okImg = (d) => typeof d === 'string' && (d.startsWith('data:image/jpeg;base64,') || /^https:\/\/[\w.-]+\/[\w\-./%]+\.(jpe?g|png|webp|avif)$/i.test(d));
         const lazy = (el, fn) => {
             if (!el) return;
             if (!('IntersectionObserver' in window)) { fn(); return; }
@@ -734,8 +764,16 @@
         // Le formulaire de contact s'affiche sauf s'il est désactivé dans l'admin
         const contactWrap = document.getElementById('contactFormWrap');
         onSnapshot(doc(db, 'settings', 'site'),
-            (snap) => { contactWrap.hidden = snap.exists() && snap.data().contactActive === false; },
+            (snap) => {
+                const d = snap.exists() ? snap.data() : {};
+                contactWrap.hidden = d.contactActive === false;
+                document.documentElement.classList.toggle('no-resa', d.reservationActive === false);
+                const an = document.getElementById('annonce'), txt = String(d.annonceText || '').trim();
+                an.textContent = txt; an.hidden = !(d.annonceActive === true && txt);
+            },
             () => { contactWrap.hidden = false; });
+        // Horaires modifiables depuis l'admin (sinon horaires par défaut du code)
+        getDoc(doc(db, 'settings', 'horaires')).then((s) => { if (s.exists() && window.__setHoraires) window.__setHoraires(s.data()); }).catch(() => {});
 
         const TABS = [
             { id: 'midi', label: 'Le Midi', note: '« Ici tout est fait maison ! »' },
