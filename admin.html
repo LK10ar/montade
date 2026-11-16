@@ -118,6 +118,21 @@
         .qr-result { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
         .qr-result img { width: 200px; height: 200px; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
         @media (max-width: 700px) { .qr-controls { grid-template-columns: 1fr; } }
+        .photos-card { padding: 1.1rem 1.4rem; margin-bottom: 1.2rem; border-left: 5px solid var(--yellow); display: grid; gap: 1rem; }
+        .slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; }
+        .slot { display: grid; gap: .5rem; align-content: start; }
+        .slot strong { font-size: .84rem; color: var(--blue); }
+        .slot-img { aspect-ratio: 4 / 3; border-radius: 12px; background: #e6eaf3 center / cover no-repeat; display: grid; place-items: center; font-size: .76rem; color: var(--muted); font-weight: 600; text-align: center; padding: .4rem; }
+        .slot-actions { display: flex; gap: .4rem; }
+        .sub-h { font-family: var(--ff-title); color: var(--blue); font-size: 1.15rem; }
+        .sub-h small { font-family: var(--ff-body); color: var(--muted); font-size: .75rem; margin-left: .3rem; }
+        .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: .6rem; }
+        .gal-item { position: relative; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #e6eaf3; }
+        .gal-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .gal-del { position: absolute; top: .35rem; right: .35rem; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(23, 35, 63, .85); color: #fff; cursor: pointer; }
+        .gal-del:hover { background: var(--danger); }
+        .muted { color: var(--muted); font-size: .88rem; }
+        @media (max-width: 900px) { .slot-grid { grid-template-columns: repeat(2, 1fr); } }
         .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; margin-bottom: 1.2rem; }
         .stat { padding: 1.1rem 1.2rem; display: flex; flex-direction: column; border-left: 5px solid var(--yellow); cursor: pointer; transition: transform .2s, box-shadow .2s; }
         .stat:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(23, 35, 63, .12); }
@@ -314,6 +329,18 @@
                     <a class="btn btn-yellow btn-sm" id="qrDl" download="qr-carte-le-montade.png"><i class="fas fa-download"></i> Télécharger (PNG)</a>
                 </div>
             </div>
+            <div class="card photos-card">
+                <div class="setting-text">
+                    <strong><i class="fas fa-images"></i> Photos du site</strong>
+                    <span>Changez les photos de l'accueil et gérez la galerie. Les photos sont réduites automatiquement avant l'envoi.</span>
+                </div>
+                <div class="slot-grid" id="slotGrid"></div>
+                <h3 class="sub-h">Galerie <small id="galCount"></small></h3>
+                <div class="gal-grid" id="galGrid"></div>
+                <div><button type="button" class="btn btn-soft" id="galAdd"><i class="fas fa-plus"></i> Ajouter des photos</button></div>
+                <input type="file" id="slotInput" accept="image/*" hidden>
+                <input type="file" id="galInput" accept="image/*" multiple hidden>
+            </div>
             <div class="stats" id="stats"></div>
             <div class="card toolbar">
                 <div class="filter-tabs" id="filterTabs"></div>
@@ -329,7 +356,7 @@
 <script src="allergenes.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, doc, onSnapshot, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     /* ===== RÉGLAGES ===== */
     // Adresse de ton backend Render (sans « / » à la fin)
@@ -353,7 +380,7 @@
 
     /* ===== Session (jeton signé par le serveur, valable 2 h, effacé à la fermeture de l'onglet) ===== */
     const TOKEN_KEY = 'montade_admin_token';
-    let token = null, tokenExp = 0, unsub = null, unsubSettings = null, plats = [], filter = 'all', editingId = null, logoutTimer;
+    let token = null, tokenExp = 0, unsub = null, unsubSettings = null, photosUnsub = null, plats = [], filter = 'all', editingId = null, logoutTimer;
 
     function readStoredToken() {
         try {
@@ -425,6 +452,7 @@
         clearTimeout(logoutTimer);
         if (unsub) { unsub(); unsub = null; }
         if (unsubSettings) { unsubSettings(); unsubSettings = null; }
+        if (photosUnsub) { photosUnsub(); photosUnsub = null; }
         $('dashboard').hidden = true; $('loginScreen').hidden = false;
         resetForm();
         if (message) showMsg($('loginMsg'), message, 'info');
@@ -436,7 +464,7 @@
         window.scrollTo(0, 0);
         clearTimeout(logoutTimer);
         logoutTimer = setTimeout(() => logout('Session expirée, reconnectez-vous.'), Math.max(1000, tokenExp - Date.now()));
-        resetForm(); updateFormVisibility(); startListening(); startSettings();
+        resetForm(); updateFormVisibility(); startListening(); startSettings(); startPhotos();
     }
 
     /* ===== Réglages du site : formulaire de contact ===== */
@@ -653,6 +681,106 @@
             if (!wasEdit) { $('categorie').value = keep.cat; sc.value = keep.sub; updateFormVisibility(); }
         } catch (err) { showMsg(msg, err.message); }
         finally { btn.disabled = false; }
+    });
+
+    /* ===== Photos du site ===== */
+    const SLOT_META = {
+        hero: { label: "Grande photo de l'accueil", w: 1600, max: 600000 },
+        cafe: { label: 'Working café', w: 900, max: 300000 },
+        midi: { label: 'Brasserie du midi', w: 900, max: 300000 },
+        vin: { label: 'Bar à vin', w: 900, max: 300000 }
+    };
+    const GAL = { w: 1000, max: 300000, limit: 12 };
+    let photos = [], pendingSlot = null;
+    const safeSrc = (d) => (typeof d === 'string' && d.startsWith('data:image/jpeg;base64,') ? d : '');
+
+    function loadImg(file) {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(file), img = new Image();
+            img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+            img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image illisible. Utilisez une photo JPEG ou PNG.')); };
+            img.src = url;
+        });
+    }
+    async function compress(file, maxW, maxChars) {
+        const img = await loadImg(file);
+        const scale = Math.min(1, maxW / img.width);
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        let q = 0.82, out = c.toDataURL('image/jpeg', q);
+        while (out.length > maxChars && q > 0.4) { q -= 0.07; out = c.toDataURL('image/jpeg', q); }
+        if (out.length > maxChars) throw new Error('Photo trop lourde, même après réduction.');
+        return out;
+    }
+
+    function startPhotos() {
+        if (photosUnsub) photosUnsub();
+        photosUnsub = onSnapshot(query(collection(db, 'photos'), where('slot', 'in', ['hero', 'cafe', 'midi', 'vin', 'gallery'])),
+            (snap) => { photos = snap.docs.map((d) => ({ id: d.id, ...d.data() })); renderPhotos(); },
+            (err) => { console.error(err); $('slotGrid').innerHTML = '<p class="muted">Lecture des photos impossible (vérifiez les règles Firestore).</p>'; });
+    }
+    function renderPhotos() {
+        $('slotGrid').innerHTML = Object.entries(SLOT_META).map(([k, m]) => {
+            const p = photos.find((x) => x.id === k), src = p ? safeSrc(p.data) : '';
+            return `<div class="slot"><div class="slot-img"${src ? ` style="background-image:url('${src}')"` : ''}>${src ? '' : 'Photo par défaut'}</div>
+                <strong>${esc(m.label)}</strong>
+                <div class="slot-actions"><button type="button" class="btn btn-soft btn-sm" data-slot-change="${k}"><i class="fas fa-camera"></i> Changer</button>
+                ${src ? `<button type="button" class="btn btn-ghost btn-sm" data-slot-reset="${k}" aria-label="Revenir à la photo par défaut" title="Revenir à la photo par défaut"><i class="fas fa-rotate-left"></i></button>` : ''}</div></div>`;
+        }).join('');
+        const gal = photos.filter((p) => p.slot === 'gallery' && safeSrc(p.data))
+            .sort((a, b) => (a.dateAjout?.toMillis?.() || 0) - (b.dateAjout?.toMillis?.() || 0));
+        $('galCount').textContent = `(${gal.length}/${GAL.limit})`;
+        $('galGrid').innerHTML = gal.length
+            ? gal.map((p) => `<div class="gal-item"><img src="${safeSrc(p.data)}" alt=""><button type="button" class="gal-del" data-photo-del="${esc(p.id)}" aria-label="Supprimer cette photo"><i class="fas fa-trash"></i></button></div>`).join('')
+            : '<p class="muted">Aucune photo dans la galerie pour l\'instant.</p>';
+        $('galAdd').hidden = gal.length >= GAL.limit;
+    }
+
+    document.addEventListener('click', async (e) => {
+        const ch = e.target.closest('[data-slot-change]');
+        if (ch) { pendingSlot = ch.dataset.slotChange; $('slotInput').click(); return; }
+        const rs = e.target.closest('[data-slot-reset]');
+        if (rs) {
+            if (!confirm('Revenir à la photo par défaut ?')) return;
+            try { await api('/api/photos/' + encodeURIComponent(rs.dataset.slotReset), { method: 'DELETE' }); toast('Photo par défaut rétablie', 'ok'); }
+            catch (err) { toast(err.message, 'err'); }
+            return;
+        }
+        const del = e.target.closest('[data-photo-del]');
+        if (del) {
+            if (!confirm('Supprimer cette photo de la galerie ?')) return;
+            try { await api('/api/photos/' + encodeURIComponent(del.dataset.photoDel), { method: 'DELETE' }); toast('Photo supprimée', 'ok'); }
+            catch (err) { toast(err.message, 'err'); }
+        }
+    });
+    $('galAdd').addEventListener('click', () => $('galInput').click());
+
+    $('slotInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0]; e.target.value = '';
+        if (!file || !pendingSlot) return;
+        const m = SLOT_META[pendingSlot], slot = pendingSlot;
+        toast('Envoi de la photo…');
+        try {
+            const data = await compress(file, m.w, m.max);
+            await api('/api/photos/' + slot, { method: 'PUT', body: { data } });
+            toast('Photo mise à jour', 'ok');
+        } catch (err) { toast(err.message, 'err'); }
+    });
+    $('galInput').addEventListener('change', async (e) => {
+        const files = Array.from(e.target.files); e.target.value = '';
+        let done = 0;
+        for (const file of files) {
+            toast(`Envoi de la photo ${done + 1}/${files.length}…`);
+            try {
+                const data = await compress(file, GAL.w, GAL.max);
+                await api('/api/photos', { method: 'POST', body: { data } });
+                done++;
+            } catch (err) { toast(err.message, 'err'); break; }
+        }
+        if (done) toast(done > 1 ? `${done} photos ajoutées` : 'Photo ajoutée', 'ok');
     });
 
     /* ===== QR code des tables ===== */

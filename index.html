@@ -103,6 +103,24 @@
         .concept-body h3 { font-size: 1.55rem; color: var(--blue); margin-bottom: .6rem; }
         .concept-body p { color: var(--muted); font-size: .96rem; }
 
+        .js .hero-bg { opacity: 0; transition: opacity 1s ease; }
+        .js .hero-bg.ready { opacity: 1; }
+
+        /* ===== GALERIE ===== */
+        .galerie { background: var(--cream); }
+        .gal-grid { columns: 3 260px; column-gap: 1rem; }
+        .gal-grid button { display: block; width: 100%; padding: 0; border: 0; background: none; margin: 0 0 1rem; break-inside: avoid; border-radius: 18px; overflow: hidden; cursor: zoom-in; box-shadow: 0 10px 30px rgba(23, 35, 63, .1); }
+        .gal-grid img { width: 100%; display: block; transition: transform .5s var(--ease); }
+        .gal-grid button:hover img, .gal-grid button:focus-visible img { transform: scale(1.05); }
+        .lightbox { position: fixed; inset: 0; z-index: 300; background: rgba(12, 18, 33, .92); display: grid; place-items: center; padding: 1rem; }
+        .lightbox img { max-width: min(100%, 1200px); max-height: 86vh; max-height: 86dvh; border-radius: 14px; box-shadow: 0 20px 80px rgba(0, 0, 0, .5); }
+        .lb-btn { position: absolute; width: 50px; height: 50px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .4); background: var(--blue); color: #fff; font-size: 1.05rem; cursor: pointer; transition: background .25s, color .25s; }
+        .lb-btn:hover, .lb-btn:focus-visible { background: var(--gold-btn); border-color: var(--gold-btn); color: var(--blue-dark); }
+        .lb-close { top: 1rem; right: 1rem; }
+        .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+        .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+        @media (max-width: 640px) { .lb-prev, .lb-next { top: auto; bottom: 1rem; transform: none; } .lb-prev { left: calc(50% - 60px); } .lb-next { right: calc(50% - 60px); } }
+
         /* ===== CARTE ===== */
         .carte { background: var(--blue-dark); color: #fff; position: relative; overflow: hidden; }
         .carte::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 15% 0%, rgba(247, 222, 78, .09), transparent 45%), radial-gradient(circle at 90% 100%, rgba(58, 85, 135, .55), transparent 50%); pointer-events: none; }
@@ -313,6 +331,17 @@
             </div>
         </section>
 
+        <div id="galSentinel" aria-hidden="true"></div>
+        <section id="galerie" class="section galerie" hidden>
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Galerie</span>
+                    <h2 class="title">Le lieu <em>en images</em></h2>
+                </div>
+                <div class="gal-grid" id="galGrid"></div>
+            </div>
+        </section>
+
         <!-- ================= CARTE ================= -->
         <section id="carte" class="section carte on-dark">
             <div class="container">
@@ -500,6 +529,12 @@
         </div>
     </footer>
 
+    <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo agrandie">
+        <button type="button" class="lb-btn lb-close" id="lbClose" aria-label="Fermer"><i class="fas fa-xmark"></i></button>
+        <button type="button" class="lb-btn lb-prev" id="lbPrev" aria-label="Photo précédente"><i class="fas fa-chevron-left"></i></button>
+        <img id="lbImg" alt="">
+        <button type="button" class="lb-btn lb-next" id="lbNext" aria-label="Photo suivante"><i class="fas fa-chevron-right"></i></button>
+    </div>
     <div class="mobile-cta">
         <a href="tel:+33556843159" class="btn btn-dark"><i class="fas fa-phone"></i> Appeler</a>
         <a href="#reserver" class="btn btn-primary">Réserver</a>
@@ -632,7 +667,7 @@
     <script src="allergenes.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, onSnapshot, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBKexIqSVeeZZqL-X11Rx4QXXO639YnE7w",
@@ -643,6 +678,58 @@
             appId: "1:325197109352:web:1b65a2c21cbc26aae7c3dd"
         };
         const db = getFirestore(initializeApp(firebaseConfig));
+
+        // ----- Photos modifiables depuis l'admin (accueil + galerie) -----
+        const okImg = (d) => typeof d === 'string' && d.startsWith('data:image/jpeg;base64,');
+        const lazy = (el, fn) => {
+            if (!el) return;
+            if (!('IntersectionObserver' in window)) { fn(); return; }
+            const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); fn(); } }, { rootMargin: '600px' });
+            io.observe(el);
+        };
+
+        const heroEl = document.querySelector('.hero-bg');
+        getDoc(doc(db, 'photos', 'hero'))
+            .then((s) => { if (s.exists() && okImg(s.data().data)) heroEl.style.backgroundImage = `url("${s.data().data}")`; })
+            .catch(() => {})
+            .finally(() => heroEl.classList.add('ready'));
+
+        lazy(document.getElementById('concept'), () => {
+            ['cafe', 'midi', 'vin'].forEach((k) => getDoc(doc(db, 'photos', k)).then((s) => {
+                if (s.exists() && okImg(s.data().data)) document.documentElement.style.setProperty('--photo-' + k, `url("${s.data().data}")`);
+            }).catch(() => {}));
+        });
+
+        const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg');
+        let galList = [], galIdx = 0;
+        const showLb = (i) => { galIdx = (i + galList.length) % galList.length; lbImg.src = galList[galIdx]; };
+        const closeLb = () => { lb.hidden = true; document.body.classList.remove('no-scroll'); };
+        lazy(document.getElementById('galSentinel'), () => {
+            getDocs(query(collection(db, 'photos'), where('slot', '==', 'gallery'))).then((snap) => {
+                const items = snap.docs.map((d) => d.data()).filter((p) => okImg(p.data))
+                    .sort((a, b) => (a.dateAjout?.toMillis?.() || 0) - (b.dateAjout?.toMillis?.() || 0));
+                if (!items.length) return;
+                galList = items.map((p) => p.data);
+                document.getElementById('galGrid').innerHTML = galList.map((src, i) =>
+                    `<button type="button" data-i="${i}" aria-label="Agrandir la photo ${i + 1}"><img src="${src}" alt="Photo du Montadé ${i + 1}"></button>`).join('');
+                document.getElementById('galerie').hidden = false;
+            }).catch(() => {});
+        });
+        document.getElementById('galGrid').addEventListener('click', (e) => {
+            const b = e.target.closest('button[data-i]'); if (!b) return;
+            showLb(Number(b.dataset.i)); lb.hidden = false; document.body.classList.add('no-scroll');
+            document.getElementById('lbClose').focus();
+        });
+        document.getElementById('lbClose').addEventListener('click', closeLb);
+        document.getElementById('lbPrev').addEventListener('click', () => showLb(galIdx - 1));
+        document.getElementById('lbNext').addEventListener('click', () => showLb(galIdx + 1));
+        lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+        document.addEventListener('keydown', (e) => {
+            if (lb.hidden) return;
+            if (e.key === 'Escape') closeLb();
+            if (e.key === 'ArrowLeft') showLb(galIdx - 1);
+            if (e.key === 'ArrowRight') showLb(galIdx + 1);
+        });
 
         // Le formulaire de contact s'affiche sauf s'il est désactivé dans l'admin
         const contactWrap = document.getElementById('contactFormWrap');

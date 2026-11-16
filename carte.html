@@ -39,7 +39,10 @@
         .qr-sticky { position: sticky; top: 0; z-index: 50; background: rgba(251, 248, 239, .96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top); }
         .scroller { display: flex; gap: .5rem; overflow-x: auto; padding: .7rem 1rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .scroller::-webkit-scrollbar { display: none; }
-        .scroller.center { justify-content: center; }
+        .scroller { position: relative; }
+        /* centré s'il y a de la place, sinon aligné à gauche et défilable (évite que le début soit coupé) */
+        .scroller > :first-child { margin-left: auto; }
+        .scroller > :last-child { margin-right: auto; }
         .tab { flex: none; border: 2px solid var(--blue); background: transparent; color: var(--blue); border-radius: 999px; padding: .55rem 1.1rem; font: 700 .76rem var(--ff-body); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
         .tab.active, .tab:hover { background: var(--blue); color: #fff; }
         .tab.active:hover { background: var(--gold-btn); border-color: var(--gold-btn); color: var(--blue-dark); }
@@ -122,7 +125,6 @@
             .grid { grid-template-columns: 1fr 1fr; }
             .formule .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 1.6rem; }
             .alg-list { grid-template-columns: 1fr 1fr; }
-            .scroller { justify-content: center; }
         }
     </style>
 </head>
@@ -141,7 +143,7 @@
             <p class="qr-note" id="tabNote"></p>
             <label class="qr-search">
                 <i class="fas fa-magnifying-glass"></i>
-                <input type="search" id="q" placeholder="Rechercher un plat, une boisson…" aria-label="Rechercher dans la carte" autocomplete="off">
+                <input type="search" id="q" placeholder="Rechercher un plat…" aria-label="Rechercher dans la carte" autocomplete="off">
                 <button type="button" id="qClear" hidden aria-label="Effacer la recherche"><i class="fas fa-xmark"></i></button>
             </label>
         </section>
@@ -266,6 +268,8 @@
             chipsEl.innerHTML = sections.map((s) => `<button type="button" class="chip" data-sec="${s.id}">${META[s.t].i} ${META[s.t].t}</button>`).join('');
             $('tabNote').textContent = TABS.find((t) => t.id === current).note;
             tabsEl.querySelectorAll('.tab').forEach((b) => { const on = b.dataset.tab === current; b.classList.toggle('active', on); b.setAttribute('aria-selected', String(on)); });
+            const act = tabsEl.querySelector('.tab.active');
+            if (act) tabsEl.scrollTo({ left: act.offsetLeft - (tabsEl.clientWidth - act.offsetWidth) / 2, behavior: 'auto' });
             measure(); spy();
         }
         function renderTabs() {
@@ -279,7 +283,6 @@
             const parisHour = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })).getHours();
             const wanted = avail.find((t) => t.id === hash) || avail.find((t) => t.id === (parisHour < 15 ? 'midi' : 'soir')) || avail[0];
             current = wanted.id;
-            tabsEl.classList.toggle('center', avail.length < 4);
             tabsEl.innerHTML = avail.map((t) => `<button type="button" role="tab" class="tab" data-tab="${t.id}">${t.label}</button>`).join('');
             renderTab();
         }
